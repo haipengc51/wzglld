@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/title_image_text_image"/>
+
+    <LinearLayout
+        android:id="@+id/button_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/choose_used_text"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/item_height"
+            android:background="@drawable/input_bg"
+            android:hint="@string/choose_recent_use"
+            android:layout_marginLeft="@dimen/marginTop20"
+            android:layout_marginRight="@dimen/marginTop20"
+            android:layout_marginTop="@dimen/marginTop20"
+            android:paddingLeft="@dimen/marginTop10"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/content_text_size"
+            android:textColor="@color/text_hint_color"/>
+
+        <TextView
+            android:id="@+id/read_card"
+            style="@style/button_style"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/item_height"
+            android:layout_marginRight="@dimen/marginTop20"
+            android:layout_marginLeft="@dimen/marginTop20"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/marginTop20"
+            android:text="@string/read_card"
+            android:textSize="@dimen/title_text_size"/>
+
+        <TextView
+            android:id="@+id/sao_ma"
+            style="@style/button_style"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/item_height"
+            android:layout_marginRight="@dimen/marginTop20"
+            android:layout_marginLeft="@dimen/marginTop20"
+            android:layout_marginTop="@dimen/marginTop20"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/marginTop20"
+            android:text="@string/recongnize_code"
+            android:textSize="@dimen/title_text_size"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/record_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_height">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/title_navi"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </FrameLayout>
+
+
+        <View
+            style="@style/line_d5"/>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+</LinearLayout>
