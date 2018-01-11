@@ -83,6 +83,10 @@
         <activity android:name="com.jiekai.wzglld.ui.RecordHistoryDetailActivity"
             android:label="@string/record_failed_detail"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.QueryDeviceInfoActivity"
+            android:label="@string/query_device_info"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
     </application>
 
 </manifest>

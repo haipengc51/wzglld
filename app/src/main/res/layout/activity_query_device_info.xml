@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/title_image_text_image"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height"
+        android:layout_marginTop="@dimen/marginTop10"
+        android:layout_marginBottom="@dimen/marginTop5"
+        android:layout_marginLeft="@dimen/marginTop10"
+        android:layout_marginRight="@dimen/marginTop10"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical|left"
+            android:layout_marginRight="@dimen/marginTop10"
+            android:text="@string/shebei_leibie"
+            android:textColor="@color/text_content_color"
+            android:textSize="@dimen/content_text_size"/>
+
+        <TextView
+            android:id="@+id/device_leibie"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/item_height"
+            android:layout_weight="3"
+            android:background="@drawable/input_bg"
+            android:drawablePadding="5dp"
+            android:drawableRight="@drawable/ic_arrow_down"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:hint="@string/shebei_leibie"
+            android:lines="1"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textColor="@color/text_content_color"
+            android:textSize="@dimen/content_text_size" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height"
+        android:layout_marginTop="@dimen/marginTop5"
+        android:layout_marginBottom="@dimen/marginTop5"
+        android:layout_marginLeft="@dimen/marginTop10"
+        android:layout_marginRight="@dimen/marginTop10"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical|left"
+            android:layout_marginRight="@dimen/marginTop10"
+            android:text="@string/shebei_xinghao"
+            android:textColor="@color/text_content_color"
+            android:textSize="@dimen/content_text_size"/>
+
+        <TextView
+            android:id="@+id/device_xinghao"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/item_height"
+            android:layout_weight="3"
+            android:background="@drawable/input_bg"
+            android:drawablePadding="5dp"
+            android:drawableRight="@drawable/ic_arrow_down"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:hint="@string/shebei_xinghao"
+            android:lines="1"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textColor="@color/text_content_color"
+            android:textSize="@dimen/content_text_size" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height"
+        android:layout_marginTop="@dimen/marginTop5"
+        android:layout_marginBottom="@dimen/marginTop5"
+        android:layout_marginLeft="@dimen/marginTop10"
+        android:layout_marginRight="@dimen/marginTop10"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical|left"
+            android:layout_marginRight="@dimen/marginTop10"
+            android:text="@string/shebei_guige"
+            android:textColor="@color/text_content_color"
+            android:textSize="@dimen/content_text_size"/>
+
+        <TextView
+            android:id="@+id/device_guige"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/item_height"
+            android:layout_weight="3"
+            android:background="@drawable/input_bg"
+            android:drawablePadding="5dp"
+            android:drawableRight="@drawable/ic_arrow_down"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:hint="@string/shebei_guige"
+            android:lines="1"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textColor="@color/text_content_color"
+            android:textSize="@dimen/content_text_size" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height"
+        android:layout_marginTop="@dimen/marginTop5"
+        android:layout_marginBottom="@dimen/marginTop5"
+        android:layout_marginLeft="@dimen/marginTop10"
+        android:layout_marginRight="@dimen/marginTop10"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical|left"
+            android:layout_marginRight="@dimen/marginTop10"
+            android:text="@string/device_id"
+            android:textColor="@color/text_content_color"
+            android:textSize="@dimen/content_text_size"/>
+
+        <TextView
+            android:id="@+id/device_id"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/item_height"
+            android:layout_weight="3"
+            android:background="@drawable/input_bg"
+            android:drawablePadding="5dp"
+            android:drawableRight="@drawable/ic_arrow_down"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:hint="@string/device_id"
+            android:lines="1"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textColor="@color/text_content_color"
+            android:textSize="@dimen/content_text_size" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height"
+        android:layout_marginTop="@dimen/marginTop20"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/read_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                style="@style/button_style"
+                android:layout_marginLeft="@dimen/marginTop20"
+                android:layout_alignParentLeft="true"
+                android:text="@string/read_card"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/sao_ma"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/button_style"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/marginTop20"
+                android:layout_alignParentRight="true"
+                android:text="@string/recongnize_code"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/cancle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height"
+        style="@style/button_style"
+        android:gravity="center"
+        android:layout_marginLeft="@dimen/marginTop10"
+        android:layout_marginRight="@dimen/marginTop10"
+        android:layout_marginTop="@dimen/marginTop20"
+        android:layout_alignParentRight="true"
+        android:text="@string/recongnize_code"
+        android:textSize="@dimen/title_text_size"/>
+
+</LinearLayout>

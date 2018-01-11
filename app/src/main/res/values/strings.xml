@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">物资管理-现场</string>
+    <string name="app_name">物资管理-领导</string>
     <string name="sweep_string">将二维码/条码放入框内，即可自动扫描</string>
     <string name="jiekai">东营杰开智能科技有限公司</string>
     <string name="please_input_username">请输入用户名</string>
@@ -141,4 +141,5 @@
     <string name="record_failed_detail">未通过审核详情</string>
     <string name="get_image_fail">获取图片失败</string>
     <string name="device_recod_faild">设备记录失败</string>
+    <string name="query_device_info">设备信息查询</string>
 </resources>
