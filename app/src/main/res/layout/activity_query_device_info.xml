@@ -202,7 +202,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/cancle"
+        android:id="@+id/enter"
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_height"
         style="@style/button_style"
@@ -211,7 +211,7 @@
         android:layout_marginRight="@dimen/marginTop10"
         android:layout_marginTop="@dimen/marginTop20"
         android:layout_alignParentRight="true"
-        android:text="@string/recongnize_code"
+        android:text="@string/find"
         android:textSize="@dimen/title_text_size"/>
 
 </LinearLayout>
