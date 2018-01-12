@@ -151,6 +151,7 @@ public class QueryDeviceInfoActivity extends NFCBaseActivity implements View.OnC
                         } else {
                             alert(getResources().getString(R.string.no_data));
                         }
+                        dismissProgressDialog();
                     }
                 });
     }
