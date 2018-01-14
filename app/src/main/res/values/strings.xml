@@ -142,4 +142,6 @@
     <string name="get_image_fail">获取图片失败</string>
     <string name="device_recod_faild">设备记录失败</string>
     <string name="query_device_info">设备信息查询</string>
+    <string name="please_choose_device">请先选择设备</string>
+    <string name="no_find_device_info">没有找到此设备的详细信息</string>
 </resources>

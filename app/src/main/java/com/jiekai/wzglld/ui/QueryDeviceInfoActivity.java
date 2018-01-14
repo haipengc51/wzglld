@@ -2,7 +2,6 @@ package com.jiekai.wzglld.ui;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,20 +9,14 @@ import android.widget.TextView;
 import com.jiekai.wzglld.R;
 import com.jiekai.wzglld.config.Constants;
 import com.jiekai.wzglld.config.SqlUrl;
-import com.jiekai.wzglld.entity.DeviceEntity;
-import com.jiekai.wzglld.entity.DevicesortEntity;
 import com.jiekai.wzglld.entity.PankuDataEntity;
 import com.jiekai.wzglld.test.NFCBaseActivity;
-import com.jiekai.wzglld.ui.popup.DeviceCodePopup;
-import com.jiekai.wzglld.ui.popup.DeviceNamePopup;
 import com.jiekai.wzglld.ui.uiUtils.TypeUtils;
 import com.jiekai.wzglld.utils.CommonUtils;
-import com.jiekai.wzglld.utils.GlidUtils;
 import com.jiekai.wzglld.utils.StringUtils;
 import com.jiekai.wzglld.utils.dbutils.DBManager;
 import com.jiekai.wzglld.utils.dbutils.DbCallBack;
 import com.jiekai.wzglld.utils.zxing.CaptureActivity;
-import com.luck.picture.lib.PictureSelector;
 
 import java.util.List;
 
@@ -111,9 +104,17 @@ public class QueryDeviceInfoActivity extends NFCBaseActivity implements View.OnC
                 startActivityForResult(new Intent(mActivity, CaptureActivity.class), Constants.SCAN);
                 break;
             case R.id.enter:
-
+                startDetail();
                 break;
         }
+    }
+
+    private void startDetail() {
+        if (StringUtils.isEmpty(deviceId.getText().toString())) {
+            alert(R.string.please_choose_device);
+            return;
+        }
+        DeviceDetailActivity.start(mActivity, deviceId.getText().toString());
     }
 
     /**
@@ -124,6 +125,10 @@ public class QueryDeviceInfoActivity extends NFCBaseActivity implements View.OnC
         if (StringUtils.isEmpty(id)) {
             return;
         }
+        deviceLeibie.setText("");
+        deviceXinghao.setText("");
+        deviceGuige.setText("");
+        deviceId.setText("");
         DBManager.dbDeal(DBManager.SELECT)
                 .sql(SqlUrl.GetPanKuDataByID)
                 .params(new String[]{id, id, id})

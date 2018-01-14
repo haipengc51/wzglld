@@ -1,6 +1,7 @@
 package com.jiekai.wzglld.ui;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,8 +15,10 @@ import com.jiekai.wzglld.adapter.DeviceDetailAdapter;
 import com.jiekai.wzglld.adapter.DeviceDetailAdapterEntity;
 import com.jiekai.wzglld.config.Config;
 import com.jiekai.wzglld.config.Constants;
+import com.jiekai.wzglld.config.IntentFlag;
 import com.jiekai.wzglld.config.SqlUrl;
 import com.jiekai.wzglld.entity.DeviceDetailEntity;
+import com.jiekai.wzglld.entity.DeviceEntity;
 import com.jiekai.wzglld.entity.DevicedocEntity;
 import com.jiekai.wzglld.test.NFCBaseActivity;
 import com.jiekai.wzglld.utils.PictureSelectUtils;
@@ -59,6 +62,12 @@ public class DeviceDetailActivity extends NFCBaseActivity implements View.OnClic
 
     private DeviceDetailEntity currentDevice;
 
+    public static final void start(Context context, String id) {
+        Intent intent = new Intent(context, DeviceDetailActivity.class);
+        intent.putExtra(IntentFlag.ID, id);
+        context.startActivity(intent);
+    }
+
     @Override
     public void initView() {
         setContentView(R.layout.activity_device_detail);
@@ -83,6 +92,11 @@ public class DeviceDetailActivity extends NFCBaseActivity implements View.OnClic
             detailAdapter = new DeviceDetailAdapter(mActivity, dataList);
             listview.setAdapter(detailAdapter);
             listview.setOnItemClickListener(this);
+        }
+        String id = getIntent().getStringExtra(IntentFlag.ID);
+        if (!StringUtils.isEmpty(id)) {
+            buttonLayout.setVisibility(View.GONE);
+            getDeviceByBH(id);
         }
     }
 
@@ -146,6 +160,46 @@ public class DeviceDetailActivity extends NFCBaseActivity implements View.OnClic
                             listview.setVisibility(View.VISIBLE);
                         } else {
                             alert(getResources().getString(R.string.no_data));
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 通过设备自编号来获取设备详细信息
+     * @param BH
+     */
+    private void getDeviceByBH(String BH) {
+        if (StringUtils.isEmpty(BH)) {
+            alert(R.string.get_bh_faild);
+            return;
+        }
+        DBManager.dbDeal(DBManager.SELECT)
+                .sql(SqlUrl.GET_DEVICE_DETAIL_BY_BH)
+                .params(new String[]{BH})
+                .clazz(DeviceDetailEntity.class)
+                .execut(new DbCallBack() {
+                    @Override
+                    public void onDbStart() {
+                        showProgressDialog(getResources().getString(R.string.loading_device));
+                    }
+
+                    @Override
+                    public void onError(String err) {
+                        alert(err);
+                        dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onResponse(List result) {
+                        dismissProgressDialog();
+                        if (result != null && result.size() != 0) {
+                            paresDeviceToShow((DeviceDetailEntity) result.get(0));
+                            buttonLayout.setVisibility(View.GONE);
+                            listview.setVisibility(View.VISIBLE);
+                        } else {
+                            alert(getResources().getString(R.string.no_find_device_info));
+                            finish();
                         }
                     }
                 });

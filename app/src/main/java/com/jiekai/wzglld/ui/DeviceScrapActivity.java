@@ -201,7 +201,7 @@ public class DeviceScrapActivity extends NFCBaseActivity implements View.OnClick
                     @Override
                     public void onResponse(List result) {
                         if (result != null && result.size() != 0) {
-                            alert(R.string.device_already_out);
+                            alert(R.string.device_already_scrap);
                             isScrap = true;
                         } else {
                             isScrap = false;

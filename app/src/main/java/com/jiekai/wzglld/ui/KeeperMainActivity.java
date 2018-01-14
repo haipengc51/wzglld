@@ -54,6 +54,7 @@ public class KeeperMainActivity extends MyBaseActivity implements AdapterView.On
 //        dataList.add(new KeeperEntity(getResources().getString(R.string.record_check_result), RecordHistoryActivity.class));
 //        dataList.add(new KeeperEntity(getResources().getString(R.string.logout), LogOutActivity.class));
         dataList.add(new KeeperEntity(getResources().getString(R.string.query_device_info), QueryDeviceInfoActivity.class));
+        dataList.add(new KeeperEntity(getResources().getString(R.string.device_scrap), DeviceScrapActivity.class));
     }
 
     @Override
@@ -63,7 +64,7 @@ public class KeeperMainActivity extends MyBaseActivity implements AdapterView.On
             gridView.setAdapter(adapter);
             gridView.setOnItemClickListener(this);
         }
-        AppContext.getUnCheckedData(this, userData.getUSERID());
+//        AppContext.getUnCheckedData(this, userData.getUSERID());
     }
 
     @Override

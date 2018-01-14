@@ -11,4 +11,5 @@ public class IntentFlag {
     public static final String TITLE = "title";
     public static final String BH = "bh";
     public static final String DATA = "data";
+    public static final String ID = "id";
 }

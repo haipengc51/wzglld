@@ -142,12 +142,20 @@ public class SqlUrl {
             "devicestore.CZSJ >=?  AND devicestore.CZSJ <=? AND devicestore.LB = 0 " +
             "AND device.BH = devicestore.SBBH AND userinfo.USERID = devicestore.CZR";
     /**
-     * 获取设备详情
+     * 获取设备详情 通过设备标签id查询
      */
     public static final String GET_DEVICE_DETAIL = "SELECT " +
             "*, lb.TEXT AS leibie, xh.TEXT AS xinghao, gg.TEXT AS guige " +
             "FROM device, devicesort AS lb, devicesort as xh, devicesort as gg " +
             "WHERE (device.IDDZMBH1 = ? OR device.IDDZMBH2 = ? OR device.IDDZMBH3 = ?) " +
+            "AND lb.COOD = device.LB AND xh.COOD = device.XH AND gg.COOD = device.GG";
+    /**
+     * 获取设备详情 通过设备标签id查询
+     */
+    public static final String GET_DEVICE_DETAIL_BY_BH = "SELECT " +
+            "*, lb.TEXT AS leibie, xh.TEXT AS xinghao, gg.TEXT AS guige " +
+            "FROM device, devicesort AS lb, devicesort as xh, devicesort as gg " +
+            "WHERE (device.BH = ?) " +
             "AND lb.COOD = device.LB AND xh.COOD = device.XH AND gg.COOD = device.GG";
     /**
      * 查询数据库中上次是否有盘库的数据,返回上次盘库的全部数据
