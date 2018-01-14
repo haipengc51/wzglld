@@ -3,6 +3,7 @@ package com.jiekai.wzglld.entity;
 import com.jiekai.wzglld.entity.base.BaseEntity;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * Created by LaoWu on 2018/1/5.
@@ -15,13 +16,15 @@ public class DevicelogEntity extends BaseEntity {
     private String SBBH;
     private String DH;
     private String JH;
-    private Date JLSJ;
+    private Timestamp JLSJ;
     private String CZR;
     private String BZ;
     private String SHYJ;
     private String SHR;
     private Date SHSJ;
     private String SHBZ;
+    private String czrname;
+    private String shrname;
 
     public int getID() {
         return ID;
@@ -63,11 +66,11 @@ public class DevicelogEntity extends BaseEntity {
         this.JH = JH;
     }
 
-    public Date getJLSJ() {
+    public Timestamp getJLSJ() {
         return JLSJ;
     }
 
-    public void setJLSJ(Date JLSJ) {
+    public void setJLSJ(Timestamp JLSJ) {
         this.JLSJ = JLSJ;
     }
 
@@ -117,5 +120,21 @@ public class DevicelogEntity extends BaseEntity {
 
     public void setSHBZ(String SHBZ) {
         this.SHBZ = SHBZ;
+    }
+
+    public String getCzrname() {
+        return czrname;
+    }
+
+    public void setCzrname(String czrname) {
+        this.czrname = czrname;
+    }
+
+    public String getShrname() {
+        return shrname;
+    }
+
+    public void setShrname(String shrname) {
+        this.shrname = shrname;
     }
 }

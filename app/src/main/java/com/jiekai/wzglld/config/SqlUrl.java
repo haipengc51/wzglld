@@ -223,4 +223,14 @@ public class SqlUrl {
      * 检查现场提交的记录的结果（列举所有没有通过审核的和没有审核的结果）
      */
     public static final String GET_RECORD_CHECK_LIST = "SELECT * FROM devicelog WHERE CZR = ? AND SHYJ = \"0\"";
+    /**
+     * 获取使用记录的历史记录内容
+     */
+    public static final String GET_LOG_LIST = "SELECT devicelog.*, userinfo.USERNAME as czrname " +
+            "FROM devicelog, userinfo WHERE " +
+            "devicelog.JLZLMC = ? AND devicelog.SBBH = ? AND userinfo.USERID = devicelog.CZR";
+    /**
+     * 通过用户id获取用户的名字
+     */
+    public static final String GET_NAME_BY_ID = "SELECT userinfo.USERNAME as name FROM userinfo WHERE USERID = ?";
 }

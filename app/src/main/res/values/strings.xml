@@ -144,4 +144,10 @@
     <string name="query_device_info">设备信息查询</string>
     <string name="please_choose_device">请先选择设备</string>
     <string name="no_find_device_info">没有找到此设备的详细信息</string>
+    <string name="device_use_record_find">设备使用记录查询</string>
+    <string name="operator_people">操作人</string>
+    <string name="operator_time">操作时间</string>
+    <string name="check_jieguo">审核结果</string>
+    <string name="check_people">审核人</string>
+    <string name="check_time">审核时间</string>
 </resources>

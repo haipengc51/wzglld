@@ -87,6 +87,15 @@
             android:label="@string/query_device_info"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"/>
+        <activity android:name=".ui.RecordDeviceUseActivity"
+            android:label="@string/device_use_record_find"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
+        <activity android:name=".ui.RecordDeviceUseDetailListActivity"
+            android:label="使用记录中某个记录的列表页"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.RecordDeviceUseDetailListDetailActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

@@ -41,6 +41,11 @@ public class TypeUtils implements View.OnClickListener{
     private DevicesortEntity currentXinghao;
     private DevicesortEntity currentGuige;
     private String currentDeviceCode = null;    //选中设备的自编号
+    private SBBHClick sbbhClick;
+
+    public interface SBBHClick {
+        void clickSBBH(String sbbh);
+    }
 
     public TypeUtils(Activity activity,
                      TextView deviceLeibie, TextView deviceXinghao,
@@ -52,6 +57,10 @@ public class TypeUtils implements View.OnClickListener{
         this.deviceId = deviceId;
 
         init(activity);
+    }
+
+    public void setSbbhClick(SBBHClick sbbhClick) {
+        this.sbbhClick = sbbhClick;
     }
 
     private void init(Activity activity) {
@@ -98,6 +107,9 @@ public class TypeUtils implements View.OnClickListener{
         @Override
         public void OnDeviceCodeClick(String deviceCode) {
             currentDeviceCode = deviceCode;
+            if (sbbhClick != null) {
+                sbbhClick.clickSBBH(deviceCode);
+            }
         }
     };
 
