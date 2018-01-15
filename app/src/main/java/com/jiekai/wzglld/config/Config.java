@@ -40,4 +40,6 @@ public class Config {
     public static final String doc_yspj= "yspj";    //易损配件
     public static final String doc_qtfj= "qtfj";    //其他附件
     public static final String doc_sbjlzl= "sbjlzl";    //设备记录种类
+    public static final String doc_sbzc = "sbzc";   //设备转场
+    public static final String doc_sbxj = "sbxj";   //设备转场
 }

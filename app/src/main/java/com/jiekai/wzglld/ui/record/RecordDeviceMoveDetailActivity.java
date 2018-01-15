@@ -1,6 +1,5 @@
-package com.jiekai.wzglld.ui;
+package com.jiekai.wzglld.ui.record;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,7 +9,7 @@ import com.jiekai.wzglld.config.Config;
 import com.jiekai.wzglld.config.IntentFlag;
 import com.jiekai.wzglld.config.SqlUrl;
 import com.jiekai.wzglld.entity.DevicedocEntity;
-import com.jiekai.wzglld.entity.DevicelogEntity;
+import com.jiekai.wzglld.entity.DevicemoveEntity;
 import com.jiekai.wzglld.entity.UserNameEntity;
 import com.jiekai.wzglld.ui.base.MyBaseActivity;
 import com.jiekai.wzglld.utils.CommonUtils;
@@ -26,14 +25,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
- * Created by LaoWu on 2018/1/5.
- * 领导查阅记录的详情页
+ * Created by LaoWu on 2018/1/15.
  */
 
-public class RecordDeviceUseDetailListDetailActivity extends MyBaseActivity implements View.OnClickListener {
+public class RecordDeviceMoveDetailActivity extends MyBaseActivity implements View.OnClickListener {
     @BindView(R.id.back)
     ImageView back;
     @BindView(R.id.title)
@@ -65,49 +62,47 @@ public class RecordDeviceUseDetailListDetailActivity extends MyBaseActivity impl
     @BindView(R.id.check_remark)
     TextView checkRemark;
 
-    private DevicelogEntity currentDatas;
-
+    private DevicemoveEntity currentData;
     private List<LocalMedia> choosePictures = new ArrayList<>();
 
     @Override
     public void initView() {
-        setContentView(R.layout.activity_record_device_use_detail_list_detail);
+        setContentView(R.layout.activity_record_device_move_detail);
     }
 
     @Override
     public void initData() {
-        title.setText(getResources().getString(R.string.record_failed_detail));
+        back.setVisibility(View.VISIBLE);
+        title.setText(getResources().getString(R.string.record_move));
+
         back.setOnClickListener(this);
         recordImage.setOnClickListener(this);
 
-        currentDatas = (DevicelogEntity) getIntent().getSerializableExtra(IntentFlag.DATA);
+        currentData = (DevicemoveEntity) getIntent().getSerializableExtra(IntentFlag.DATA);
     }
 
     @Override
     public void initOperation() {
-        if (currentDatas != null) {
-            recordType.setText(CommonUtils.getDataIfNull(currentDatas.getJLZLMC()));
-            deviceId.setText(CommonUtils.getDataIfNull(currentDatas.getSBBH()));
-            duihao.setText(CommonUtils.getDataIfNull(currentDatas.getDH()));
-            jinghao.setText(CommonUtils.getDataIfNull(currentDatas.getJH()));
-            operatorPeople.setText(CommonUtils.getDataIfNull(currentDatas.getCzrname()));
-            operatorTime.setText(TimeUtils.dateToStringYYYYmmddHHMMSS(currentDatas.getJLSJ()));
-            if (currentDatas.getSHSJ() != null) {
-                checkTime.setText(TimeUtils.dateToStringYYYYmmddHHMMSS(currentDatas.getSHSJ()));
+        if (currentData != null) {
+            deviceId.setText(CommonUtils.getDataIfNull(currentData.getSBBH()));
+            operatorPeople.setText(CommonUtils.getDataIfNull(currentData.getCzrname()));
+            operatorTime.setText(TimeUtils.dateToStringYYYYmmdd(currentData.getCZSJ()));
+            if (currentData.getSHSJ() != null) {
+                checkTime.setText(TimeUtils.dateToStringYYYYmmdd(currentData.getSHSJ()));
             }
-            checkRemark.setText(CommonUtils.getDataIfNull(currentDatas.getSHBZ()));
-            if ("1".equals(currentDatas.getSHYJ())) {
+            checkRemark.setText(CommonUtils.getDataIfNull(currentData.getSHBZ()));
+            if ("1".equals(currentData.getSHYJ())) {
                 checkResult.setText("通过");
-            } else if ("0".equals(currentDatas.getSHYJ())) {
+            } else if ("0".equals(currentData.getSHYJ())) {
                 checkResult.setText("未通过");
             } else {
                 checkResult.setText("待审核");
             }
 
-            showCommitImage(currentDatas.getID());
+            showCommitImage(currentData.getSBBH());
             getSHRName();
         } else {
-            alert(R.string.get_bh_faild);
+            alert(R.string.no_data);
             finish();
         }
     }
@@ -119,20 +114,19 @@ public class RecordDeviceUseDetailListDetailActivity extends MyBaseActivity impl
                 finish();
                 break;
             case R.id.record_image:
-                if (choosePictures != null && choosePictures.size() != 0)
-                    PictureSelectUtils.previewPicture(mActivity, choosePictures);
+
                 break;
         }
     }
 
-    private void showCommitImage(int id) {
-        if (id == -1) {
+    private void showCommitImage(String id) {
+        if (StringUtils.isEmpty(id)) {
             alert(R.string.get_image_fail);
             return;
         }
         DBManager.NewDbDeal(DBManager.SELECT)
                 .sql(SqlUrl.Get_Image_Path)
-                .params(new Object[]{id, Config.doc_sbjlzl})
+                .params(new Object[]{id, Config.doc_sbzc})
                 .clazz(DevicedocEntity.class)
                 .execut(new DbCallBack() {
                     @Override
@@ -160,12 +154,12 @@ public class RecordDeviceUseDetailListDetailActivity extends MyBaseActivity impl
     }
 
     private void getSHRName() {
-        if (StringUtils.isEmpty(currentDatas.getSHR())) {
+        if (StringUtils.isEmpty(currentData.getSHR())) {
             return;
         }
         DBManager.NewDbDeal(DBManager.SELECT)
                 .sql(SqlUrl.GET_NAME_BY_ID)
-                .params(new String[]{currentDatas.getSHR()})
+                .params(new String[]{currentData.getSHR()})
                 .clazz(UserNameEntity.class)
                 .execut(new DbCallBack() {
                     @Override
@@ -185,7 +179,6 @@ public class RecordDeviceUseDetailListDetailActivity extends MyBaseActivity impl
                         }
                     }
                 });
-
     }
 
     @Override

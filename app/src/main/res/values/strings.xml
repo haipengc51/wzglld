@@ -150,4 +150,9 @@
     <string name="check_jieguo">审核结果</string>
     <string name="check_people">审核人</string>
     <string name="check_time">审核时间</string>
+    <string name="record_in">入库记录</string>
+    <string name="record_out">出库记录</string>
+    <string name="record_scrap">报废记录</string>
+    <string name="record_move">转场记录</string>
+    <string name="record_inspection">巡检记录</string>
 </resources>

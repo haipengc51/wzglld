@@ -10,11 +10,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jiekai.wzglld.R;
-import com.jiekai.wzglld.adapter.RecordDeviceInAdapter;
+import com.jiekai.wzglld.adapter.RecordDeviceAdapter;
 import com.jiekai.wzglld.config.Constants;
-import com.jiekai.wzglld.config.IntentFlag;
 import com.jiekai.wzglld.config.SqlUrl;
-import com.jiekai.wzglld.entity.DevicestoreEntity;
+import com.jiekai.wzglld.entity.DevicelogsortEntity;
 import com.jiekai.wzglld.entity.PankuDataEntity;
 import com.jiekai.wzglld.test.NFCBaseActivity;
 import com.jiekai.wzglld.ui.uiUtils.TypeUtils;
@@ -31,9 +30,10 @@ import butterknife.BindView;
 
 /**
  * Created by laowu on 2018/1/14.
+ * 档案查询->设备使用记录查询
  */
 
-public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnClickListener,
+public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnClickListener,
         TypeUtils.SBBHClick, AdapterView.OnItemClickListener {
     @BindView(R.id.back)
     ImageView back;
@@ -53,21 +53,20 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
 
     private TypeUtils typeUtils;
     private AlertDialog alertDialog;
-
-    private RecordDeviceInAdapter adapter;
-    private List<DevicestoreEntity> dataList = new ArrayList();
+    private RecordDeviceAdapter adapter;
+    private List<DevicelogsortEntity> dataList = new ArrayList();
 
     @Override
     public void initView() {
-        setContentView(R.layout.activity_record_device_in);
+        setContentView(R.layout.activity_record_device_use);
     }
 
     @Override
     public void initData() {
-        title.setText(getResources().getString(R.string.record_in));
         back.setVisibility(View.VISIBLE);
+        title.setText(getResources().getString(R.string.device_use_record_find));
 
-        View headerView = LayoutInflater.from(this).inflate(R.layout.header_record_type_choose, null);
+        View headerView = LayoutInflater.from(this).inflate(R.layout.type_choose_layout, null);
         deviceLeibie = (TextView) headerView.findViewById(R.id.device_leibie);
         deviceXinghao = (TextView) headerView.findViewById(R.id.device_xinghao);
         deviceGuige = (TextView) headerView.findViewById(R.id.device_guige);
@@ -91,9 +90,8 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
                 .setTitle("")
                 .setMessage(getResources().getString(R.string.please_nfc))
                 .create();
-
         if (adapter == null) {
-            adapter = new RecordDeviceInAdapter(mActivity, dataList);
+            adapter = new RecordDeviceAdapter(mActivity, dataList);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(this);
         }
@@ -106,11 +104,12 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
         }
         nfcEnable = false;
         getDeviceDataById(nfcString);
+        getRecordListById(nfcString);
     }
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()) {
+        switch (v.getId()) {
             case R.id.back:
                 finish();
                 break;
@@ -126,17 +125,28 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        DevicestoreEntity item = (DevicestoreEntity) parent.getItemAtPosition(position);
-        if (item != null) {
-            Intent intent = new Intent(mActivity, RecordDeviceInDetailActivity.class);
-            intent.putExtra(IntentFlag.DATA, item);
-            startActivity(intent);
+        try {
+            DevicelogsortEntity item = (DevicelogsortEntity) parent.getItemAtPosition(position);
+            if (item != null) {
+                String leibie = deviceLeibie.getText().toString();
+                String xinghao = deviceXinghao.getText().toString();
+                String guige = deviceGuige.getText().toString();
+                String bh = deviceId.getText().toString();
+                if (StringUtils.isEmpty(leibie) || StringUtils.isEmpty(xinghao) ||
+                        StringUtils.isEmpty(guige) || StringUtils.isEmpty(bh)) {
+                    alert(R.string.please_choose_device);
+                    return;
+                }
+                RecordDeviceUseDetailListActivity.start(mActivity, leibie, xinghao, guige,bh, item);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public void clickSBBH(String sbbh) {
-        getDeviceInListBySBBH(sbbh);
+        getRecordListByBH(sbbh);
     }
 
     /**
@@ -175,7 +185,6 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
                             deviceLeibie.setText(CommonUtils.getDataIfNull(pankuDataEntity.getLeibie()));
                             deviceXinghao.setText(CommonUtils.getDataIfNull(pankuDataEntity.getXinghao()));
                             deviceGuige.setText(CommonUtils.getDataIfNull(pankuDataEntity.getGuige()));
-                            getDeviceInListBySBBH(pankuDataEntity.getBH());
                         } else {
                             alert(getResources().getString(R.string.no_data));
                         }
@@ -184,15 +193,20 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
                 });
     }
 
-    private void getDeviceInListBySBBH(String sbbh) {
-        if (StringUtils.isEmpty(sbbh)) {
-            alert(R.string.please_choose_device);
+    /**
+     * 通过id获取记录列表
+     *
+     * @param cardId
+     */
+    private void getRecordListById(String cardId) {
+        if (StringUtils.isEmpty(cardId)) {
+            alert(R.string.get_id_err);
             return;
         }
         DBManager.NewDbDeal(DBManager.SELECT)
-                .sql(SqlUrl.GetDeviceIN)
-                .params(new String[]{sbbh})
-                .clazz(DevicestoreEntity.class)
+                .sql(SqlUrl.Get_Record_List)
+                .params(new String[]{cardId, cardId, cardId})
+                .clazz(DevicelogsortEntity.class)
                 .execut(new DbCallBack() {
                     @Override
                     public void onDbStart() {
@@ -208,11 +222,7 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
                     @Override
                     public void onResponse(List result) {
                         if (result != null && result.size() != 0) {
-                            dataList.clear();
-                            dataList.addAll(result);
-                            if (adapter != null) {
-                                adapter.notifyDataSetChanged();
-                            }
+                            getRecordList(result);
                         } else {
                             alert(R.string.no_data);
                         }
@@ -221,12 +231,62 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
                 });
     }
 
+    /**
+     * 通过id获取记录列表
+     *
+     * @param sbbh
+     */
+    private void getRecordListByBH(String sbbh) {
+        if (StringUtils.isEmpty(sbbh)) {
+            alert(R.string.get_bh_faild);
+            return;
+        }
+        DBManager.dbDeal(DBManager.SELECT)
+                .sql(SqlUrl.Get_Record_List_by_BH)
+                .params(new String[]{sbbh})
+                .clazz(DevicelogsortEntity.class)
+                .execut(new DbCallBack() {
+                    @Override
+                    public void onDbStart() {
+                        showProgressDialog(getResources().getString(R.string.loading_data));
+                    }
+
+                    @Override
+                    public void onError(String err) {
+                        alert(err);
+                        dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onResponse(List result) {
+                        if (result != null && result.size() != 0) {
+                            getRecordList(result);
+                        } else {
+                            alert(R.string.no_data);
+                        }
+                        dismissProgressDialog();
+                    }
+                });
+    }
+
+    /**
+     * 从数据库中发现了设备的列表
+     * @param result
+     */
+    private void getRecordList(List<DevicelogsortEntity> result) {
+        dataList.clear();
+        dataList.addAll(result);
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.SCAN && resultCode == RESULT_OK) {
             String code = data.getExtras().getString("result");
-            getDeviceDataById(code);
+            getRecordListById(code);
         }
     }
 }

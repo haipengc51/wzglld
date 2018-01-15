@@ -10,11 +10,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jiekai.wzglld.R;
-import com.jiekai.wzglld.adapter.RecordDeviceInAdapter;
+import com.jiekai.wzglld.adapter.RecordDeviceScrapAdapter;
 import com.jiekai.wzglld.config.Constants;
 import com.jiekai.wzglld.config.IntentFlag;
 import com.jiekai.wzglld.config.SqlUrl;
-import com.jiekai.wzglld.entity.DevicestoreEntity;
+import com.jiekai.wzglld.entity.DevicescrapEntity;
 import com.jiekai.wzglld.entity.PankuDataEntity;
 import com.jiekai.wzglld.test.NFCBaseActivity;
 import com.jiekai.wzglld.ui.uiUtils.TypeUtils;
@@ -33,7 +33,7 @@ import butterknife.BindView;
  * Created by laowu on 2018/1/14.
  */
 
-public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnClickListener,
+public class RecordDeviceScrapActivity extends NFCBaseActivity implements View.OnClickListener,
         TypeUtils.SBBHClick, AdapterView.OnItemClickListener {
     @BindView(R.id.back)
     ImageView back;
@@ -54,17 +54,17 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
     private TypeUtils typeUtils;
     private AlertDialog alertDialog;
 
-    private RecordDeviceInAdapter adapter;
-    private List<DevicestoreEntity> dataList = new ArrayList();
+    private RecordDeviceScrapAdapter adapter;
+    private List<DevicescrapEntity> dataList = new ArrayList();
 
     @Override
     public void initView() {
-        setContentView(R.layout.activity_record_device_in);
+        setContentView(R.layout.activity_record_device_scrap);
     }
 
     @Override
     public void initData() {
-        title.setText(getResources().getString(R.string.record_in));
+        title.setText(getResources().getString(R.string.record_scrap));
         back.setVisibility(View.VISIBLE);
 
         View headerView = LayoutInflater.from(this).inflate(R.layout.header_record_type_choose, null);
@@ -93,7 +93,7 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
                 .create();
 
         if (adapter == null) {
-            adapter = new RecordDeviceInAdapter(mActivity, dataList);
+            adapter = new RecordDeviceScrapAdapter(mActivity, dataList);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(this);
         }
@@ -126,9 +126,9 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        DevicestoreEntity item = (DevicestoreEntity) parent.getItemAtPosition(position);
+        DevicescrapEntity item = (DevicescrapEntity) parent.getItemAtPosition(position);
         if (item != null) {
-            Intent intent = new Intent(mActivity, RecordDeviceInDetailActivity.class);
+            Intent intent = new Intent(mActivity, RecordDeviceScrapDetailActivity.class);
             intent.putExtra(IntentFlag.DATA, item);
             startActivity(intent);
         }
@@ -136,7 +136,7 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
 
     @Override
     public void clickSBBH(String sbbh) {
-        getDeviceInListBySBBH(sbbh);
+        getDeviceScrapListBySBBH(sbbh);
     }
 
     /**
@@ -151,7 +151,7 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
         deviceXinghao.setText("");
         deviceGuige.setText("");
         deviceId.setText("");
-        DBManager.NewDbDeal(DBManager.SELECT)
+        DBManager.dbDeal(DBManager.SELECT)
                 .sql(SqlUrl.GetPanKuDataByID)
                 .params(new String[]{id, id, id})
                 .clazz(PankuDataEntity.class)
@@ -175,7 +175,7 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
                             deviceLeibie.setText(CommonUtils.getDataIfNull(pankuDataEntity.getLeibie()));
                             deviceXinghao.setText(CommonUtils.getDataIfNull(pankuDataEntity.getXinghao()));
                             deviceGuige.setText(CommonUtils.getDataIfNull(pankuDataEntity.getGuige()));
-                            getDeviceInListBySBBH(pankuDataEntity.getBH());
+                            getDeviceScrapListBySBBH(pankuDataEntity.getBH());
                         } else {
                             alert(getResources().getString(R.string.no_data));
                         }
@@ -184,15 +184,15 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
                 });
     }
 
-    private void getDeviceInListBySBBH(String sbbh) {
+    private void getDeviceScrapListBySBBH(String sbbh) {
         if (StringUtils.isEmpty(sbbh)) {
             alert(R.string.please_choose_device);
             return;
         }
-        DBManager.NewDbDeal(DBManager.SELECT)
-                .sql(SqlUrl.GetDeviceIN)
+        DBManager.dbDeal(DBManager.SELECT)
+                .sql(SqlUrl.GET_SCRAP_DEVICE)
                 .params(new String[]{sbbh})
-                .clazz(DevicestoreEntity.class)
+                .clazz(DevicescrapEntity.class)
                 .execut(new DbCallBack() {
                     @Override
                     public void onDbStart() {

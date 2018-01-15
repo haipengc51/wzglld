@@ -92,11 +92,11 @@ public class SqlUrl {
     /**
      * 查找设备出库表
      */
-    public static final String GetDeviceOut = "SELECT * FROM devicestore WHERE SBBH = ? AND LB = 0";
+    public static final String GetDeviceOut = "SELECT deivcestore.*, userinfo.USERNAME as czrname FROM devicestore, userinfo WHERE SBBH = ? AND LB = 0 AND userinfo.USERID = devicestore.CZR";
     /**
      * 查找设备入库表
      */
-    public static final String GetDeviceIN = "SELECT * FROM devicestore WHERE SBBH = ? AND LB = 1";
+    public static final String GetDeviceIN = "SELECT deivcestore.*, userinfo.USERNAME as czrname FROM devicestore, userinfo WHERE SBBH = ? AND LB = 1 AND userinfo.USERID = devicestore.CZR";
     /**
      * 根据盘库的需求查询数据库
      */
@@ -126,7 +126,7 @@ public class SqlUrl {
     /**
      * 查找报废设备
      */
-    public static final String GET_SCRAP_DEVICE = "SELECT * FROM devicescrap WHERE SBBH = ?";
+    public static final String GET_SCRAP_DEVICE = "SELECT devicescrap.*, userinfo.USERNAME as bfrname FROM devicescrap, userinfo WHERE SBBH = ? AND userinfo.USERID = devicescrap.BFR";
     /**
      * 更改设备状态
      */
@@ -233,4 +233,14 @@ public class SqlUrl {
      * 通过用户id获取用户的名字
      */
     public static final String GET_NAME_BY_ID = "SELECT userinfo.USERNAME as name FROM userinfo WHERE USERID = ?";
+    /**
+     * 获取转场记录
+     */
+    public static final String GET_MOVE_RECORD = "SELECT devicemove.*, userinfo.USERNAME as czrname FROM " +
+            "devicemove, userinfo WHERE devicemove.SBBH = ? AND userinfo.USERID = devicemove.CZR";
+    /**
+     * 获取巡检记录
+     */
+    public static final String GET_INSPECTION_RECORD = "SELECT deviceinspection.*, userinfo.USERNAME as czrname FROM " +
+            "deviceinspection, userinfo WHERE deviceinspection.SBBH = ? AND userinfo.USERID = deviceinspection.CZR";
 }

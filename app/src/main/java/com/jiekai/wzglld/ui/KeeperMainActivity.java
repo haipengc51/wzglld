@@ -7,11 +7,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.jiekai.wzglld.AppContext;
 import com.jiekai.wzglld.R;
 import com.jiekai.wzglld.adapter.KeeperAdapter;
 import com.jiekai.wzglld.entity.KeeperEntity;
 import com.jiekai.wzglld.ui.base.MyBaseActivity;
+import com.jiekai.wzglld.ui.record.RecordDeviceInActivity;
+import com.jiekai.wzglld.ui.record.RecordDeviceInspectionActivity;
+import com.jiekai.wzglld.ui.record.RecordDeviceMoveActivity;
+import com.jiekai.wzglld.ui.record.RecordDeviceOutActivity;
+import com.jiekai.wzglld.ui.record.RecordDeviceScrapActivity;
+import com.jiekai.wzglld.ui.record.RecordDeviceUseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +60,11 @@ public class KeeperMainActivity extends MyBaseActivity implements AdapterView.On
 //        dataList.add(new KeeperEntity(getResources().getString(R.string.logout), LogOutActivity.class));
         dataList.add(new KeeperEntity(getResources().getString(R.string.query_device_info), QueryDeviceInfoActivity.class));
         dataList.add(new KeeperEntity(getResources().getString(R.string.device_use_record_find), RecordDeviceUseActivity.class));
+        dataList.add(new KeeperEntity(getResources().getString(R.string.record_in), RecordDeviceInActivity.class));
+        dataList.add(new KeeperEntity(getResources().getString(R.string.record_out), RecordDeviceOutActivity.class));
+        dataList.add(new KeeperEntity(getResources().getString(R.string.record_scrap), RecordDeviceScrapActivity.class));
+        dataList.add(new KeeperEntity(getResources().getString(R.string.record_move), RecordDeviceMoveActivity.class));
+        dataList.add(new KeeperEntity(getResources().getString(R.string.record_inspection), RecordDeviceInspectionActivity.class));
         dataList.add(new KeeperEntity(getResources().getString(R.string.device_scrap), DeviceScrapActivity.class));
     }
 

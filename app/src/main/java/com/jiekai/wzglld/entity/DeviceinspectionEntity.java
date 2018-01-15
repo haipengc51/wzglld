@@ -2,27 +2,23 @@ package com.jiekai.wzglld.entity;
 
 import com.jiekai.wzglld.entity.base.BaseEntity;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
- * Created by laowu on 2017/12/28.
- * 设备库存表
+ * Created by LaoWu on 2018/1/15.
  */
 
-public class DevicestoreEntity extends BaseEntity {
+public class DeviceinspectionEntity extends BaseEntity {
     private int ID;
-    private String SBBH;    //设备编号
-    private Date CZSJ;    //操作时间
-    private String CZR;     //操作人
-    private String LB;      //类别
-    private String JH;      //井号
-    private String BZ;      //备注
-    private String LYDW;    //领用单位
-    private String SHYJ;    //审核意见
-    private Date SHSJ;    //审核时间
-    private String SHR;     //审核人
-    private String SHBZ;    //审核备注
-    private String czrname;     //操作人的姓名
+    private String SBBH;
+    private Timestamp CZSJ;
+    private String CZR;
+    private String BZ;
+    private String SHYJ;
+    private Timestamp SHSJ;
+    private String SHR;
+    private String SHBZ;
+    private String czrname;
 
     public int getID() {
         return ID;
@@ -40,11 +36,11 @@ public class DevicestoreEntity extends BaseEntity {
         this.SBBH = SBBH;
     }
 
-    public Date getCZSJ() {
+    public Timestamp getCZSJ() {
         return CZSJ;
     }
 
-    public void setCZSJ(Date CZSJ) {
+    public void setCZSJ(Timestamp CZSJ) {
         this.CZSJ = CZSJ;
     }
 
@@ -56,36 +52,12 @@ public class DevicestoreEntity extends BaseEntity {
         this.CZR = CZR;
     }
 
-    public String getLB() {
-        return LB;
-    }
-
-    public void setLB(String LB) {
-        this.LB = LB;
-    }
-
-    public String getJH() {
-        return JH;
-    }
-
-    public void setJH(String JH) {
-        this.JH = JH;
-    }
-
     public String getBZ() {
         return BZ;
     }
 
     public void setBZ(String BZ) {
         this.BZ = BZ;
-    }
-
-    public String getLYDW() {
-        return LYDW;
-    }
-
-    public void setLYDW(String LYDW) {
-        this.LYDW = LYDW;
     }
 
     public String getSHYJ() {
@@ -96,11 +68,11 @@ public class DevicestoreEntity extends BaseEntity {
         this.SHYJ = SHYJ;
     }
 
-    public Date getSHSJ() {
+    public Timestamp getSHSJ() {
         return SHSJ;
     }
 
-    public void setSHSJ(Date SHSJ) {
+    public void setSHSJ(Timestamp SHSJ) {
         this.SHSJ = SHSJ;
     }
 

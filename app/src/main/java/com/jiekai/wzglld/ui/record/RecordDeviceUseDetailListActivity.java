@@ -1,4 +1,4 @@
-package com.jiekai.wzglld.ui;
+package com.jiekai.wzglld.ui.record;
 
 import android.content.Context;
 import android.content.Intent;

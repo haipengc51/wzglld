@@ -15,6 +15,7 @@ public class DevicescrapEntity extends BaseEntity{
     private Date BFSJ;
     private String BFR;
     private String BZ;
+    private String bfrname;
 
     public String getSBBH() {
         return SBBH;
@@ -54,5 +55,13 @@ public class DevicescrapEntity extends BaseEntity{
 
     public void setBZ(String BZ) {
         this.BZ = BZ;
+    }
+
+    public String getBfrname() {
+        return bfrname;
+    }
+
+    public void setBfrname(String bfrname) {
+        this.bfrname = bfrname;
     }
 }
