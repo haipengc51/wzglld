@@ -87,10 +87,6 @@ public class RecordDeviceInDetailActivity extends MyBaseActivity implements View
             deviceId.setText(CommonUtils.getDataIfNull(currentData.getSBBH()));
             operatorPeople.setText(CommonUtils.getDataIfNull(currentData.getCzrname()));
             operatorTime.setText(TimeUtils.dateToStringYYYYmmdd(currentData.getCZSJ()));
-            if (currentData.getSHSJ() != null) {
-                checkTime.setText(TimeUtils.dateToStringYYYYmmdd(currentData.getSHSJ()));
-            }
-            checkRemark.setText(CommonUtils.getDataIfNull(currentData.getSHBZ()));
             if ("1".equals(currentData.getSHYJ())) {
                 checkResult.setText("通过");
             } else if ("0".equals(currentData.getSHYJ())) {
@@ -98,7 +94,10 @@ public class RecordDeviceInDetailActivity extends MyBaseActivity implements View
             } else {
                 checkResult.setText("待审核");
             }
-
+            if (currentData.getSHSJ() != null) {
+                checkTime.setText(TimeUtils.dateToStringYYYYmmdd(currentData.getSHSJ()));
+            }
+            checkRemark.setText(CommonUtils.getDataIfNull(currentData.getSHBZ()));
             showCommitImage(currentData.getID());
             getSHRName();
         } else {
@@ -114,7 +113,9 @@ public class RecordDeviceInDetailActivity extends MyBaseActivity implements View
                 finish();
                 break;
             case R.id.record_image:
-
+                if (choosePictures != null && choosePictures.size() != 0) {
+                    PictureSelectUtils.previewPicture(mActivity, choosePictures);
+                }
                 break;
         }
     }

@@ -120,6 +120,7 @@
     <string name="loading_data_failed">加载数据失败</string>
     <string name="this_id_has_bind">该标签已经绑定了其它设备</string>
     <string name="no_permission">没有库管权限，请使用库管账号登录</string>
+    <string name="no_ld_permission">没有领导权限，请使用领导账号登录</string>
     <string name="zhang_hao_jing_yong">该账号已被禁用</string>
     <string name="device_use_record">设备使用记录</string>
     <string name="duihao_">队号:</string>
@@ -156,4 +157,14 @@
     <string name="record_move">转场记录</string>
     <string name="record_inspection">巡检记录</string>
     <string name="record_repair">维修记录</string>
+
+    <string name="xlistview_header_hint_normal">下拉刷新</string>
+    <string name="xlistview_header_hint_ready">松开刷新数据</string>
+    <string name="xlistview_header_hint_loading">正在加载...</string>
+    <string name="xlistview_header_last_time">上次更新时间：</string>
+    <string name="xlistview_footer_hint_normal">正在加载...</string>
+    <string name="xlistview_footer_hint_normalee">查看更多</string>
+    <string name="loading">正在加载...</string>
+    <string name="i_am_the_last">没有更多消息</string>
+
 </resources>

@@ -92,15 +92,19 @@ public class SqlUrl {
     /**
      * 查找设备出库表
      */
-    public static final String GetDeviceOut = "SELECT deivcestore.*, userinfo.USERNAME as czrname FROM devicestore, userinfo WHERE SBBH = ? AND LB = 0 AND userinfo.USERID = devicestore.CZR";
+    public static final String GetDeviceOut = "SELECT devicestore.*, userinfo.USERNAME as czrname FROM devicestore, userinfo WHERE SBBH = ? AND LB = 0 AND userinfo.USERID = devicestore.CZR";
     /**
      * 查找设备入库表
      */
-    public static final String GetDeviceIN = "SELECT deivcestore.*, userinfo.USERNAME as czrname FROM devicestore, userinfo WHERE SBBH = ? AND LB = 1 AND userinfo.USERID = devicestore.CZR";
+    public static final String GetDeviceIN = "SELECT devicestore.*, userinfo.USERNAME as czrname FROM devicestore, userinfo WHERE SBBH = ? AND LB = 1 AND userinfo.USERID = devicestore.CZR";
     /**
      * 查找设备入库表
      */
-    public static final String GetDeviceRepair = "SELECT deivcestore.*, userinfo.USERNAME as czrname FROM devicestore, userinfo WHERE SBBH = ? AND (LB = 3 OR LB = 4 OR LB = 5) AND userinfo.USERID = devicestore.CZR";
+    public static final String GetDeviceINPage = "SELECT devicestore.*, userinfo.USERNAME as czrname FROM devicestore, userinfo WHERE SBBH = ? AND LB = 1 AND userinfo.USERID = devicestore.CZR limit ?, ?";
+    /**
+     * 查找设备入库表
+     */
+    public static final String GetDeviceRepair = "SELECT devicestore.*, userinfo.USERNAME as czrname FROM devicestore, userinfo WHERE SBBH = ? AND (LB = 3 OR LB = 4 OR LB = 5) AND userinfo.USERID = devicestore.CZR";
     /**
      * 根据盘库的需求查询数据库
      */

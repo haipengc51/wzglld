@@ -18,11 +18,13 @@ import com.jiekai.wzglld.entity.DevicestoreEntity;
 import com.jiekai.wzglld.entity.PankuDataEntity;
 import com.jiekai.wzglld.test.NFCBaseActivity;
 import com.jiekai.wzglld.ui.uiUtils.TypeUtils;
+import com.jiekai.wzglld.ui.uiUtils.XListViewUtils;
 import com.jiekai.wzglld.utils.CommonUtils;
 import com.jiekai.wzglld.utils.StringUtils;
 import com.jiekai.wzglld.utils.dbutils.DBManager;
 import com.jiekai.wzglld.utils.dbutils.DbCallBack;
 import com.jiekai.wzglld.utils.zxing.CaptureActivity;
+import com.jiekai.wzglld.weight.XListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +44,7 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
     @BindView(R.id.menu)
     ImageView menu;
     @BindView(R.id.list_view)
-    ListView listView;
+    XListView listView;
 
     private TextView deviceLeibie;
     private TextView deviceXinghao;
@@ -56,6 +58,7 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
 
     private RecordDeviceInAdapter adapter;
     private List<DevicestoreEntity> dataList = new ArrayList();
+    private XListViewUtils xListViewUtils;
 
     @Override
     public void initView() {
@@ -75,7 +78,10 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
         readCard = (TextView) headerView.findViewById(R.id.read_card);
         saoMa = (TextView) headerView.findViewById(R.id.sao_ma);
 
-        listView.addHeaderView(headerView);
+//        listView.addHeaderView(headerView);
+        xListViewUtils = new XListViewUtils(listView);
+        xListViewUtils.setSqlUrl(SqlUrl.GetDeviceINPage);
+        xListViewUtils.addParams();
 
         back.setOnClickListener(this);
         readCard.setOnClickListener(this);

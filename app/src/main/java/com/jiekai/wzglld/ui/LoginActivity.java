@@ -154,29 +154,23 @@ public class LoginActivity extends MyBaseActivity implements View.OnClickListene
                     public void onResponse(List result) {
                         if (result != null && result.size() != 0) {
                             boolean isOne = false;
-                            boolean isTwo = false;
                             for (int i=0; i<result.size(); i++) {
                                 String role = ((UserRoleEntity) result.get(i)).getROLEID();
-                                if ("003".equals(role)) {
+                                if ("006".equals(role)) {
                                     isOne = true;
-                                }
-                                if ("004".equals(role)) {
-                                    isTwo = true;
-                                }
-                                if (isOne && isTwo) {
                                     break;
                                 }
                             }
-                            if (isOne && isTwo) {
+                            if (isOne) {
                                 saveLoginData(userInfoEntity);
                                 Intent intent = new Intent(LoginActivity.this, KeeperMainActivity.class);
                                 startActivity(intent);
                                 finish();
                             } else {
-                                alert(R.string.no_permission);
+                                alert(R.string.no_ld_permission);
                             }
                         } else {
-                            alert(R.string.no_permission);
+                            alert(R.string.no_ld_permission);
                         }
                         dismissProgressDialog();
                     }
