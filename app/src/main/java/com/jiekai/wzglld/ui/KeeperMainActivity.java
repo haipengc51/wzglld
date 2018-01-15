@@ -15,6 +15,7 @@ import com.jiekai.wzglld.ui.record.RecordDeviceInActivity;
 import com.jiekai.wzglld.ui.record.RecordDeviceInspectionActivity;
 import com.jiekai.wzglld.ui.record.RecordDeviceMoveActivity;
 import com.jiekai.wzglld.ui.record.RecordDeviceOutActivity;
+import com.jiekai.wzglld.ui.record.RecordDeviceRepairActivity;
 import com.jiekai.wzglld.ui.record.RecordDeviceScrapActivity;
 import com.jiekai.wzglld.ui.record.RecordDeviceUseActivity;
 
@@ -63,6 +64,7 @@ public class KeeperMainActivity extends MyBaseActivity implements AdapterView.On
         dataList.add(new KeeperEntity(getResources().getString(R.string.record_in), RecordDeviceInActivity.class));
         dataList.add(new KeeperEntity(getResources().getString(R.string.record_out), RecordDeviceOutActivity.class));
         dataList.add(new KeeperEntity(getResources().getString(R.string.record_scrap), RecordDeviceScrapActivity.class));
+        dataList.add(new KeeperEntity(getResources().getString(R.string.record_repair), RecordDeviceRepairActivity.class));
         dataList.add(new KeeperEntity(getResources().getString(R.string.record_move), RecordDeviceMoveActivity.class));
         dataList.add(new KeeperEntity(getResources().getString(R.string.record_inspection), RecordDeviceInspectionActivity.class));
         dataList.add(new KeeperEntity(getResources().getString(R.string.device_scrap), DeviceScrapActivity.class));

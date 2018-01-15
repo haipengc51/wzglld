@@ -131,6 +131,13 @@
         <activity android:name=".ui.record.RecordDeviceInspectionDetailActivity"
             android:label="巡检记录详情"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.record.RecordDeviceRepairActivity"
+            android:label="@string/record_repair"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
+        <activity android:name=".ui.record.RecordDeviceRepairDetailActivity"
+            android:label="维修记录详情"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
