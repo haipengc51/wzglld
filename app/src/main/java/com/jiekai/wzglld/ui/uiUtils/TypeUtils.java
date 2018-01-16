@@ -10,6 +10,7 @@ import com.jiekai.wzglld.R;
 import com.jiekai.wzglld.config.SqlUrl;
 import com.jiekai.wzglld.entity.DeviceBHEntity;
 import com.jiekai.wzglld.entity.DevicesortEntity;
+import com.jiekai.wzglld.entity.DevicestoreEntity;
 import com.jiekai.wzglld.ui.popup.DeviceCodePopup;
 import com.jiekai.wzglld.ui.popup.DeviceNamePopup;
 import com.jiekai.wzglld.utils.StringUtils;
@@ -82,6 +83,9 @@ public class TypeUtils implements View.OnClickListener{
             deviceXinghao.setText("");
             deviceGuige.setText("");
             deviceId.setText("");
+            currentXinghao = null;
+            currentGuige = null;
+            currentDeviceCode = null;
         }
     };
 
@@ -91,6 +95,8 @@ public class TypeUtils implements View.OnClickListener{
             currentXinghao = devicesortEntity;
             deviceGuige.setText("");
             deviceId.setText("");
+            currentGuige = null;
+            currentDeviceCode = null;
         }
     };
 
@@ -99,6 +105,7 @@ public class TypeUtils implements View.OnClickListener{
         public void OnDeviceNameClick(DevicesortEntity devicesortEntity) {
             currentGuige = devicesortEntity;
             deviceId.setText("");
+            currentDeviceCode = null;
         }
     };
 
@@ -113,8 +120,28 @@ public class TypeUtils implements View.OnClickListener{
         }
     };
 
+    /**
+     * 返回选中的设备自编号
+     * @return
+     */
     public String getCurrentDeviceCode() {
         return  currentDeviceCode;
+    }
+
+    /**
+     * 返回选中的类别
+     * @return
+     */
+    public DevicesortEntity getLeibie() {
+        return currentLeibie;
+    }
+
+    public DevicesortEntity getXinghao() {
+        return currentXinghao;
+    }
+
+    public DevicesortEntity getGuige() {
+        return  currentGuige;
     }
 
     @Override

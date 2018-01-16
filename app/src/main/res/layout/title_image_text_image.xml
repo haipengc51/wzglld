@@ -27,7 +27,7 @@
         android:layout_width="@dimen/title_height"
         android:layout_height="match_parent"
         android:scaleType="center"
-        android:src="@mipmap/ic_menu"
+        android:src="@mipmap/ic_filtrate"
         android:visibility="invisible"/>
 
 </LinearLayout>

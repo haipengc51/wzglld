@@ -7,7 +7,15 @@
     <include
         layout="@layout/type_choose_layout"/>
 
-    <include
-        layout="@layout/adapter_record_device_detail"/>
+    <TextView
+        android:id="@+id/filtrate"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height"
+        android:layout_margin="@dimen/marginTop10"
+        style="@style/button_style"
+        android:gravity="center"
+        android:text="@string/find"
+        android:textSize="@dimen/title_text_size"
+        android:textColor="@color/white"/>
 
 </LinearLayout>

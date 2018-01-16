@@ -9,10 +9,12 @@ import com.jiekai.wzglld.utils.dbutils.DBManager;
 import com.jiekai.wzglld.utils.dbutils.DbCallBack;
 import com.jiekai.wzglld.utils.dbutils.DbDeal;
 import com.jiekai.wzglld.weight.XListView;
+import com.jiekai.wzglld.weight.XListViewFooter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by laowu on 2018/1/15.
@@ -26,7 +28,7 @@ public class XListViewUtils implements XListView.IXListViewListener, AdapterView
     private int size = 20;
     private MyBaseAdapter myBaseAdapter;
     private String sqlUrl;
-    private List params = new ArrayList();
+    private Map<String, Object> params = new HashMap<>();
     private Class clazz;
     private boolean isLoading = false;
 
@@ -39,8 +41,12 @@ public class XListViewUtils implements XListView.IXListViewListener, AdapterView
         this.sqlUrl = sqlUrl;
     }
 
-    public void addParams(Object object) {
-        params.add(object);
+    public void clearParams() {
+        params.clear();
+    }
+
+    public void addParams(String name, Object values) {
+        params.put(name, values);
     }
 
     public void setClazz(Class clazz) {
@@ -49,6 +55,7 @@ public class XListViewUtils implements XListView.IXListViewListener, AdapterView
 
     public void setMyBaseAdapter(MyBaseAdapter adapter) {
         this.myBaseAdapter = adapter;
+        xListView.setAdapter(adapter);
     }
 
     private void init() {
@@ -73,7 +80,6 @@ public class XListViewUtils implements XListView.IXListViewListener, AdapterView
     @Override
     public void onRefresh() {
         xListView.setRefreshTime();
-        xListView.removeFooterView(xListView.mFooterView);
         index = 1;
         myBaseAdapter.dataList.clear();
         requestData();
@@ -99,13 +105,22 @@ public class XListViewUtils implements XListView.IXListViewListener, AdapterView
         isLoading = true;
 
         DbDeal dbDeal = DBManager.dbDeal(DBManager.SELECT);
-        dbDeal.sql(sqlUrl);
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(sqlUrl);
         Object[] objects = new Object[params.size() + 2];
-        for (int i=0; i<params.size(); i++) {
-            objects[i] = params.get(i);
+        int paramsId = 0;
+        for (String name: params.keySet()) {
+            builder.append(name);
+            objects[paramsId] = params.get(name);
+            paramsId++;
         }
-        objects[objects.length - 1] = index;
-        objects[objects.length - 2] = size;
+        builder.append(" limit ?, ?");
+        objects[paramsId] = (index-1)*size;
+        paramsId++;
+        objects[paramsId] = size;
+
+        dbDeal.sql(builder.toString());
         dbDeal.params(objects);
         dbDeal.clazz(clazz);
         dbDeal.execut(new DbCallBack() {
@@ -130,13 +145,16 @@ public class XListViewUtils implements XListView.IXListViewListener, AdapterView
                         myBaseAdapter.notifyDataSetChanged();
                         index++;
                         if (result.size() < size) {
-                            xListView.mFooterView.mHintView.setText(R.string.no_data);
+                            xListView.mFooterView.mHintView.setText(R.string.no_data_xlist);
                             xListView.mFooterView.mProgressBar.setVisibility(View.GONE);
                             xListView.mFooterView.setClickable(false);
+                        } else {
+                            xListView.mFooterView.setState(XListViewFooter.STATE_NORMAL);
+                            xListView.mFooterView.setClickable(true);
                         }
                     } else {
                         xListView.mFooterView.mProgressBar.setVisibility(View.GONE);
-                        xListView.mFooterView.mHintView.setText(R.string.no_data);
+                        xListView.mFooterView.mHintView.setText(R.string.no_data_xlist);
                         xListView.mFooterView.setClickable(false);
                     }
                 } catch (Exception e) {
