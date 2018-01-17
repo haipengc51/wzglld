@@ -5,10 +5,10 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.jiekai.wzglld.R;
@@ -141,6 +141,10 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
 //                if (popupWindow != null) {
 //                    popupWindow.showDropDown(v);
 //                }
+                Window dialogWindow = filtrateDialog.getWindow();
+                WindowManager.LayoutParams layoutParams = dialogWindow.getAttributes();
+                layoutParams.y = 0;//v.getTop() + v.getHeight();
+                dialogWindow.setAttributes(layoutParams);
                 filtrateDialog.show();
                 break;
             case R.id.sao_ma:
