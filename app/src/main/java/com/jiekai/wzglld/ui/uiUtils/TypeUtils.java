@@ -128,6 +128,10 @@ public class TypeUtils implements View.OnClickListener{
         return  currentDeviceCode;
     }
 
+    public void setCurrentDeviceCode(String deviceCode) {
+        this.currentDeviceCode = deviceCode;
+    }
+
     /**
      * 返回选中的类别
      * @return

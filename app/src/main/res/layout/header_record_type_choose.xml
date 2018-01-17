@@ -14,7 +14,7 @@
         android:layout_margin="@dimen/marginTop10"
         style="@style/button_style"
         android:gravity="center"
-        android:text="@string/find"
+        android:text="@string/filrate"
         android:textSize="@dimen/title_text_size"
         android:textColor="@color/white"/>
 

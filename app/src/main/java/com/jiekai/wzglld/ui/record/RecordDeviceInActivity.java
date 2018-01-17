@@ -40,7 +40,7 @@ import butterknife.BindView;
  */
 
 public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnClickListener,
-        TypeUtils.SBBHClick, AdapterView.OnItemClickListener {
+        AdapterView.OnItemClickListener {
     @BindView(R.id.back)
     ImageView back;
     @BindView(R.id.title)
@@ -63,7 +63,6 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
 
     private TypeUtils typeUtils;
     private AlertDialog alertDialog;
-    private FiltratePopUtils popupWindow;
 
     private RecordDeviceInAdapter adapter;
     private List<DevicestoreEntity> dataList = new ArrayList();
@@ -89,9 +88,6 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
         saoMa = (TextView) headerView.findViewById(R.id.sao_ma);
         filtrate = (TextView) headerView.findViewById(R.id.filtrate);
 
-        popupWindow = new FiltratePopUtils(mActivity, headerView);
-//        listView.addHeaderView(headerView);
-
         filtrateDialog = new Dialog(mActivity);
         filtrateDialog.setContentView(headerView);
 
@@ -105,7 +101,6 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
     @Override
     public void initOperation() {
         typeUtils = new TypeUtils(mActivity, deviceLeibie, deviceXinghao, deviceGuige, deviceId);
-        typeUtils.setSbbhClick(this);
 
         alertDialog = new AlertDialog.Builder(this)
                 .setTitle("")
@@ -115,7 +110,6 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
         xListViewUtils = new XListViewUtils(listView);
         if (adapter == null) {
             adapter = new RecordDeviceInAdapter(mActivity, dataList);
-//            listView.setAdapter(adapter);
             listView.setOnItemClickListener(this);
         }
         xListViewUtils.setMyBaseAdapter(adapter);
@@ -138,36 +132,22 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
                 finish();
                 break;
             case R.id.menu:
-//                if (popupWindow != null) {
-//                    popupWindow.showDropDown(v);
-//                }
-                Window dialogWindow = filtrateDialog.getWindow();
-                WindowManager.LayoutParams layoutParams = dialogWindow.getAttributes();
-                layoutParams.y = 0;//v.getTop() + v.getHeight();
-                dialogWindow.setAttributes(layoutParams);
+//                Window dialogWindow = filtrateDialog.getWindow();
+//                WindowManager.LayoutParams layoutParams = dialogWindow.getAttributes();
+//                layoutParams.y = 0;//v.getTop() + v.getHeight();
+//                dialogWindow.setAttributes(layoutParams);
                 filtrateDialog.show();
                 break;
             case R.id.sao_ma:
                 startActivityForResult(new Intent(mActivity, CaptureActivity.class), Constants.SCAN);
-                if (popupWindow != null) {
-                    popupWindow.dismiss();
-                }
                 break;
             case R.id.read_card:
                 nfcEnable = true;
                 alertDialog.show();
-                if (popupWindow != null) {
-                    popupWindow.dismiss();
-                }
                 break;
             case R.id.filtrate:
                 filtrate();
-                if (popupWindow != null) {
-                    popupWindow.dismiss();
-                }
-                if (filtrateDialog != null && filtrateDialog.isShowing()) {
-                    filtrateDialog.dismiss();
-                }
+                dismissFiltrateDialog();
                 break;
         }
     }
@@ -180,11 +160,6 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
             intent.putExtra(IntentFlag.DATA, item);
             startActivity(intent);
         }
-    }
-
-    @Override
-    public void clickSBBH(String sbbh) {
-//        getDeviceInListBySBBH(sbbh);
     }
 
     /**
@@ -223,57 +198,15 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
                             deviceLeibie.setText(CommonUtils.getDataIfNull(pankuDataEntity.getLeibie()));
                             deviceXinghao.setText(CommonUtils.getDataIfNull(pankuDataEntity.getXinghao()));
                             deviceGuige.setText(CommonUtils.getDataIfNull(pankuDataEntity.getGuige()));
-                            getDeviceInListBySBBH(pankuDataEntity.getBH());
+                            typeUtils.setCurrentDeviceCode(pankuDataEntity.getBH());
+                            filtrate();
+                            dismissFiltrateDialog();
                         } else {
                             alert(getResources().getString(R.string.no_data));
                         }
                         dismissProgressDialog();
                     }
                 });
-    }
-
-    private void getDeviceInListBySBBH(String sbbh) {
-        xListViewUtils.setSqlUrl(SqlUrl.GetDeviceINPage);
-        xListViewUtils.clearParams();
-        xListViewUtils.addParams(" AND devicestore.SBBH = ?", sbbh);
-        xListViewUtils.addParams(" AND devicestore.LB = ?", "1");
-        xListViewUtils.setClazz(DevicestoreEntity.class);
-        xListViewUtils.onRefresh();
-
-//        if (StringUtils.isEmpty(sbbh)) {
-//            alert(R.string.please_choose_device);
-//            return;
-//        }
-//        DBManager.NewDbDeal(DBManager.SELECT)
-//                .sql(SqlUrl.GetDeviceIN)
-//                .params(new String[]{sbbh})
-//                .clazz(DevicestoreEntity.class)
-//                .execut(new DbCallBack() {
-//                    @Override
-//                    public void onDbStart() {
-//                        showProgressDialog(getResources().getString(R.string.loading_data));
-//                    }
-//
-//                    @Override
-//                    public void onError(String err) {
-//                        alert(err);
-//                        dismissProgressDialog();
-//                    }
-//
-//                    @Override
-//                    public void onResponse(List result) {
-//                        if (result != null && result.size() != 0) {
-//                            dataList.clear();
-//                            dataList.addAll(result);
-//                            if (adapter != null) {
-//                                adapter.notifyDataSetChanged();
-//                            }
-//                        } else {
-//                            alert(R.string.no_data);
-//                        }
-//                        dismissProgressDialog();
-//                    }
-//                });
     }
 
     private void filtrate() {
@@ -298,6 +231,12 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
         xListViewUtils.onRefresh();
     }
 
+    private void dismissFiltrateDialog(){
+        if (filtrateDialog != null && filtrateDialog.isShowing()) {
+            filtrateDialog.dismiss();
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -305,5 +244,11 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
             String code = data.getExtras().getString("result");
             getDeviceDataById(code);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dismissFiltrateDialog();
     }
 }
