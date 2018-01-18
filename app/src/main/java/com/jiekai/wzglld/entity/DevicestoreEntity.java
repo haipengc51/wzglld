@@ -3,6 +3,7 @@ package com.jiekai.wzglld.entity;
 import com.jiekai.wzglld.entity.base.BaseEntity;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * Created by laowu on 2017/12/28.
@@ -19,7 +20,7 @@ public class DevicestoreEntity extends BaseEntity {
     private String BZ;      //备注
     private String LYDW;    //领用单位
     private String SHYJ;    //审核意见
-    private Date SHSJ;    //审核时间
+    private Timestamp SHSJ;    //审核时间
     private String SHR;     //审核人
     private String SHBZ;    //审核备注
     private String czrname;     //操作人的姓名
@@ -96,11 +97,11 @@ public class DevicestoreEntity extends BaseEntity {
         this.SHYJ = SHYJ;
     }
 
-    public Date getSHSJ() {
+    public Timestamp getSHSJ() {
         return SHSJ;
     }
 
-    public void setSHSJ(Date SHSJ) {
+    public void setSHSJ(Timestamp SHSJ) {
         this.SHSJ = SHSJ;
     }
 

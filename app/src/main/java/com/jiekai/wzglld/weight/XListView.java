@@ -37,7 +37,7 @@ public class XListView extends ListView implements OnScrollListener {
     private IXListViewListener mListViewListener;
 
     // -- header view
-    private XListViewHeader mHeaderView;
+    public XListViewHeader mHeaderView;
     // header view content, use it to calculate the Header's height. And hide it
     // when disable pull refresh.
     private RelativeLayout mHeaderViewContent;
@@ -181,6 +181,24 @@ public class XListView extends ListView implements OnScrollListener {
             mPullLoading = false;
             mFooterView.setState(XListViewFooter.STATE_NORMAL);
         }
+    }
+
+    /**
+     * 显示出headerView来，每次刷新的时候出现头部
+     */
+    public void showHeaderView() {
+//        int height = 100;
+//        if (height == 0) {
+//            return;
+//        }
+//        int visibleHeight = mHeaderView.getVisibleHeight();
+//
+//        if (visibleHeight >= height) {
+//            return;
+//        }
+//        mScroller.startScroll(0, 0, 0, height, SCROLL_DURATION);
+//        invalidate();
+        mHeaderView.setState(XListViewHeader.STATE_NORMAL);
     }
 
     /**

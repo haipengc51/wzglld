@@ -1,5 +1,6 @@
 package com.jiekai.wzglld.ui.record;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by LaoWu on 2018/1/15.
@@ -40,6 +42,8 @@ public class RecordDeviceRepairDetailActivity extends MyBaseActivity implements 
     ImageView menu;
     @BindView(R.id.record_type)
     TextView recordType;
+    @BindView(R.id.repair_type)
+    TextView repairType;
     @BindView(R.id.device_id)
     TextView deviceId;
     @BindView(R.id.read_card)
@@ -92,6 +96,13 @@ public class RecordDeviceRepairDetailActivity extends MyBaseActivity implements 
                 checkTime.setText(TimeUtils.dateToStringYYYYmmdd(currentData.getSHSJ()));
             }
             checkRemark.setText(CommonUtils.getDataIfNull(currentData.getSHBZ()));
+            if (Config.repair_weixiu.equals(currentData.getLB())) {
+                repairType.setText("维修");
+            } else if (Config.repair_daxiu.equals(currentData.getLB())) {
+                repairType.setText("大修");
+            } else if (Config.repair_fanchang.equals(currentData.getLB())) {
+                repairType.setText("返厂");
+            }
             if ("1".equals(currentData.getSHYJ())) {
                 checkResult.setText("通过");
             } else if ("0".equals(currentData.getSHYJ())) {
@@ -115,7 +126,9 @@ public class RecordDeviceRepairDetailActivity extends MyBaseActivity implements 
                 finish();
                 break;
             case R.id.record_image:
-
+                if (choosePictures != null && choosePictures.size() != 0) {
+                    PictureSelectUtils.previewPicture(mActivity, choosePictures);
+                }
                 break;
         }
     }
@@ -131,33 +144,33 @@ public class RecordDeviceRepairDetailActivity extends MyBaseActivity implements 
             dbdeal.params(new Object[]{id, Config.doc_sbwx});
         } else if ("4".equals(currentData.getLB())) {
             dbdeal.params(new Object[]{id, Config.doc_sbdx});
-        } else if ("5".equals(currentData.getLB())){
+        } else if ("5".equals(currentData.getLB())) {
             dbdeal.params(new Object[]{id, Config.doc_sbfc});
         }
         dbdeal.clazz(DevicedocEntity.class);
         dbdeal.execut(new DbCallBack() {
-                    @Override
-                    public void onDbStart() {
+            @Override
+            public void onDbStart() {
 
-                    }
+            }
 
-                    @Override
-                    public void onError(String err) {
+            @Override
+            public void onError(String err) {
 
-                    }
+            }
 
-                    @Override
-                    public void onResponse(List result) {
-                        if (result != null && result.size() != 0) {
-                            DevicedocEntity entity = (DevicedocEntity) result.get(0);
-                            LocalMedia localMedia = new LocalMedia();
-                            localMedia.setPath(Config.WEB_HOLDE + entity.getWJDZ());
-                            choosePictures.clear();
-                            choosePictures.add(localMedia);
-                            GlidUtils.displayImage(mActivity, Config.WEB_HOLDE + entity.getWJDZ(), recordImage);
-                        }
-                    }
-                });
+            @Override
+            public void onResponse(List result) {
+                if (result != null && result.size() != 0) {
+                    DevicedocEntity entity = (DevicedocEntity) result.get(0);
+                    LocalMedia localMedia = new LocalMedia();
+                    localMedia.setPath(Config.WEB_HOLDE + entity.getWJDZ());
+                    choosePictures.clear();
+                    choosePictures.add(localMedia);
+                    GlidUtils.displayImage(mActivity, Config.WEB_HOLDE + entity.getWJDZ(), recordImage);
+                }
+            }
+        });
     }
 
     private void getSHRName() {
@@ -182,7 +195,7 @@ public class RecordDeviceRepairDetailActivity extends MyBaseActivity implements 
                     @Override
                     public void onResponse(List result) {
                         if (result != null && result.size() != 0) {
-                            checkPeople.setText(((UserNameEntity)result.get(0)).getName());
+                            checkPeople.setText(((UserNameEntity) result.get(0)).getName());
                         }
                     }
                 });

@@ -26,7 +26,7 @@ public class RecordDeviceInspectionAdapter extends MyBaseAdapter {
 
     @Override
     public View createCellView(ViewGroup parent) {
-        return mInflater.inflate(R.layout.adapter_record_scrap_device_detail, parent, false);
+        return mInflater.inflate(R.layout.adapter_record_device_detail, parent, false);
     }
 
     @Override
@@ -52,13 +52,13 @@ public class RecordDeviceInspectionAdapter extends MyBaseAdapter {
     }
 
     private class MyViewHolder extends BusinessHolder {
-        private TextView id;    //序号
+        private TextView id;    //设备自编码
         private TextView operatorPeople;   //操作人
         private TextView operatorTime;  //操作时间
         private TextView checkResult;  //审核结果
 
         public MyViewHolder(View view) {
-            id = (TextView) view.findViewById(R.id.xuhao);
+            id = (TextView) view.findViewById(R.id.device_id);
             operatorPeople = (TextView) view.findViewById(R.id.operator_people);
             operatorTime = (TextView) view.findViewById(R.id.operator_time);
             checkResult = (TextView) view.findViewById(R.id.check_result);

@@ -38,9 +38,9 @@ public class RecordDeviceOutAdapter extends MyBaseAdapter {
     public View buildData(int position, View cellView, BusinessHolder viewHolder) {
         MyViewHolder myViewHolder = (MyViewHolder) viewHolder;
         DevicestoreEntity item = (DevicestoreEntity) dataList.get(position);
-        myViewHolder.id.setText(CommonUtils.getDataIfNull(String.valueOf(item.getID())));
+        myViewHolder.id.setText(CommonUtils.getDataIfNull(item.getSBBH()));
         myViewHolder.operatorPeople.setText(CommonUtils.getDataIfNull(item.getCzrname()));
-        myViewHolder.operatorTime.setText(TimeUtils.dateToStringYYYYmmddHHMMSS(item.getCZSJ()));
+        myViewHolder.operatorTime.setText(TimeUtils.dateToStringYYYYmmdd(item.getCZSJ()));
         if ("1".equals(item.getSHYJ())) {
             myViewHolder.checkResult.setText("通过");
         } else if ("0".equals(item.getSHYJ())) {
@@ -52,13 +52,13 @@ public class RecordDeviceOutAdapter extends MyBaseAdapter {
     }
 
     private class MyViewHolder extends BusinessHolder {
-        private TextView id;    //序号
+        private TextView id;    //设备自编码
         private TextView operatorPeople;   //操作人
         private TextView operatorTime;  //操作时间
         private TextView checkResult;  //审核结果
 
         public MyViewHolder(View view) {
-            id = (TextView) view.findViewById(R.id.xuhao);
+            id = (TextView) view.findViewById(R.id.device_id);
             operatorPeople = (TextView) view.findViewById(R.id.operator_people);
             operatorTime = (TextView) view.findViewById(R.id.operator_time);
             checkResult = (TextView) view.findViewById(R.id.check_result);

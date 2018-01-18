@@ -5,8 +5,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,7 +18,6 @@ import com.jiekai.wzglld.entity.DevicesortEntity;
 import com.jiekai.wzglld.entity.DevicestoreEntity;
 import com.jiekai.wzglld.entity.PankuDataEntity;
 import com.jiekai.wzglld.test.NFCBaseActivity;
-import com.jiekai.wzglld.ui.popup.FiltratePopUtils;
 import com.jiekai.wzglld.ui.uiUtils.TypeUtils;
 import com.jiekai.wzglld.ui.uiUtils.XListViewUtils;
 import com.jiekai.wzglld.utils.CommonUtils;
@@ -58,15 +55,15 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
     private TextView saoMa;
     private TextView filtrate;
 
-    private View headerView;
+    private View filtrateView;
     private Dialog filtrateDialog;
+    private XListViewUtils xListViewUtils;
 
     private TypeUtils typeUtils;
     private AlertDialog alertDialog;
 
     private RecordDeviceInAdapter adapter;
     private List<DevicestoreEntity> dataList = new ArrayList();
-    private XListViewUtils xListViewUtils;
 
     @Override
     public void initView() {
@@ -79,17 +76,20 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
         back.setVisibility(View.VISIBLE);
         menu.setVisibility(View.VISIBLE);
 
-        headerView = LayoutInflater.from(this).inflate(R.layout.header_record_type_choose, null);
-        deviceLeibie = (TextView) headerView.findViewById(R.id.device_leibie);
-        deviceXinghao = (TextView) headerView.findViewById(R.id.device_xinghao);
-        deviceGuige = (TextView) headerView.findViewById(R.id.device_guige);
-        deviceId = (TextView) headerView.findViewById(R.id.device_id);
-        readCard = (TextView) headerView.findViewById(R.id.read_card);
-        saoMa = (TextView) headerView.findViewById(R.id.sao_ma);
-        filtrate = (TextView) headerView.findViewById(R.id.filtrate);
+        filtrateView = LayoutInflater.from(this).inflate(R.layout.header_record_type_choose, null);
+        deviceLeibie = (TextView) filtrateView.findViewById(R.id.device_leibie);
+        deviceXinghao = (TextView) filtrateView.findViewById(R.id.device_xinghao);
+        deviceGuige = (TextView) filtrateView.findViewById(R.id.device_guige);
+        deviceId = (TextView) filtrateView.findViewById(R.id.device_id);
+        readCard = (TextView) filtrateView.findViewById(R.id.read_card);
+        saoMa = (TextView) filtrateView.findViewById(R.id.sao_ma);
+        filtrate = (TextView) filtrateView.findViewById(R.id.filtrate);
 
         filtrateDialog = new Dialog(mActivity);
-        filtrateDialog.setContentView(headerView);
+        filtrateDialog.setContentView(filtrateView);
+
+        View headerView = LayoutInflater.from(this).inflate(R.layout.adapter_record_device_detail, null);
+        listView.addHeaderView(headerView);
 
         back.setOnClickListener(this);
         menu.setOnClickListener(this);
@@ -113,7 +113,7 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
             listView.setOnItemClickListener(this);
         }
         xListViewUtils.setMyBaseAdapter(adapter);
-        filtrate();
+        filtrate(false);
     }
 
     @Override
@@ -146,8 +146,7 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
                 alertDialog.show();
                 break;
             case R.id.filtrate:
-                filtrate();
-                dismissFiltrateDialog();
+                filtrate(true);
                 break;
         }
     }
@@ -199,7 +198,7 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
                             deviceXinghao.setText(CommonUtils.getDataIfNull(pankuDataEntity.getXinghao()));
                             deviceGuige.setText(CommonUtils.getDataIfNull(pankuDataEntity.getGuige()));
                             typeUtils.setCurrentDeviceCode(pankuDataEntity.getBH());
-                            filtrate();
+                            filtrate(false);
                             dismissFiltrateDialog();
                         } else {
                             alert(getResources().getString(R.string.no_data));
@@ -209,11 +208,22 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
                 });
     }
 
-    private void filtrate() {
+    /**
+     * 执行分页的筛选操作
+     * @param isClickIn 是否点击的，如果是点击就判断点击是否选择了条件，如果没有提示用户
+     */
+    private void filtrate(boolean isClickIn) {
         DevicesortEntity leibie = typeUtils.getLeibie();
         DevicesortEntity xinghao = typeUtils.getXinghao();
         DevicesortEntity guige = typeUtils.getGuige();
         String sbbh = typeUtils.getCurrentDeviceCode();
+
+        if (isClickIn && leibie == null && xinghao == null && guige == null && StringUtils.isEmpty(sbbh)) {
+            alert(R.string.please_choose_filtrate);
+            return;
+        } else {
+            dismissFiltrateDialog();
+        }
 
         xListViewUtils.setSqlUrl(SqlUrl.GetDeviceINPage);
         xListViewUtils.clearParams();
@@ -228,6 +238,7 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
         }
         xListViewUtils.addParams(" AND devicestore.LB = ?", "1");
         xListViewUtils.setClazz(DevicestoreEntity.class);
+//        listView.showHeaderView();
         xListViewUtils.onRefresh();
     }
 

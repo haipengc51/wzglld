@@ -99,7 +99,7 @@ public class RecordDeviceInspectionDetailActivity extends MyBaseActivity impleme
                 checkResult.setText("待审核");
             }
 
-            showCommitImage(currentData.getSBBH());
+            showCommitImage(currentData.getID());
             getSHRName();
         } else {
             alert(R.string.no_data);
@@ -114,13 +114,15 @@ public class RecordDeviceInspectionDetailActivity extends MyBaseActivity impleme
                 finish();
                 break;
             case R.id.record_image:
-
+                if (choosePictures != null && choosePictures.size() != 0) {
+                    PictureSelectUtils.previewPicture(mActivity, choosePictures);
+                }
                 break;
         }
     }
 
-    private void showCommitImage(String id) {
-        if (StringUtils.isEmpty(id)) {
+    private void showCommitImage(int id) {
+        if (id == -1) {
             alert(R.string.get_image_fail);
             return;
         }

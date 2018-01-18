@@ -42,4 +42,8 @@ public class Config {
     public static final String doc_sbjlzl= "sbjlzl";    //设备记录种类
     public static final String doc_sbzc = "sbzc";   //设备转场
     public static final String doc_sbxj = "sbxj";   //设备转场
+
+    public static final String repair_weixiu = "3";     //维修
+    public static final String repair_daxiu = "4";      //大修
+    public static final String repair_fanchang = "5";   //反厂
 }

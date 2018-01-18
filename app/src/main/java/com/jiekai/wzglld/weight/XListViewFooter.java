@@ -106,7 +106,7 @@ public class XListViewFooter extends LinearLayout {
 //        lp.height = 0;
 //        mContentView.setLayoutParams(lp);
         mContentView.setVisibility(GONE);
-        isLast.setVisibility(VISIBLE);
+//        isLast.setVisibility(VISIBLE);
     }
 
     /**
@@ -117,8 +117,6 @@ public class XListViewFooter extends LinearLayout {
 //        lp.height = LayoutParams.WRAP_CONTENT;
 //        mContentView.setLayoutParams(lp);
         mContentView.setVisibility(VISIBLE);
-        isLast.setVisibility(GONE);
+//        isLast.setVisibility(GONE);
     }
-
-
 }

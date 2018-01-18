@@ -8,6 +8,8 @@ import android.widget.TextView;
 import com.jiekai.wzglld.R;
 import com.jiekai.wzglld.adapter.base.MyBaseAdapter;
 import com.jiekai.wzglld.entity.DevicemoveEntity;
+import com.jiekai.wzglld.utils.CommonUtils;
+import com.jiekai.wzglld.utils.TimeUtils;
 
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class RecordDeviceMoveAdapter extends MyBaseAdapter {
 
     @Override
     public View createCellView(ViewGroup parent) {
-        return mInflater.inflate(R.layout.adapter_record_scrap_device_detail, parent, false);
+        return mInflater.inflate(R.layout.adapter_record_device_detail, parent, false);
     }
 
     @Override
@@ -36,16 +38,16 @@ public class RecordDeviceMoveAdapter extends MyBaseAdapter {
     public View buildData(int position, View cellView, BusinessHolder viewHolder) {
         MyViewHolder myViewHolder = (MyViewHolder) viewHolder;
         DevicemoveEntity item = (DevicemoveEntity) dataList.get(position);
-//        myViewHolder.id.setText(CommonUtils.getDataIfNull(String.valueOf(item.getSBBH())));
-//        myViewHolder.operatorPeople.setText(CommonUtils.getDataIfNull(item.getCzrname()));
-//        myViewHolder.operatorTime.setText(TimeUtils.dateToStringYYYYmmddHHMMSS(item.getCZSJ()));
-//        if ("1".equals(item.getSHYJ())) {
-//            myViewHolder.checkResult.setText("通过");
-//        } else if ("0".equals(item.getSHYJ())) {
-//            myViewHolder.checkResult.setText("未通过");
-//        } else {
-//            myViewHolder.checkResult.setText("待审核");
-//        }
+        myViewHolder.id.setText(CommonUtils.getDataIfNull(String.valueOf(item.getSBBH())));
+        myViewHolder.operatorPeople.setText(CommonUtils.getDataIfNull(item.getCzrname()));
+        myViewHolder.operatorTime.setText(TimeUtils.dateToStringYYYYmmddHHMMSS(item.getCZSJ()));
+        if ("1".equals(item.getSHYJ())) {
+            myViewHolder.checkResult.setText("通过");
+        } else if ("0".equals(item.getSHYJ())) {
+            myViewHolder.checkResult.setText("未通过");
+        } else {
+            myViewHolder.checkResult.setText("待审核");
+        }
         return null;
     }
 
@@ -56,7 +58,7 @@ public class RecordDeviceMoveAdapter extends MyBaseAdapter {
         private TextView checkResult;  //审核结果
 
         public MyViewHolder(View view) {
-            id = (TextView) view.findViewById(R.id.xuhao);
+            id = (TextView) view.findViewById(R.id.device_id);
             operatorPeople = (TextView) view.findViewById(R.id.operator_people);
             operatorTime = (TextView) view.findViewById(R.id.operator_time);
             checkResult = (TextView) view.findViewById(R.id.check_result);

@@ -11,10 +11,9 @@ import com.jiekai.wzglld.utils.dbutils.DbDeal;
 import com.jiekai.wzglld.weight.XListView;
 import com.jiekai.wzglld.weight.XListViewFooter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by laowu on 2018/1/15.
@@ -28,7 +27,7 @@ public class XListViewUtils implements XListView.IXListViewListener, AdapterView
     private int size = 20;
     private MyBaseAdapter myBaseAdapter;
     private String sqlUrl;
-    private Map<String, Object> params = new HashMap<>();
+    private Map<String, Object> params = new TreeMap<>();
     private Class clazz;
     private boolean isLoading = false;
 
@@ -98,7 +97,7 @@ public class XListViewUtils implements XListView.IXListViewListener, AdapterView
     }
 
     private void requestData() {
-        xListView.mFooterView.setState(2);
+        xListView.mFooterView.hide();
         if (isLoading) {
             return;
         }
@@ -133,6 +132,7 @@ public class XListViewUtils implements XListView.IXListViewListener, AdapterView
             public void onError(String err) {
                 isLoading = false;
                 onLoad();
+                xListView.mFooterView.show();
             }
 
             @Override
@@ -140,6 +140,7 @@ public class XListViewUtils implements XListView.IXListViewListener, AdapterView
                 try {
                     isLoading = false;
                     onLoad();
+                    xListView.mFooterView.show();
                     if (result != null && result.size() > 0) {
                         myBaseAdapter.dataList.addAll(result);
                         myBaseAdapter.notifyDataSetChanged();

@@ -17,6 +17,17 @@
         android:textSize="@dimen/content_text_size"/>
 
     <TextView
+        android:id="@+id/repair_type"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/item_height"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="@string/repair_type"
+        android:textColor="@color/text_content_color"
+        android:textSize="@dimen/content_text_size"/>
+
+    <TextView
         android:id="@+id/operator_people"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -47,7 +58,6 @@
         android:gravity="center"
         android:text="@string/check_jieguo"
         android:textColor="@color/text_content_color"
-        android:textSize="@dimen/content_text_size"
-        android:visibility="gone"/>
+        android:textSize="@dimen/content_text_size"/>
 
 </LinearLayout>

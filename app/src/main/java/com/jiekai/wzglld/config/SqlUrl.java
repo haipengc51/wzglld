@@ -252,5 +252,30 @@ public class SqlUrl {
      * 查找设备入库记录，分页加载
      */
     public static final String GetDeviceINPage = "SELECT devicestore.*, userinfo.USERNAME as czrname " +
-            "FROM devicestore, userinfo, device AS dv WHERE userinfo.USERID = devicestore.CZR AND dv.BH = devicestore.SBBH";// AND SBBH = ? AND LB = 1 limit ?, ?";
+            "FROM devicestore, userinfo, device AS dv WHERE userinfo.USERID = devicestore.CZR AND dv.BH = devicestore.SBBH";
+    /**
+     * 查找设备出库记录，分页加载
+     */
+    public static final String GetDeviceOutPage = "SELECT devicestore.*, userinfo.USERNAME as czrname " +
+            "FROM devicestore, userinfo, device AS dv WHERE userinfo.USERID = devicestore.CZR AND dv.BH = devicestore.SBBH";
+    /**
+     * 查找设备维修记录，分页加载， 类别3,4,5
+     */
+    public static final String GetDeviceRepairPage = "SELECT devicestore.*, userinfo.USERNAME as czrname " +
+            "FROM devicestore, userinfo, device AS dv WHERE userinfo.USERID = devicestore.CZR AND dv.BH = devicestore.SBBH";
+    /**
+     * 查找报废设备记录，分页加载
+     */
+    public static final String GET_SCRAP_DEVICE_PAGE = "SELECT devicescrap.*, userinfo.USERNAME as bfrname " +
+            "FROM devicescrap, userinfo, device AS dv WHERE userinfo.USERID = devicescrap.BFR AND dv.BH = devicescrap.SBBH";
+    /**
+     * 获取转场记录,加分页
+     */
+    public static final String GET_MOVE_RECORD_PAGE = "SELECT devicemove.*, userinfo.USERNAME as czrname " +
+            "FROM devicemove, userinfo, device AS dv WHERE userinfo.USERID = devicemove.CZR AND dv.BH = devicemove.SBBH";
+    /**
+     * 获取巡检记录， 加分页
+     */
+    public static final String GET_INSPECTION_RECORD_PAGE = "SELECT deviceinspection.*, userinfo.USERNAME as czrname " +
+            "FROM deviceinspection, userinfo, device AS dv WHERE userinfo.USERID = deviceinspection.CZR AND dv.BH = deviceinspection.SBBH";
 }

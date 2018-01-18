@@ -21,6 +21,7 @@ import com.jiekai.wzglld.utils.dbutils.DBManager;
 import com.jiekai.wzglld.utils.dbutils.DbCallBack;
 import com.luck.picture.lib.entity.LocalMedia;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,6 +88,8 @@ public class RecordDeviceMoveDetailActivity extends MyBaseActivity implements Vi
             deviceId.setText(CommonUtils.getDataIfNull(currentData.getSBBH()));
             operatorPeople.setText(CommonUtils.getDataIfNull(currentData.getCzrname()));
             operatorTime.setText(TimeUtils.dateToStringYYYYmmdd(currentData.getCZSJ()));
+            duihao.setText(CommonUtils.getDataIfNull(currentData.getDH()));
+            jinghao.setText(CommonUtils.getDataIfNull(currentData.getJH()));
             if (currentData.getSHSJ() != null) {
                 checkTime.setText(TimeUtils.dateToStringYYYYmmdd(currentData.getSHSJ()));
             }
@@ -99,7 +102,7 @@ public class RecordDeviceMoveDetailActivity extends MyBaseActivity implements Vi
                 checkResult.setText("待审核");
             }
 
-            showCommitImage(currentData.getSBBH());
+            showCommitImage(currentData.getID());
             getSHRName();
         } else {
             alert(R.string.no_data);
@@ -114,13 +117,15 @@ public class RecordDeviceMoveDetailActivity extends MyBaseActivity implements Vi
                 finish();
                 break;
             case R.id.record_image:
-
+                if (choosePictures != null && choosePictures.size() != 0) {
+                    PictureSelectUtils.previewPicture(mActivity, choosePictures);
+                }
                 break;
         }
     }
 
-    private void showCommitImage(String id) {
-        if (StringUtils.isEmpty(id)) {
+    private void showCommitImage(int id) {
+        if (id == -1) {
             alert(R.string.get_image_fail);
             return;
         }

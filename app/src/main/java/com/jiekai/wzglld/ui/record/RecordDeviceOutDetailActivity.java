@@ -88,7 +88,7 @@ public class RecordDeviceOutDetailActivity extends MyBaseActivity implements Vie
             operatorPeople.setText(CommonUtils.getDataIfNull(currentData.getCzrname()));
             operatorTime.setText(TimeUtils.dateToStringYYYYmmdd(currentData.getCZSJ()));
             if (currentData.getSHSJ() != null) {
-                checkTime.setText(TimeUtils.dateToStringYYYYmmdd(currentData.getSHSJ()));
+                checkTime.setText(TimeUtils.dateToStringYYYYmmddHHMMSS(currentData.getSHSJ()));
             }
             checkRemark.setText(CommonUtils.getDataIfNull(currentData.getSHBZ()));
             if ("1".equals(currentData.getSHYJ())) {
@@ -114,7 +114,9 @@ public class RecordDeviceOutDetailActivity extends MyBaseActivity implements Vie
                 finish();
                 break;
             case R.id.record_image:
-
+                if (choosePictures != null && choosePictures.size() != 0) {
+                    PictureSelectUtils.previewPicture(mActivity, choosePictures);
+                }
                 break;
         }
     }

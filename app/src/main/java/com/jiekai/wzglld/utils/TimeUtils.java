@@ -31,7 +31,7 @@ public class TimeUtils {
         if (data == null) {
             return null;
         }
-        return new SimpleDateFormat("yyyy-mm-dd").format(data);
+        return new SimpleDateFormat("yyyy-MM-dd").format(data);
     }
 
     /**
@@ -43,6 +43,6 @@ public class TimeUtils {
         if (data == null) {
             return null;
         }
-        return new SimpleDateFormat("yyyy-mm-dd HH-mm-ss").format(data);
+        return new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(data);
     }
 }

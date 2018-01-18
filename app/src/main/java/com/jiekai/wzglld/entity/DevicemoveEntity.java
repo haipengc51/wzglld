@@ -9,7 +9,7 @@ import java.sql.Timestamp;
  */
 
 public class DevicemoveEntity extends BaseEntity {
-    private int ID;
+    private int ID = -1;
     private String SBBH;
     private String JH;
     private String DH;

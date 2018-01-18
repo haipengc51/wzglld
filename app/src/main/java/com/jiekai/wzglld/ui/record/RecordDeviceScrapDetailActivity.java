@@ -1,5 +1,6 @@
 package com.jiekai.wzglld.ui.record;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by LaoWu on 2018/1/15.
@@ -66,7 +68,7 @@ public class RecordDeviceScrapDetailActivity extends MyBaseActivity implements V
 
     @Override
     public void initView() {
-        setContentView(R.layout.activity_record_device_scrap_detail);
+        setContentView(R.layout.activity_scrap_device_scrap_detail);
     }
 
     @Override
@@ -83,6 +85,7 @@ public class RecordDeviceScrapDetailActivity extends MyBaseActivity implements V
     @Override
     public void initOperation() {
         if (currentData != null) {
+            recordType.setText(getResources().getString(R.string.device_scrap));
             deviceId.setText(CommonUtils.getDataIfNull(currentData.getSBBH()));
             operatorPeople.setText(CommonUtils.getDataIfNull(currentData.getBfrname()));
             operatorTime.setText(TimeUtils.dateToStringYYYYmmdd(currentData.getBFSJ()));
@@ -113,7 +116,9 @@ public class RecordDeviceScrapDetailActivity extends MyBaseActivity implements V
                 finish();
                 break;
             case R.id.record_image:
-
+                if (choosePictures != null && choosePictures.size() != 0) {
+                    PictureSelectUtils.previewPicture(mActivity, choosePictures);
+                }
                 break;
         }
     }
