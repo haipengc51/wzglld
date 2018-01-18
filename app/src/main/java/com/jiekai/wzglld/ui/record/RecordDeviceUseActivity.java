@@ -14,6 +14,7 @@ import com.jiekai.wzglld.adapter.RecordDeviceAdapter;
 import com.jiekai.wzglld.config.Constants;
 import com.jiekai.wzglld.config.SqlUrl;
 import com.jiekai.wzglld.entity.DevicelogsortEntity;
+import com.jiekai.wzglld.entity.DevicesortEntity;
 import com.jiekai.wzglld.entity.PankuDataEntity;
 import com.jiekai.wzglld.test.NFCBaseActivity;
 import com.jiekai.wzglld.ui.uiUtils.TypeUtils;
@@ -137,11 +138,16 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
                     alert(R.string.please_choose_device);
                     return;
                 }
-                RecordDeviceUseDetailListActivity.start(mActivity, leibie, xinghao, guige,bh, item);
+                RecordDeviceUseDetailListActivity.start(mActivity, leibie, xinghao, guige, bh, item);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void clickGuige(DevicesortEntity guige) {
+        getRecordListByGG(guige);
     }
 
     @Override
@@ -244,6 +250,39 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
         DBManager.dbDeal(DBManager.SELECT)
                 .sql(SqlUrl.Get_Record_List_by_BH)
                 .params(new String[]{sbbh})
+                .clazz(DevicelogsortEntity.class)
+                .execut(new DbCallBack() {
+                    @Override
+                    public void onDbStart() {
+                        showProgressDialog(getResources().getString(R.string.loading_data));
+                    }
+
+                    @Override
+                    public void onError(String err) {
+                        alert(err);
+                        dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onResponse(List result) {
+                        if (result != null && result.size() != 0) {
+                            getRecordList(result);
+                        } else {
+                            alert(R.string.no_data);
+                        }
+                        dismissProgressDialog();
+                    }
+                });
+    }
+
+    private void getRecordListByGG(DevicesortEntity devicesortEntity) {
+        if (devicesortEntity != null && StringUtils.isEmpty(devicesortEntity.getCOOD())) {
+            alert(R.string.get_bh_faild);
+            return;
+        }
+        DBManager.dbDeal(DBManager.SELECT)
+                .sql(SqlUrl.Get_Record_List_by_GG)
+                .params(new Object[]{devicesortEntity.getCOOD()})
                 .clazz(DevicelogsortEntity.class)
                 .execut(new DbCallBack() {
                     @Override

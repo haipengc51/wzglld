@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jiekai.wzglld.R;
@@ -21,11 +21,13 @@ import com.jiekai.wzglld.utils.CommonUtils;
 import com.jiekai.wzglld.utils.StringUtils;
 import com.jiekai.wzglld.utils.dbutils.DBManager;
 import com.jiekai.wzglld.utils.dbutils.DbCallBack;
+import com.jiekai.wzglld.weight.XListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by laowu on 2018/1/14.
@@ -33,7 +35,7 @@ import butterknife.BindView;
  */
 
 public class RecordDeviceUseDetailListActivity extends MyBaseActivity implements View.OnClickListener,
-        AdapterView.OnItemClickListener{
+        AdapterView.OnItemClickListener {
     @BindView(R.id.back)
     ImageView back;
     @BindView(R.id.title)
@@ -41,7 +43,11 @@ public class RecordDeviceUseDetailListActivity extends MyBaseActivity implements
     @BindView(R.id.menu)
     ImageView menu;
     @BindView(R.id.list_view)
-    ListView listView;
+    XListView listView;
+    @BindView(R.id.search_input)
+    EditText searchInput;
+    @BindView(R.id.search)
+    TextView search;
 
     private TextView deviceLeibie;
     private TextView deviceXinghao;
@@ -169,5 +175,12 @@ public class RecordDeviceUseDetailListActivity extends MyBaseActivity implements
                         dismissProgressDialog();
                     }
                 });
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

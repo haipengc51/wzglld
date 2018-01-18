@@ -45,7 +45,8 @@ public class TypeUtils implements View.OnClickListener{
     private SBBHClick sbbhClick;
 
     public interface SBBHClick {
-        void clickSBBH(String sbbh);
+        void clickGuige(DevicesortEntity guige);    //规格的点击回调
+        void clickSBBH(String sbbh);                //设备自编号的点击回调
     }
 
     public TypeUtils(Activity activity,
@@ -106,6 +107,9 @@ public class TypeUtils implements View.OnClickListener{
             currentGuige = devicesortEntity;
             deviceId.setText("");
             currentDeviceCode = null;
+            if (sbbhClick != null) {
+                sbbhClick.clickGuige(devicesortEntity);
+            }
         }
     };
 
