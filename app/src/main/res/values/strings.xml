@@ -174,5 +174,7 @@
     <string name="device_move">设备转场</string>
     <string name="device_inspection">设备巡检</string>
     <string name="please_input_device">请输入设备自编码</string>
+    <string name="please_input_device_id">请输入设备自编码</string>
+    <string name="device_use_detail">使用记录详情</string>
 
 </resources>

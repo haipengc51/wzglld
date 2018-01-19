@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jiekai.wzglld.R;
@@ -16,7 +17,10 @@ import com.jiekai.wzglld.config.IntentFlag;
 import com.jiekai.wzglld.config.SqlUrl;
 import com.jiekai.wzglld.entity.DevicelogEntity;
 import com.jiekai.wzglld.entity.DevicelogsortEntity;
+import com.jiekai.wzglld.entity.DevicesortEntity;
+import com.jiekai.wzglld.entity.DevicestoreEntity;
 import com.jiekai.wzglld.ui.base.MyBaseActivity;
+import com.jiekai.wzglld.ui.uiUtils.XListViewUtils;
 import com.jiekai.wzglld.utils.CommonUtils;
 import com.jiekai.wzglld.utils.StringUtils;
 import com.jiekai.wzglld.utils.dbutils.DBManager;
@@ -48,6 +52,8 @@ public class RecordDeviceUseDetailListActivity extends MyBaseActivity implements
     EditText searchInput;
     @BindView(R.id.search)
     TextView search;
+    @BindView(R.id.search_layout)
+    LinearLayout searchLayout;
 
     private TextView deviceLeibie;
     private TextView deviceXinghao;
@@ -57,6 +63,7 @@ public class RecordDeviceUseDetailListActivity extends MyBaseActivity implements
     private String leibie;
     private String xinghao;
     private String guige;
+    private DevicesortEntity currentGuige;
     private String id;
     private String JLMC;
     private DevicelogsortEntity devicelogsortEntity;
@@ -64,8 +71,11 @@ public class RecordDeviceUseDetailListActivity extends MyBaseActivity implements
     private RecordDeviceUseDetailAdapter adapter;
     private List<DevicelogEntity> dataList = new ArrayList<>();
 
+    private boolean isGuiGe = true;
+    private XListViewUtils xListViewUtils;
+
     public static void start(Context context,
-                             String leibie, String xinghao, String guige, String id,
+                             String leibie, String xinghao, DevicesortEntity guige, String id,
                              DevicelogsortEntity devicelogsortEntity) {
         Intent intent = new Intent(context, RecordDeviceUseDetailListActivity.class);
         intent.putExtra(IntentFlag.LEIBIE, leibie);
@@ -89,8 +99,16 @@ public class RecordDeviceUseDetailListActivity extends MyBaseActivity implements
         title.setText(getResources().getString(R.string.detail));
         leibie = getIntent().getStringExtra(IntentFlag.LEIBIE);
         xinghao = getIntent().getStringExtra(IntentFlag.XINGHAO);
-        guige = getIntent().getStringExtra(IntentFlag.GUIGE);
         id = getIntent().getStringExtra(IntentFlag.ID);
+        if (StringUtils.isEmpty(id)) {
+            currentGuige = (DevicesortEntity) getIntent().getSerializableExtra(IntentFlag.GUIGE);
+            guige = currentGuige.getTEXT();
+            isGuiGe = true;
+            searchLayout.setVisibility(View.VISIBLE);
+        } else {
+            isGuiGe = false;
+            searchLayout.setVisibility(View.GONE);
+        }
         devicelogsortEntity = (DevicelogsortEntity) getIntent().getExtras().getSerializable(IntentFlag.DATA);
 
         if (devicelogsortEntity != null && !StringUtils.isEmpty(devicelogsortEntity.getJLZLMC())) {
@@ -98,28 +116,38 @@ public class RecordDeviceUseDetailListActivity extends MyBaseActivity implements
             title.setText(JLMC);
         }
         back.setOnClickListener(this);
+        search.setOnClickListener(this);
     }
 
     @Override
     public void initOperation() {
-        View headerView = LayoutInflater.from(this).inflate(R.layout.header_record_detail, null);
-        deviceLeibie = (TextView) headerView.findViewById(R.id.device_leibie);
-        deviceXinghao = (TextView) headerView.findViewById(R.id.device_xinghao);
-        deviceGuige = (TextView) headerView.findViewById(R.id.device_guige);
-        deviceId = (TextView) headerView.findViewById(R.id.device_id);
+//        View headerView = LayoutInflater.from(this).inflate(R.layout.header_record_detail, null);
+//        deviceLeibie = (TextView) headerView.findViewById(R.id.device_leibie);
+//        deviceXinghao = (TextView) headerView.findViewById(R.id.device_xinghao);
+//        deviceGuige = (TextView) headerView.findViewById(R.id.device_guige);
+//        deviceId = (TextView) headerView.findViewById(R.id.device_id);
+//        listView.addHeaderView(headerView);
+//
+//        deviceLeibie.setText(CommonUtils.getDataIfNull(leibie));
+//        deviceXinghao.setText(CommonUtils.getDataIfNull(xinghao));
+//        deviceGuige.setText(CommonUtils.getDataIfNull(guige));
+//        deviceId.setText(CommonUtils.getDataIfNull(id));
+
+        View headerView = LayoutInflater.from(this).inflate(R.layout.adapter_record_device_detail, null);
         listView.addHeaderView(headerView);
 
-        deviceLeibie.setText(CommonUtils.getDataIfNull(leibie));
-        deviceXinghao.setText(CommonUtils.getDataIfNull(xinghao));
-        deviceGuige.setText(CommonUtils.getDataIfNull(guige));
-        deviceId.setText(CommonUtils.getDataIfNull(id));
-
+        xListViewUtils = new XListViewUtils(listView);
         if (adapter == null) {
             adapter = new RecordDeviceUseDetailAdapter(mActivity, dataList);
-            listView.setAdapter(adapter);
+//            listView.setAdapter(adapter);
             listView.setOnItemClickListener(this);
         }
-        getListData();
+        xListViewUtils.setMyBaseAdapter(adapter);
+        if (isGuiGe) {
+            getListDataByGG();
+        } else {
+            getListDataById(id);
+        }
     }
 
     @Override
@@ -127,6 +155,9 @@ public class RecordDeviceUseDetailListActivity extends MyBaseActivity implements
         switch (v.getId()) {
             case R.id.back:
                 finish();
+                break;
+            case R.id.search:
+                getListDataById(searchInput.getText().toString());
                 break;
         }
     }
@@ -141,46 +172,36 @@ public class RecordDeviceUseDetailListActivity extends MyBaseActivity implements
         }
     }
 
+    private void getListDataById(String id) {
+//        if (StringUtils.isEmpty(id)) {
+//            alert(R.string.please_input_device_id);
+//            return;
+//        }
+
+        xListViewUtils.setSqlUrl(SqlUrl.GET_LOG_LIST_BY_BH);
+        xListViewUtils.clearParams();
+        xListViewUtils.addParams(" AND devicelog.JLZLMC = ?", JLMC);
+        xListViewUtils.addParams(" AND devicelog.SBBH like ?", "%" + id + "%");
+        xListViewUtils.setClazz(DevicelogEntity.class);
+//        listView.showHeaderView();
+        xListViewUtils.onRefresh();
+    }
+
     /**
      * 查询列表的记录信息
      */
-    private void getListData() {
-        DBManager.dbDeal(DBManager.SELECT)
-                .sql(SqlUrl.GET_LOG_LIST)
-                .params(new String[]{JLMC, id})
-                .clazz(DevicelogEntity.class)
-                .execut(new DbCallBack() {
-                    @Override
-                    public void onDbStart() {
-                        showProgressDialog(getResources().getString(R.string.loading_data));
-                    }
+    private void getListDataByGG() {
+        if (StringUtils.isEmpty(guige)) {
+            alert(R.string.params_empty);
+            return;
+        }
 
-                    @Override
-                    public void onError(String err) {
-                        alert(err);
-                        dismissProgressDialog();
-                    }
-
-                    @Override
-                    public void onResponse(List result) {
-                        if (result != null && result.size() != 0) {
-                            dataList.clear();
-                            dataList.addAll(result);
-                            if (adapter != null) {
-                                adapter.notifyDataSetChanged();
-                            }
-                        } else {
-                            alert(R.string.no_data);
-                        }
-                        dismissProgressDialog();
-                    }
-                });
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+        xListViewUtils.setSqlUrl(SqlUrl.GET_LOG_LIST_BY_GG);
+        xListViewUtils.clearParams();
+        xListViewUtils.addParams(" AND devicelog.JLZLMC = ?", JLMC);
+        xListViewUtils.addParams(" AND dv.GG = ?", currentGuige.getCOOD());
+        xListViewUtils.setClazz(DevicelogEntity.class);
+//        listView.showHeaderView();
+        xListViewUtils.onRefresh();
     }
 }

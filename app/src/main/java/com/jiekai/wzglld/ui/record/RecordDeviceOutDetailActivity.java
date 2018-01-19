@@ -1,5 +1,6 @@
 package com.jiekai.wzglld.ui.record;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by LaoWu on 2018/1/15.
@@ -45,14 +47,14 @@ public class RecordDeviceOutDetailActivity extends MyBaseActivity implements Vie
     TextView readCard;
     @BindView(R.id.record_image)
     ImageView recordImage;
-    @BindView(R.id.duihao)
-    TextView duihao;
-    @BindView(R.id.jinghao)
-    TextView jinghao;
     @BindView(R.id.operator_people)
     TextView operatorPeople;
     @BindView(R.id.operator_time)
     TextView operatorTime;
+    @BindView(R.id.jinghao)
+    TextView jinghao;
+    @BindView(R.id.lydw)
+    TextView lydw;
     @BindView(R.id.check_people)
     TextView checkPeople;
     @BindView(R.id.check_time)
@@ -87,6 +89,8 @@ public class RecordDeviceOutDetailActivity extends MyBaseActivity implements Vie
             deviceId.setText(CommonUtils.getDataIfNull(currentData.getSBBH()));
             operatorPeople.setText(CommonUtils.getDataIfNull(currentData.getCzrname()));
             operatorTime.setText(TimeUtils.dateToStringYYYYmmdd(currentData.getCZSJ()));
+            jinghao.setText(CommonUtils.getDataIfNull(currentData.getJH()));
+            lydw.setText(CommonUtils.getDataIfNull(currentData.getLYDW()));
             if (currentData.getSHSJ() != null) {
                 checkTime.setText(TimeUtils.dateToStringYYYYmmddHHMMSS(currentData.getSHSJ()));
             }
@@ -177,7 +181,7 @@ public class RecordDeviceOutDetailActivity extends MyBaseActivity implements Vie
                     @Override
                     public void onResponse(List result) {
                         if (result != null && result.size() != 0) {
-                            checkPeople.setText(((UserNameEntity)result.get(0)).getName());
+                            checkPeople.setText(((UserNameEntity) result.get(0)).getName());
                         }
                     }
                 });
@@ -188,5 +192,12 @@ public class RecordDeviceOutDetailActivity extends MyBaseActivity implements Vie
     protected void onDestroy() {
         super.onDestroy();
         PictureSelectUtils.clearPictureSelectorCache(mActivity);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

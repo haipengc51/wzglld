@@ -7,6 +7,7 @@
         layout="@layout/title_image_text_image"/>
 
     <LinearLayout
+        android:id="@+id/search_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_height"
         android:orientation="horizontal">
@@ -24,6 +25,7 @@
             android:layout_gravity="center_vertical"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:singleLine="true"
             android:hint="@string/please_input_device"
             android:textColor="@color/text_content_color"
             android:textSize="@dimen/content_text_size"/>
@@ -41,6 +43,9 @@
             android:layout_marginRight="@dimen/marginTop10"/>
 
     </LinearLayout>
+
+    <View
+        style="@style/line_d5"/>
 
     <com.jiekai.wzglld.weight.XListView
         android:id="@+id/list_view"

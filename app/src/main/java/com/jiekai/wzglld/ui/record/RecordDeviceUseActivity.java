@@ -57,6 +57,8 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
     private RecordDeviceAdapter adapter;
     private List<DevicelogsortEntity> dataList = new ArrayList();
 
+    private DevicesortEntity currentGuiGe;
+
     @Override
     public void initView() {
         setContentView(R.layout.activity_record_device_use);
@@ -134,11 +136,11 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
                 String guige = deviceGuige.getText().toString();
                 String bh = deviceId.getText().toString();
                 if (StringUtils.isEmpty(leibie) || StringUtils.isEmpty(xinghao) ||
-                        StringUtils.isEmpty(guige) || StringUtils.isEmpty(bh)) {
+                        StringUtils.isEmpty(guige)) {
                     alert(R.string.please_choose_device);
                     return;
                 }
-                RecordDeviceUseDetailListActivity.start(mActivity, leibie, xinghao, guige, bh, item);
+                RecordDeviceUseDetailListActivity.start(mActivity, leibie, xinghao, currentGuiGe, bh, item);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -147,6 +149,7 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
 
     @Override
     public void clickGuige(DevicesortEntity guige) {
+        currentGuiGe = guige;
         getRecordListByGG(guige);
     }
 

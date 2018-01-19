@@ -74,7 +74,7 @@ public class RecordDeviceUseDetailListDetailActivity extends MyBaseActivity impl
 
     @Override
     public void initData() {
-        title.setText(getResources().getString(R.string.record_failed_detail));
+        title.setText(getResources().getString(R.string.device_use_detail));
         back.setOnClickListener(this);
         recordImage.setOnClickListener(this);
 
@@ -84,6 +84,9 @@ public class RecordDeviceUseDetailListDetailActivity extends MyBaseActivity impl
     @Override
     public void initOperation() {
         if (currentDatas != null) {
+            if (!StringUtils.isEmpty(currentDatas.getJLZLMC())) {
+                title.setText(currentDatas.getJLZLMC());
+            }
             recordType.setText(CommonUtils.getDataIfNull(currentDatas.getJLZLMC()));
             deviceId.setText(CommonUtils.getDataIfNull(currentDatas.getSBBH()));
             duihao.setText(CommonUtils.getDataIfNull(currentDatas.getDH()));

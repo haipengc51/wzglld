@@ -111,77 +111,6 @@
 
             </RelativeLayout>
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/item_height"
-                android:layout_marginTop="@dimen/marginTop10"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/marginTop20"
-                    android:text="@string/duihao_"
-                    android:textColor="@color/text_content_color"
-                    android:textSize="@dimen/content_text_size"/>
-
-                <TextView
-                    android:id="@+id/duihao"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="@dimen/marginTop10"
-                    android:layout_marginRight="@dimen/marginTop20"
-                    android:background="@drawable/input_bg"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:singleLine="true"
-                    android:enabled="false"
-                    android:hint="@string/input_duihao"
-                    android:textColor="@color/text_content_color"
-                    android:textSize="@dimen/content_text_size"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/item_height"
-                android:layout_marginTop="@dimen/marginTop10"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/marginTop20"
-                    android:text="@string/jinghao_"
-                    android:textColor="@color/text_content_color"
-                    android:textSize="@dimen/content_text_size"/>
-
-                <TextView
-                    android:id="@+id/jinghao"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="@dimen/marginTop10"
-                    android:layout_marginRight="@dimen/marginTop20"
-                    android:background="@drawable/input_bg"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:singleLine="true"
-                    android:enabled="false"
-                    android:hint="@string/input_jinghao"
-                    android:textColor="@color/text_content_color"
-                    android:textSize="@dimen/content_text_size"/>
-
-            </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -239,6 +168,76 @@
                     android:gravity="center_vertical"
                     android:padding="10dp"
                     android:hint="@string/operator_time"
+                    android:textColor="@color/text_content_color"
+                    android:textSize="@dimen/content_text_size"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/item_height"
+                android:layout_marginTop="@dimen/marginTop10"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/marginTop20"
+                    android:text="@string/jinghao_"
+                    android:textColor="@color/text_content_color"
+                    android:textSize="@dimen/content_text_size"/>
+
+                <TextView
+                    android:id="@+id/jinghao"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/marginTop10"
+                    android:layout_marginRight="@dimen/marginTop20"
+                    android:background="@drawable/input_bg"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:singleLine="true"
+                    android:enabled="false"
+                    android:hint="@string/duihao"
+                    android:textColor="@color/text_content_color"
+                    android:textSize="@dimen/content_text_size"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/item_height"
+                android:layout_marginTop="@dimen/marginTop10"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/marginTop20"
+                    android:text="@string/lingyongdanwei"
+                    android:textColor="@color/text_content_color"
+                    android:textSize="@dimen/content_text_size"/>
+
+                <TextView
+                    android:id="@+id/lydw"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/marginTop10"
+                    android:layout_marginRight="@dimen/marginTop20"
+                    android:background="@drawable/input_bg"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:singleLine="true"
+                    android:enabled="false"
+                    android:hint="@string/lingyongdanwei"
                     android:textColor="@color/text_content_color"
                     android:textSize="@dimen/content_text_size"/>
 

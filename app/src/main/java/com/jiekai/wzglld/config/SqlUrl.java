@@ -218,8 +218,7 @@ public class SqlUrl {
      * 获取记录列表的内容（有哪些内容需要记录）
      * 通过设备自编号获取
      */
-    public static final String Get_Record_List_by_GG = "SELECT devicelogsort.*, device.BH FROM devicelogsort WHERE " +
-            "devicelogsort.LBBH = ?";
+    public static final String Get_Record_List_by_GG = "SELECT * FROM devicelogsort WHERE devicelogsort.LBBH = ?";
     /**
      * 添加一条记录信息--现场添加记录信息
      */
@@ -234,11 +233,17 @@ public class SqlUrl {
      */
     public static final String GET_RECORD_CHECK_LIST = "SELECT * FROM devicelog WHERE CZR = ? AND SHYJ = \"0\"";
     /**
+     * 获取使用记录的历史记录内容, 通过设备自编码
+     */
+    public static final String GET_LOG_LIST_BY_BH = "SELECT devicelog.*, userinfo.USERNAME as czrname " +
+            "FROM devicelog, userinfo WHERE " +
+            "userinfo.USERID = devicelog.CZR";      //devicelog.JLZLMC = ? AND devicelog.SBBH = ? AND ";
+    /**
      * 获取使用记录的历史记录内容
      */
-    public static final String GET_LOG_LIST = "SELECT devicelog.*, userinfo.USERNAME as czrname " +
-            "FROM devicelog, userinfo WHERE " +
-            "devicelog.JLZLMC = ? AND devicelog.SBBH = ? AND userinfo.USERID = devicelog.CZR";
+    public static final String GET_LOG_LIST_BY_GG = "SELECT devicelog.*, userinfo.USERNAME as czrname " +
+            "FROM devicelog, userinfo, device AS dv WHERE " +
+            "dv.BH = devicelog.SBBH AND userinfo.USERID = devicelog.CZR";   // devicelog.JLZLMC = ? AND dv.GG = ? AND
     /**
      * 通过用户id获取用户的名字
      */
