@@ -193,11 +193,4 @@ public class RecordDeviceOutDetailActivity extends MyBaseActivity implements Vie
         super.onDestroy();
         PictureSelectUtils.clearPictureSelectorCache(mActivity);
     }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

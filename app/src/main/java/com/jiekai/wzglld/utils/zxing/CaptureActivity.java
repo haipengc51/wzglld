@@ -15,6 +15,7 @@
  */
 package com.jiekai.wzglld.utils.zxing;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -37,6 +38,7 @@ import android.widget.TextView;
 import com.google.zxing.Result;
 import com.jiekai.wzglld.R;
 import com.jiekai.wzglld.ui.base.MyBaseActivity;
+import com.jiekai.wzglld.ui.uiUtils.PermissionUtils;
 import com.jiekai.wzglld.utils.zxing.camera.CameraManager;
 import com.jiekai.wzglld.utils.zxing.decode.DecodeThread;
 import com.jiekai.wzglld.utils.zxing.utils.BeepManager;
@@ -133,6 +135,12 @@ public final class CaptureActivity extends MyBaseActivity implements SurfaceHold
         animation.setRepeatCount(-1);
         animation.setRepeatMode(Animation.RESTART);
         scanLine.startAnimation(animation);
+
+        checkPermission();
+    }
+
+    private void checkPermission() {
+        boolean isCamare = PermissionUtils.checkPermission(this, Manifest.permission.CAMERA);
     }
 
     @Override
