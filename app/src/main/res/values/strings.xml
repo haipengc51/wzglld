@@ -176,5 +176,6 @@
     <string name="please_input_device">请输入设备自编码</string>
     <string name="please_input_device_id">请输入设备自编码</string>
     <string name="device_use_detail">使用记录详情</string>
+    <string name="ungree_permission">拒绝摄像头权限，该功能无法使用</string>
 
 </resources>
