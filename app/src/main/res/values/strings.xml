@@ -179,5 +179,6 @@
     <string name="record">记录</string>
     <string name="scrap">报废</string>
     <string name="me">我的</string>
+    <string name="ungree_permission">拒绝摄像头权限，该功能无法使用</string>
 
 </resources>
