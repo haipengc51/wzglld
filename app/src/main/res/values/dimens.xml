@@ -17,4 +17,8 @@
     <dimen name="marginTop40">40dp</dimen>
     <dimen name="marginTop50">50dp</dimen>
     <dimen name="marginTop5">5dp</dimen>
+    <dimen name="height_80">80dp</dimen>
+    <dimen name="height_50">50dp</dimen>
+    <dimen name="height_40">40dp</dimen>
+    <dimen name="text_size_10">10sp</dimen>
 </resources>

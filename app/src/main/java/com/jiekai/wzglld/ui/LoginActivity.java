@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jiekai.wzglld.MainActivity;
 import com.jiekai.wzglld.R;
 import com.jiekai.wzglld.config.ShareConstants;
 import com.jiekai.wzglld.config.SqlUrl;
@@ -163,7 +164,7 @@ public class LoginActivity extends MyBaseActivity implements View.OnClickListene
                             }
                             if (isOne) {
                                 saveLoginData(userInfoEntity);
-                                Intent intent = new Intent(LoginActivity.this, KeeperMainActivity.class);
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
                                 finish();
                             } else {

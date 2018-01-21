@@ -93,7 +93,7 @@
     <string name="device_num">设备数量</string>
     <string name="cancle">取消</string>
     <string name="logout">退出登录</string>
-    <string name="click_again_finish">在此点击退出物资管理</string>
+    <string name="click_again_finish">再次点击退出物资管理</string>
     <string name="input_jinghao">请输入井号</string>
     <string name="please_input_jinghao">请输入井号</string>
     <string name="uploading_db">正在上传数据库</string>
@@ -176,5 +176,8 @@
     <string name="please_input_device">请输入设备自编码</string>
     <string name="please_input_device_id">请输入设备自编码</string>
     <string name="device_use_detail">使用记录详情</string>
+    <string name="record">记录</string>
+    <string name="scrap">报废</string>
+    <string name="me">我的</string>
 
 </resources>

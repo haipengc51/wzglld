@@ -13,4 +13,8 @@
 
     <color name="divider_color">#FFCCCCCC</color>
     <color name="line_color">@color/divider_color</color>
+
+    <color name="tabar_color_press">@color/main_color_click</color>
+    <color name="tabar_color">@color/main_color</color>
+
 </resources>

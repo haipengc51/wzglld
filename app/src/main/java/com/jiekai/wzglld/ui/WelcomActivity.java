@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 
+import com.jiekai.wzglld.MainActivity;
 import com.jiekai.wzglld.R;
 import com.jiekai.wzglld.config.ShareConstants;
 import com.jiekai.wzglld.config.SqlUrl;
@@ -129,7 +130,7 @@ public class WelcomActivity extends MyBaseActivity {
         if (isTime && myLogin) {
             isTime = false;
             saveLoginData(userInfoEntity);
-            Intent intent = new Intent(mActivity, KeeperMainActivity.class);
+            Intent intent = new Intent(mActivity, MainActivity.class);
             startActivity(intent);
             finish();
         } else if (isTime && !myLogin) {
