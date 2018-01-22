@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:layout_margin="@dimen/marginTop10"
+        android:src="@drawable/ic_device_inspection"/>
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/marginTop10"
+        android:layout_marginRight="@dimen/marginTop10"
+        android:layout_marginBottom="@dimen/marginTop10"
+        android:text="使用记录"
+        android:textColor="@color/text_content_color"
+        android:textSize="@dimen/content_text_size"/>
+
+</LinearLayout>

@@ -140,7 +140,7 @@ public class TabBarFragment extends Fragment {
                 this.tab_three_text.setTextColor(getResources().getColor(R.color.tabar_color));
                 this.tab_four_text.setTextColor(getResources().getColor(R.color.tabar_color));
                 if (baseFragment == null) {
-                    baseFragment = new DeviceScrapFragment();
+                    baseFragment = new RecordGridFragement();
                 }
                 break;
             case 2:

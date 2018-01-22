@@ -36,8 +36,7 @@ public class KeeperMainActivity extends MyBaseActivity implements AdapterView.On
 
     private long mBackPressedTime = 0;
 
-    private List<KeeperEntity> dataList = new ArrayList<KeeperEntity>() {
-    };
+    private List<KeeperEntity> dataList = new ArrayList<KeeperEntity>() {};
     private KeeperAdapter adapter;
 
     @Override

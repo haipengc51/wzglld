@@ -15,7 +15,7 @@ import com.jiekai.wzglld.ui.fragment.base.MyNFCBaseFragment;
 public class TestFragment extends MyNFCBaseFragment {
     @Override
     public View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_bind_device, container, false);
+        View view = inflater.inflate(R.layout.activity_test, container, false);
         return view;
     }
 
