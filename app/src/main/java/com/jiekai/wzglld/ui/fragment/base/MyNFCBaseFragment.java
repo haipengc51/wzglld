@@ -22,6 +22,8 @@ public abstract class MyNFCBaseFragment extends Fragment {
     public MyBaseActivity mActivity;
     private ProgressDialog progressDialog = null;
 
+    public boolean enableNfc = false;
+
     public abstract View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
     public abstract void initData();
     public abstract void initOperation();
@@ -63,6 +65,12 @@ public abstract class MyNFCBaseFragment extends Fragment {
     public void dismissProgressDialog() {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
+        }
+    }
+
+    public void setNfcData(String nfcString) {
+        if (enableNfc) {
+            getNfcData(nfcString);
         }
     }
 }

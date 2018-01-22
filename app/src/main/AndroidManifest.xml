@@ -25,7 +25,8 @@
             </intent-filter>
         </activity>
         <activity android:name="com.jiekai.wzglld.MainActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
         <activity android:name="com.jiekai.wzglld.ui.LoginActivity"
             android:screenOrientation="portrait"/>
         <activity android:name="com.jiekai.wzglld.ui.KeeperMainActivity"

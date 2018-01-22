@@ -1,6 +1,5 @@
 package com.jiekai.wzglld.ui.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jiekai.wzglld.R;
@@ -123,7 +121,7 @@ public class TabBarFragment extends Fragment {
                 this.tab_four_text.setTextColor(getResources().getColor(R.color.tabar_color));
 
                 if (baseFragment == null) {
-                    baseFragment = new TestFragment();
+                    baseFragment = new QueryDeviceInfoFragment();
                 }
                 break;
             case 1:
@@ -142,7 +140,7 @@ public class TabBarFragment extends Fragment {
                 this.tab_three_text.setTextColor(getResources().getColor(R.color.tabar_color));
                 this.tab_four_text.setTextColor(getResources().getColor(R.color.tabar_color));
                 if (baseFragment == null) {
-                    baseFragment = new TestFragment();
+                    baseFragment = new DeviceScrapFragment();
                 }
                 break;
             case 2:
@@ -161,7 +159,7 @@ public class TabBarFragment extends Fragment {
                 this.tab_three_text.setTextColor(getResources().getColor(R.color.tabar_color_press));
                 this.tab_four_text.setTextColor(getResources().getColor(R.color.tabar_color));
                 if (baseFragment == null) {
-                    baseFragment = new TestFragment();
+                    baseFragment = new DeviceScrapFragment();
                 }
                 break;
             case 3:
@@ -198,5 +196,9 @@ public class TabBarFragment extends Fragment {
             }
             this.currentFragment = baseFragment;
         }
+    }
+
+    public MyNFCBaseFragment getCurrentFragment() {
+        return this.currentFragment;
     }
 }

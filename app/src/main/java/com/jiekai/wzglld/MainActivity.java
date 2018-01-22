@@ -1,16 +1,16 @@
 package com.jiekai.wzglld;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.jiekai.wzglld.test.NFCBaseActivity;
+import com.jiekai.wzglld.ui.fragment.QueryDeviceInfoFragment;
 import com.jiekai.wzglld.ui.fragment.TabBarFragment;
-import com.jiekai.wzglld.ui.fragment.TestFragment;
+import com.jiekai.wzglld.ui.fragment.base.MyNFCBaseFragment;
 
 public class MainActivity extends NFCBaseActivity {
     private TabBarFragment tabFragment;
@@ -55,7 +55,8 @@ public class MainActivity extends NFCBaseActivity {
 
     @Override
     public void getNfcData(String nfcString) {
-
+        MyNFCBaseFragment baseFragment = tabFragment.getCurrentFragment();
+        baseFragment.setNfcData(nfcString);
     }
 
     @Override
@@ -65,7 +66,7 @@ public class MainActivity extends NFCBaseActivity {
                 return false;
             }
             //TODO 是否跳转到第一个页面，如果是的话才退出
-            if (tabFragment.baseFragment.getClass().equals(TestFragment.class)) {
+            if (tabFragment.baseFragment.getClass().equals(QueryDeviceInfoFragment.class)) {
                 long curTime = SystemClock.uptimeMillis();
                 if ((curTime - mBackPressedTime) < (3 * 1000)) {
                     isAnimation = false;
