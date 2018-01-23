@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/body_bg"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/title_image_text_image"/>
+
+    <LinearLayout
+        android:id="@+id/accout_info_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/marginTop10"
+        android:background="@color/main_color"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="管理员"
+            android:textStyle="bold"
+            android:textSize="@dimen/title_text_size"
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/marginTop10"
+            android:text="18678682983"
+            android:textSize="@dimen/content_text_size"
+            android:textColor="@color/white"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/account_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/marginTop10"
+        android:background="@color/white"
+        android:drawableRight="@drawable/ic_right_arrow"
+        android:padding="@dimen/marginTop15"
+        android:text="@string/account_info"
+        android:textColor="@color/text_content_color"
+        android:textSize="@dimen/content_text_size"
+        android:visibility="gone"/>
+
+    <View
+        style="@style/line_d5"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/change_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_marginTop="@dimen/marginTop20"
+        android:drawableRight="@drawable/ic_right_arrow"
+        android:padding="@dimen/marginTop15"
+        android:text="@string/change_password"
+        android:textColor="@color/text_content_color"
+        android:textSize="@dimen/content_text_size"/>
+
+    <View
+        style="@style/line_d5" />
+
+    <TextView
+        android:id="@+id/about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:drawableRight="@drawable/ic_right_arrow"
+        android:padding="@dimen/marginTop15"
+        android:text="@string/about_wzgl"
+        android:textColor="@color/text_content_color"
+        android:textSize="@dimen/content_text_size"/>
+
+    <View
+        style="@style/line_d5" />
+
+    <TextView
+        android:id="@+id/logout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height"
+        style="@style/button_style"
+        android:layout_marginTop="@dimen/marginTop30"
+        android:layout_marginLeft="@dimen/marginTop10"
+        android:layout_marginRight="@dimen/marginTop10"
+        android:text="@string/logout"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/content_text_size"/>
+
+</LinearLayout>

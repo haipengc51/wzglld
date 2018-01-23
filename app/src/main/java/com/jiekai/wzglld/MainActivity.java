@@ -1,5 +1,6 @@
 package com.jiekai.wzglld;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -7,7 +8,9 @@ import android.os.SystemClock;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
+import com.jiekai.wzglld.config.Constants;
 import com.jiekai.wzglld.test.NFCBaseActivity;
+import com.jiekai.wzglld.ui.LoginActivity;
 import com.jiekai.wzglld.ui.fragment.QueryDeviceInfoFragment;
 import com.jiekai.wzglld.ui.fragment.TabBarFragment;
 import com.jiekai.wzglld.ui.fragment.base.MyNFCBaseFragment;
@@ -80,5 +83,14 @@ public class MainActivity extends NFCBaseActivity {
             }
         }
         return false;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.REQUEST_LOGOUT && resultCode == RESULT_OK) {
+            startActivity(new Intent(mActivity, LoginActivity.class));
+            finish();
+        }
     }
 }

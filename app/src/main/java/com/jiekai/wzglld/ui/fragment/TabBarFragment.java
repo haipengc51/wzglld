@@ -178,7 +178,7 @@ public class TabBarFragment extends Fragment {
                 this.tab_three_text.setTextColor(getResources().getColor(R.color.tabar_color));
                 this.tab_four_text.setTextColor(getResources().getColor(R.color.tabar_color_press));
                 if (baseFragment == null) {
-                    baseFragment = new TestFragment();
+                    baseFragment = new MeFragment();
                 }
                 break;
         }

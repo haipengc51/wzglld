@@ -17,4 +17,5 @@ public class Constants {
     public static final String YI_CHU_KU = "3";
     public static final String yichuku = "已出库";
     public static final String detail_fujian = "点击查看详情";
+    public static final int REQUEST_LOGOUT = 103;
 }

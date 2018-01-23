@@ -139,6 +139,12 @@
         <activity android:name=".ui.record.RecordDeviceRepairDetailActivity"
             android:label="维修记录详情"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.ChangePasswordActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/change_password"/>
+        <activity android:name=".ui.AboutActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/about_wzgl"/>
     </application>
 
 </manifest>

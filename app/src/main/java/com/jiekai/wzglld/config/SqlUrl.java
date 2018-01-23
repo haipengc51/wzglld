@@ -289,4 +289,8 @@ public class SqlUrl {
      */
     public static final String GET_INSPECTION_RECORD_PAGE = "SELECT deviceinspection.*, userinfo.USERNAME as czrname " +
             "FROM deviceinspection, userinfo, device AS dv WHERE userinfo.USERID = deviceinspection.CZR AND dv.BH = deviceinspection.SBBH";
+    /**
+     * 修改密码
+     */
+    public static final String CHANGE_PASSWORD = "UPDATE userinfo SET PASSWORD = ? WHERE USERID = ?";
 }

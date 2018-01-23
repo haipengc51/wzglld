@@ -1,6 +1,7 @@
 package com.jiekai.wzglld.utils;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
@@ -70,5 +71,19 @@ public class CommonUtils {
      */
     public static String getDataIfNull(String data) {
         return StringUtils.isEmpty(data) ? "" : data;
+    }
+
+    /**
+     * 获取软件版本号
+     */
+
+    public static String getVersionName(Context mContext) {
+        String versionName = "1.0";
+        try {
+            versionName = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return versionName;
     }
 }

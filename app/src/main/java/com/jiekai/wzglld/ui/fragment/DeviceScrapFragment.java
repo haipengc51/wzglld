@@ -123,8 +123,8 @@ public class DeviceScrapFragment extends MyNFCBaseFragment implements View.OnCli
                 break;
             case R.id.read_card:    //读卡
                 if (getActivity() instanceof NFCBaseActivity) {
-                    ((NFCBaseActivity) mActivity).nfcEnable = false;
-                    enableNfc = false;
+                    ((NFCBaseActivity) mActivity).nfcEnable = true;
+                    enableNfc = true;
                     alertDialog.show();
                 } else {
                     alert(R.string.dont_allow_readcard);
@@ -139,7 +139,7 @@ public class DeviceScrapFragment extends MyNFCBaseFragment implements View.OnCli
                 }
                 break;
             case R.id.choose_picture:   //选择图片
-                PictureSelectUtils.choosePicture(PictureSelector.create(mActivity), Constants.REQUEST_PICTURE);
+                PictureSelectUtils.choosePicture(PictureSelector.create(this), Constants.REQUEST_PICTURE);
                 break;
             case R.id.enter:    //确定
                 deviceScrap();
@@ -433,6 +433,12 @@ public class DeviceScrapFragment extends MyNFCBaseFragment implements View.OnCli
                     public void onResponse(List result) {
                         alert(R.string.device_scrap_success);
                         dismissProgressDialog();
+                        choosePictures.clear();
+                        deviceId.setText("");
+                        deviceName.setText("");
+                        deviceXinghao.setText("");
+                        imageShow.setImageResource(R.drawable.ic_choose_image);
+                        currentDevice = null;
                     }
                 });
     }
