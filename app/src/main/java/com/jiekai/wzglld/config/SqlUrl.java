@@ -58,6 +58,10 @@ public class SqlUrl {
      */
     public static final String GetDeviceByBH = "SELECT * FROM device where BH = ?";
     /**
+     * 根据二维码获取设备信息
+     */
+    public static final String GetDeviceBySAOMA = "SELECT * FROM device where EWMBH = ?";
+    /**
      * 往一个设备中添加配件
      */
     public static final String AddDepart = "UPDATE device SET SFPJ = ? , SSSBBH = ? WHERE BH = ?";
@@ -114,6 +118,18 @@ public class SqlUrl {
             "AND xinghao.COOD = dv.XH " +
             "AND guige.COOD = dv.GG";
     /**
+     * 通过扫码所获取的二维码号找到设备的信息
+     */
+    public static final String GetPanKuDataBySAOMA = "SELECT " +
+            "dv.BH, dv.MC, dv.LB, dv.XH, dv.GG, leibie.TEXT AS leibie,xinghao.TEXT AS xinghao,guige.TEXT AS guige" +
+            " FROM " +
+            "devicesort AS leibie, devicesort AS xinghao, devicesort AS guige, device as dv" +
+            " WHERE " +
+            "(dv.EWMBH = ?)" +
+            "AND leibie.COOD = dv.LB " +
+            "AND xinghao.COOD = dv.XH " +
+            "AND guige.COOD = dv.GG";
+    /**
      * 插入图片到服务器中（ID, 文件名称， 文件大小， 文件地址，文件类型，类别）
      */
     public static final String INSERT_IAMGE = "INSERT INTO devicedoc (SBBH, WJMC, WJDX, WJDZ, WDLX, LB) VALUES (?, ?, ?, ?, ?, ?)";
@@ -154,12 +170,20 @@ public class SqlUrl {
             "WHERE (device.IDDZMBH1 = ? OR device.IDDZMBH2 = ? OR device.IDDZMBH3 = ?) " +
             "AND lb.COOD = device.LB AND xh.COOD = device.XH AND gg.COOD = device.GG";
     /**
-     * 获取设备详情 通过设备标签id查询
+     * 获取设备详情 通过设备编号
      */
     public static final String GET_DEVICE_DETAIL_BY_BH = "SELECT " +
             "*, lb.TEXT AS leibie, xh.TEXT AS xinghao, gg.TEXT AS guige " +
             "FROM device, devicesort AS lb, devicesort as xh, devicesort as gg " +
             "WHERE (device.BH = ?) " +
+            "AND lb.COOD = device.LB AND xh.COOD = device.XH AND gg.COOD = device.GG";
+    /**
+     * 获取设备详情 通过二维码
+     */
+    public static final String GET_DEVICE_DETAIL_BY_SAOMA = "SELECT " +
+            "*, lb.TEXT AS leibie, xh.TEXT AS xinghao, gg.TEXT AS guige " +
+            "FROM device, devicesort AS lb, devicesort as xh, devicesort as gg " +
+            "WHERE (device.EWMBH = ?) " +
             "AND lb.COOD = device.LB AND xh.COOD = device.XH AND gg.COOD = device.GG";
     /**
      * 查询数据库中上次是否有盘库的数据,返回上次盘库的全部数据
@@ -206,6 +230,13 @@ public class SqlUrl {
      */
     public static final String Get_Record_List = "SELECT devicelogsort.*, device.BH FROM device, devicelogsort WHERE " +
             "(device.IDDZMBH1 = ? OR device.IDDZMBH2 = ? OR device.IDDZMBH3 = ?) " +
+            "AND devicelogsort.LBBH = device.GG";
+    /**
+     * 获取记录列表的内容（有哪些内容需要记录）
+     * 通过二维码获取
+     */
+    public static final String Get_Record_List_By_SAOMA = "SELECT devicelogsort.*, device.BH FROM device, devicelogsort WHERE " +
+            "(device.EWMBH = ?) " +
             "AND devicelogsort.LBBH = device.GG";
     /**
      * 获取记录列表的内容（有哪些内容需要记录）

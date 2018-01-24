@@ -21,7 +21,6 @@ import com.jiekai.wzglld.utils.zxing.CaptureActivity;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by laowu on 2018/1/11.
@@ -161,12 +160,56 @@ public class QueryDeviceInfoActivity extends NFCBaseActivity implements View.OnC
                 });
     }
 
+    /**
+     * 通过ID卡号获取设备信息
+     * @param id
+     */
+    private void getDeviceDataBySAOMA(String id) {
+        if (StringUtils.isEmpty(id)) {
+            return;
+        }
+        deviceLeibie.setText("");
+        deviceXinghao.setText("");
+        deviceGuige.setText("");
+        deviceId.setText("");
+        DBManager.dbDeal(DBManager.SELECT)
+                .sql(SqlUrl.GetPanKuDataBySAOMA)
+                .params(new String[]{id})
+                .clazz(PankuDataEntity.class)
+                .execut(new DbCallBack() {
+                    @Override
+                    public void onDbStart() {
+                        showProgressDialog(getResources().getString(R.string.loading_device));
+                    }
+
+                    @Override
+                    public void onError(String err) {
+                        alert(err);
+                        dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onResponse(List result) {
+                        if (result != null && result.size() != 0) {
+                            PankuDataEntity pankuDataEntity = (PankuDataEntity) result.get(0);
+                            deviceId.setText(CommonUtils.getDataIfNull(pankuDataEntity.getBH()));
+                            deviceLeibie.setText(CommonUtils.getDataIfNull(pankuDataEntity.getLeibie()));
+                            deviceXinghao.setText(CommonUtils.getDataIfNull(pankuDataEntity.getXinghao()));
+                            deviceGuige.setText(CommonUtils.getDataIfNull(pankuDataEntity.getGuige()));
+                        } else {
+                            alert(getResources().getString(R.string.no_data));
+                        }
+                        dismissProgressDialog();
+                    }
+                });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.SCAN && resultCode == RESULT_OK) {  //扫码回到
             String code = data.getExtras().getString("result");
-            getDeviceDataById(code);
+            getDeviceDataBySAOMA(code);
         }
     }
 }

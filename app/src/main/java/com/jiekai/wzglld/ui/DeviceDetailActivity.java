@@ -18,7 +18,6 @@ import com.jiekai.wzglld.config.Constants;
 import com.jiekai.wzglld.config.IntentFlag;
 import com.jiekai.wzglld.config.SqlUrl;
 import com.jiekai.wzglld.entity.DeviceDetailEntity;
-import com.jiekai.wzglld.entity.DeviceEntity;
 import com.jiekai.wzglld.entity.DevicedocEntity;
 import com.jiekai.wzglld.test.NFCBaseActivity;
 import com.jiekai.wzglld.utils.PictureSelectUtils;
@@ -206,6 +205,46 @@ public class DeviceDetailActivity extends NFCBaseActivity implements View.OnClic
     }
 
     /**
+     * 通过设备自编号来获取设备详细信息
+     * @param EWM
+     */
+    private void getDeviceBySAOMA(String EWM) {
+        if (StringUtils.isEmpty(EWM)) {
+            alert(R.string.get_bh_faild);
+            return;
+        }
+        DBManager.dbDeal(DBManager.SELECT)
+                .sql(SqlUrl.GET_DEVICE_DETAIL_BY_SAOMA)
+                .params(new String[]{EWM})
+                .clazz(DeviceDetailEntity.class)
+                .execut(new DbCallBack() {
+                    @Override
+                    public void onDbStart() {
+                        showProgressDialog(getResources().getString(R.string.loading_device));
+                    }
+
+                    @Override
+                    public void onError(String err) {
+                        alert(err);
+                        dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onResponse(List result) {
+                        dismissProgressDialog();
+                        if (result != null && result.size() != 0) {
+                            paresDeviceToShow((DeviceDetailEntity) result.get(0));
+                            buttonLayout.setVisibility(View.GONE);
+                            listview.setVisibility(View.VISIBLE);
+                        } else {
+                            alert(getResources().getString(R.string.no_find_device_info));
+                            finish();
+                        }
+                    }
+                });
+    }
+
+    /**
      * 把deviceEntity的数据转换成listView结构去显示
      *
      * @param deviceEntity
@@ -349,7 +388,7 @@ public class DeviceDetailActivity extends NFCBaseActivity implements View.OnClic
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.SCAN && resultCode == RESULT_OK) {
             String code = data.getExtras().getString("result");
-            getDeviceById(code);
+            getDeviceBySAOMA(code);
         }
     }
 

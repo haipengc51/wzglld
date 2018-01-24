@@ -241,6 +241,44 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
     }
 
     /**
+     * 通过二维码获取记录列表
+     *
+     * @param cardId
+     */
+    private void getRecordListBySAOMA(String cardId) {
+        if (StringUtils.isEmpty(cardId)) {
+            alert(R.string.get_id_err);
+            return;
+        }
+        DBManager.NewDbDeal(DBManager.SELECT)
+                .sql(SqlUrl.Get_Record_List_By_SAOMA)
+                .params(new String[]{cardId})
+                .clazz(DevicelogsortEntity.class)
+                .execut(new DbCallBack() {
+                    @Override
+                    public void onDbStart() {
+                        showProgressDialog(getResources().getString(R.string.loading_data));
+                    }
+
+                    @Override
+                    public void onError(String err) {
+                        alert(err);
+                        dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onResponse(List result) {
+                        if (result != null && result.size() != 0) {
+                            getRecordList(result);
+                        } else {
+                            alert(R.string.no_data);
+                        }
+                        dismissProgressDialog();
+                    }
+                });
+    }
+
+    /**
      * 通过id获取记录列表
      *
      * @param sbbh
@@ -328,7 +366,7 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.SCAN && resultCode == RESULT_OK) {
             String code = data.getExtras().getString("result");
-            getRecordListById(code);
+            getRecordListBySAOMA(code);
         }
     }
 }

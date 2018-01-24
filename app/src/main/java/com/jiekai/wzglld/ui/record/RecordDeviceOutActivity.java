@@ -206,6 +206,53 @@ public class RecordDeviceOutActivity extends NFCBaseActivity implements View.OnC
     }
 
     /**
+     * 通过二维码获取设备信息
+     * @param id
+     */
+    private void getDeviceDataBySAOMA(String id) {
+        if (StringUtils.isEmpty(id)) {
+            return;
+        }
+        deviceLeibie.setText("");
+        deviceXinghao.setText("");
+        deviceGuige.setText("");
+        deviceId.setText("");
+        DBManager.dbDeal(DBManager.SELECT)
+                .sql(SqlUrl.GetPanKuDataBySAOMA)
+                .params(new String[]{id})
+                .clazz(PankuDataEntity.class)
+                .execut(new DbCallBack() {
+                    @Override
+                    public void onDbStart() {
+                        showProgressDialog(getResources().getString(R.string.loading_device));
+                    }
+
+                    @Override
+                    public void onError(String err) {
+                        alert(err);
+                        dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onResponse(List result) {
+                        if (result != null && result.size() != 0) {
+                            PankuDataEntity pankuDataEntity = (PankuDataEntity) result.get(0);
+                            deviceId.setText(CommonUtils.getDataIfNull(pankuDataEntity.getBH()));
+                            deviceLeibie.setText(CommonUtils.getDataIfNull(pankuDataEntity.getLeibie()));
+                            deviceXinghao.setText(CommonUtils.getDataIfNull(pankuDataEntity.getXinghao()));
+                            deviceGuige.setText(CommonUtils.getDataIfNull(pankuDataEntity.getGuige()));
+                            typeUtils.setCurrentDeviceCode(pankuDataEntity.getBH());
+                            filtrate(false);
+                            dismissFiltrateDialog();
+                        } else {
+                            alert(getResources().getString(R.string.no_data));
+                        }
+                        dismissProgressDialog();
+                    }
+                });
+    }
+
+    /**
      * 执行分页的筛选操作
      * @param isClickIn 是否点击的，如果是点击就判断点击是否选择了条件，如果没有提示用户
      */
@@ -250,7 +297,7 @@ public class RecordDeviceOutActivity extends NFCBaseActivity implements View.OnC
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.SCAN && resultCode == RESULT_OK) {
             String code = data.getExtras().getString("result");
-            getDeviceDataById(code);
+            getDeviceDataBySAOMA(code);
         }
     }
 
