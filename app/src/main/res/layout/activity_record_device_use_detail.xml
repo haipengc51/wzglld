@@ -9,7 +9,7 @@
     <LinearLayout
         android:id="@+id/search_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/item_height"
+        android:layout_height="50dp"
         android:orientation="horizontal">
 
         <EditText
@@ -32,13 +32,11 @@
 
         <TextView
             android:id="@+id/search"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            style="@style/button_style"
+            style="@style/little_button_style"
             android:text="@string/search"
             android:layout_marginRight="@dimen/marginTop10"/>
 

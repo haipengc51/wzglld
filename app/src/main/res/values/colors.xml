@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="main_color">#FF123456</color>
-    <color name="main_color_click">#FF125436</color>
+    <color name="main_color">#FF3F51B5</color>
+    <color name="main_color_click">#FF3F51B5</color>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
@@ -9,12 +9,13 @@
     <color name="text_content_color">#ff5d646f</color>
     <color name="text_hint_color">#FFCCCCCC</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="light_gray">#FFF4F4F4</color>
     <color name="transparency">#00000000</color>
 
     <color name="divider_color">#FFCCCCCC</color>
     <color name="line_color">@color/divider_color</color>
 
-    <color name="tabar_color_press">@color/main_color_click</color>
-    <color name="tabar_color">@color/main_color</color>
+    <color name="tabar_color_press">@color/main_color</color>
+    <color name="tabar_color">@color/text_content_color</color>
 
 </resources>

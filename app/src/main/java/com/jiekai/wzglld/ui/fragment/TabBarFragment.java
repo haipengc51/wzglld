@@ -105,9 +105,9 @@ public class TabBarFragment extends Fragment {
         baseFragment = (MyNFCBaseFragment) getFragmentManager().findFragmentByTag(String.valueOf(position));
         switch (position) {
             case 0:
-                this.tab_one.setImageResource(R.drawable.ic_me_press);
-                this.tab_two.setImageResource(R.drawable.ic_me);
-                this.tab_three.setImageResource(R.drawable.ic_me);
+                this.tab_one.setImageResource(R.drawable.ic_find_press);
+                this.tab_two.setImageResource(R.drawable.ic_record);
+                this.tab_three.setImageResource(R.drawable.ic_scrap);
                 this.tab_four.setImageResource(R.drawable.ic_me);
 
                 this.tab_onebg.setVisibility(View.INVISIBLE);
@@ -125,9 +125,9 @@ public class TabBarFragment extends Fragment {
                 }
                 break;
             case 1:
-                this.tab_one.setImageResource(R.drawable.ic_me);
-                this.tab_two.setImageResource(R.drawable.ic_me_press);
-                this.tab_three.setImageResource(R.drawable.ic_me);
+                this.tab_one.setImageResource(R.drawable.ic_find);
+                this.tab_two.setImageResource(R.drawable.ic_record_press);
+                this.tab_three.setImageResource(R.drawable.ic_scrap);
                 this.tab_four.setImageResource(R.drawable.ic_me);
 
                 this.tab_onebg.setVisibility(View.INVISIBLE);
@@ -144,9 +144,9 @@ public class TabBarFragment extends Fragment {
                 }
                 break;
             case 2:
-                this.tab_one.setImageResource(R.drawable.ic_me);
-                this.tab_two.setImageResource(R.drawable.ic_me);
-                this.tab_three.setImageResource(R.drawable.ic_me_press);
+                this.tab_one.setImageResource(R.drawable.ic_find);
+                this.tab_two.setImageResource(R.drawable.ic_record);
+                this.tab_three.setImageResource(R.drawable.ic_scrap_press);
                 this.tab_four.setImageResource(R.drawable.ic_me);
 
                 this.tab_onebg.setVisibility(View.INVISIBLE);
@@ -163,9 +163,9 @@ public class TabBarFragment extends Fragment {
                 }
                 break;
             case 3:
-                this.tab_one.setImageResource(R.drawable.ic_me);
-                this.tab_two.setImageResource(R.drawable.ic_me);
-                this.tab_three.setImageResource(R.drawable.ic_me);
+                this.tab_one.setImageResource(R.drawable.ic_find);
+                this.tab_two.setImageResource(R.drawable.ic_record);
+                this.tab_three.setImageResource(R.drawable.ic_scrap);
                 this.tab_four.setImageResource(R.drawable.ic_me_press);
 
                 this.tab_onebg.setVisibility(View.INVISIBLE);
