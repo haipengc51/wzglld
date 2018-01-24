@@ -1,5 +1,6 @@
 package com.jiekai.wzglld.ui.record;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,11 +22,11 @@ import com.jiekai.wzglld.utils.dbutils.DBManager;
 import com.jiekai.wzglld.utils.dbutils.DbCallBack;
 import com.luck.picture.lib.entity.LocalMedia;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by LaoWu on 2018/1/15.
@@ -62,6 +63,8 @@ public class RecordDeviceMoveDetailActivity extends MyBaseActivity implements Vi
     TextView checkResult;
     @BindView(R.id.check_remark)
     TextView checkRemark;
+    @BindView(R.id.operator_remark)
+    TextView operatorRemark;
 
     private DevicemoveEntity currentData;
     private List<LocalMedia> choosePictures = new ArrayList<>();
@@ -88,6 +91,7 @@ public class RecordDeviceMoveDetailActivity extends MyBaseActivity implements Vi
             deviceId.setText(CommonUtils.getDataIfNull(currentData.getSBBH()));
             operatorPeople.setText(CommonUtils.getDataIfNull(currentData.getCzrname()));
             operatorTime.setText(TimeUtils.dateToStringYYYYmmdd(currentData.getCZSJ()));
+            operatorRemark.setText(CommonUtils.getDataIfNull(currentData.getBZ()));
             duihao.setText(CommonUtils.getDataIfNull(currentData.getDH()));
             jinghao.setText(CommonUtils.getDataIfNull(currentData.getJH()));
             if (currentData.getSHSJ() != null) {
@@ -180,7 +184,7 @@ public class RecordDeviceMoveDetailActivity extends MyBaseActivity implements Vi
                     @Override
                     public void onResponse(List result) {
                         if (result != null && result.size() != 0) {
-                            checkPeople.setText(((UserNameEntity)result.get(0)).getName());
+                            checkPeople.setText(((UserNameEntity) result.get(0)).getName());
                         }
                     }
                 });

@@ -62,6 +62,8 @@ public class RecordDeviceScrapDetailActivity extends MyBaseActivity implements V
     TextView checkResult;
     @BindView(R.id.check_remark)
     TextView checkRemark;
+    @BindView(R.id.operator_remark)
+    TextView operatorRemark;
 
     private DevicescrapEntity currentData;
     private List<LocalMedia> choosePictures = new ArrayList<>();
@@ -89,6 +91,7 @@ public class RecordDeviceScrapDetailActivity extends MyBaseActivity implements V
             deviceId.setText(CommonUtils.getDataIfNull(currentData.getSBBH()));
             operatorPeople.setText(CommonUtils.getDataIfNull(currentData.getBfrname()));
             operatorTime.setText(TimeUtils.dateToStringYYYYmmdd(currentData.getBFSJ()));
+            operatorRemark.setText(CommonUtils.getDataIfNull(currentData.getBZ()));
 //            if (currentData.getSHSJ() != null) {
 //                checkTime.setText(TimeUtils.dateToStringYYYYmmdd(currentData.getSHSJ()));
 //            }

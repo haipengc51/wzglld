@@ -66,6 +66,8 @@ public class RecordDeviceRepairDetailActivity extends MyBaseActivity implements 
     TextView checkResult;
     @BindView(R.id.check_remark)
     TextView checkRemark;
+    @BindView(R.id.operator_remark)
+    TextView operatorRemark;
 
     private DevicestoreEntity currentData;
     private List<LocalMedia> choosePictures = new ArrayList<>();
@@ -92,6 +94,7 @@ public class RecordDeviceRepairDetailActivity extends MyBaseActivity implements 
             deviceId.setText(CommonUtils.getDataIfNull(currentData.getSBBH()));
             operatorPeople.setText(CommonUtils.getDataIfNull(currentData.getCzrname()));
             operatorTime.setText(TimeUtils.dateToStringYYYYmmdd(currentData.getCZSJ()));
+            operatorRemark.setText(CommonUtils.getDataIfNull(currentData.getBZ()));
             if (currentData.getSHSJ() != null) {
                 checkTime.setText(TimeUtils.dateToStringYYYYmmdd(currentData.getSHSJ()));
             }

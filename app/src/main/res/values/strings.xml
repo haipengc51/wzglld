@@ -190,5 +190,6 @@
     <string name="old_password_err">原密码错误</string>
     <string name="password_different">两次输入的密码不相同</string>
     <string name="password_change_success">密码修改成功,请重新登录</string>
+    <string name="operator_remark">操作备注</string>
 
 </resources>

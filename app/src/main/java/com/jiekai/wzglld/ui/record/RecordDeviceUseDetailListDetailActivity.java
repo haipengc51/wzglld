@@ -1,5 +1,6 @@
 package com.jiekai.wzglld.ui.record;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by LaoWu on 2018/1/5.
@@ -62,6 +64,8 @@ public class RecordDeviceUseDetailListDetailActivity extends MyBaseActivity impl
     TextView checkResult;
     @BindView(R.id.check_remark)
     TextView checkRemark;
+    @BindView(R.id.operator_remark)
+    TextView operatorRemark;
 
     private DevicelogEntity currentDatas;
 
@@ -93,6 +97,7 @@ public class RecordDeviceUseDetailListDetailActivity extends MyBaseActivity impl
             jinghao.setText(CommonUtils.getDataIfNull(currentDatas.getJH()));
             operatorPeople.setText(CommonUtils.getDataIfNull(currentDatas.getCzrname()));
             operatorTime.setText(TimeUtils.dateToStringYYYYmmddHHMMSS(currentDatas.getJLSJ()));
+            operatorRemark.setText(CommonUtils.getDataIfNull(currentDatas.getBZ()));
             if (currentDatas.getSHSJ() != null) {
                 checkTime.setText(TimeUtils.dateToStringYYYYmmddHHMMSS(currentDatas.getSHSJ()));
             }
@@ -182,7 +187,7 @@ public class RecordDeviceUseDetailListDetailActivity extends MyBaseActivity impl
                     @Override
                     public void onResponse(List result) {
                         if (result != null && result.size() != 0) {
-                            checkPeople.setText(((UserNameEntity)result.get(0)).getName());
+                            checkPeople.setText(((UserNameEntity) result.get(0)).getName());
                         }
                     }
                 });

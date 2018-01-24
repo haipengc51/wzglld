@@ -63,6 +63,8 @@ public class RecordDeviceOutDetailActivity extends MyBaseActivity implements Vie
     TextView checkResult;
     @BindView(R.id.check_remark)
     TextView checkRemark;
+    @BindView(R.id.operator_remark)
+    TextView operatorRemark;
 
     private DevicestoreEntity currentData;
     private List<LocalMedia> choosePictures = new ArrayList<>();
@@ -91,6 +93,7 @@ public class RecordDeviceOutDetailActivity extends MyBaseActivity implements Vie
             operatorTime.setText(TimeUtils.dateToStringYYYYmmdd(currentData.getCZSJ()));
             jinghao.setText(CommonUtils.getDataIfNull(currentData.getJH()));
             lydw.setText(CommonUtils.getDataIfNull(currentData.getLYDW()));
+            operatorRemark.setText(CommonUtils.getDataIfNull(currentData.getBZ()));
             if (currentData.getSHSJ() != null) {
                 checkTime.setText(TimeUtils.dateToStringYYYYmmddHHMMSS(currentData.getSHSJ()));
             }

@@ -1,5 +1,6 @@
 package com.jiekai.wzglld.ui.record;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by LaoWu on 2018/1/15.
@@ -61,6 +63,8 @@ public class RecordDeviceInDetailActivity extends MyBaseActivity implements View
     TextView checkResult;
     @BindView(R.id.check_remark)
     TextView checkRemark;
+    @BindView(R.id.operator_remark)
+    TextView operatorRemark;
 
     private DevicestoreEntity currentData;
     private List<LocalMedia> choosePictures = new ArrayList<>();
@@ -87,6 +91,7 @@ public class RecordDeviceInDetailActivity extends MyBaseActivity implements View
             deviceId.setText(CommonUtils.getDataIfNull(currentData.getSBBH()));
             operatorPeople.setText(CommonUtils.getDataIfNull(currentData.getCzrname()));
             operatorTime.setText(TimeUtils.dateToStringYYYYmmdd(currentData.getCZSJ()));
+            operatorRemark.setText(CommonUtils.getDataIfNull(currentData.getBZ()));
             if ("1".equals(currentData.getSHYJ())) {
                 checkResult.setText("通过");
             } else if ("0".equals(currentData.getSHYJ())) {
@@ -176,7 +181,7 @@ public class RecordDeviceInDetailActivity extends MyBaseActivity implements View
                     @Override
                     public void onResponse(List result) {
                         if (result != null && result.size() != 0) {
-                            checkPeople.setText(((UserNameEntity)result.get(0)).getName());
+                            checkPeople.setText(((UserNameEntity) result.get(0)).getName());
                         }
                     }
                 });
