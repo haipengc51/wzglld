@@ -200,7 +200,7 @@
                     android:paddingRight="5dp"
                     android:singleLine="true"
                     android:enabled="false"
-                    android:hint="@string/duihao"
+                    android:hint="@string/jinghao"
                     android:textColor="@color/text_content_color"
                     android:textSize="@dimen/content_text_size"/>
 
