@@ -414,7 +414,7 @@ public class DeviceDetailActivity extends NFCBaseActivity implements View.OnClic
         final List<LocalMedia> localMedias = new ArrayList<>();
         DBManager.dbDeal(DBManager.SELECT)
                 .sql(SqlUrl.Get_Image_Path)
-                .params(new String[]{currentDevice.getBH(), dataLB})
+                .params(new String[]{sbbh, dataLB})
                 .clazz(DevicedocEntity.class)
                 .execut(new DbCallBack() {
                     @Override
