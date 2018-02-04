@@ -191,5 +191,8 @@
     <string name="password_different">两次输入的密码不相同</string>
     <string name="password_change_success">密码修改成功,请重新登录</string>
     <string name="operator_remark">操作备注</string>
+    <string name="device_bzwd">标准文档</string>
+    <string name="lingyongren">领用人</string>
+    <string name="lingyongrendianhua">领用人电话</string>
 
 </resources>

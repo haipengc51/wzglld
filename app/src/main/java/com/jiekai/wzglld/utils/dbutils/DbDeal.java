@@ -118,13 +118,20 @@ public class DbDeal extends AsynInterface {
             }
             ResultSet resultSet = preparedStatement.executeQuery();
             List list = transformData(resultSet, mClass);
-            asynCallBack.onSuccess(list);
             resultSet.close();
             preparedStatement.close();
             if (dbType != DBManager.EVENT_SELECT) {
                 connection.close();
             }
+            asynCallBack.onSuccess(list);
         } catch (SQLException e) {
+            try {
+                if (dbType != DBManager.EVENT_SELECT) {
+                    connection.close();
+                }
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             e.printStackTrace();
             asynCallBack.onError(e.getMessage());
         }
@@ -136,17 +143,17 @@ public class DbDeal extends AsynInterface {
                 asynCallBack.onError("sql命令为空");
                 return;
             }
-                if (connection == null || connection.isClosed()) {
-                    if (dbType == DBManager.EVENT_INSERT ||
-                            dbType == DBManager.EVENT_UPDATA ||
-                            dbType == DBManager.EVENT_DELET) {
-                        asynCallBack.onError("数据库连接失败");
-                        return;
-                    } else if (!initConnection()) {
-                        asynCallBack.onError("数据库连接失败");
-                        return;
-                    }
+            if (connection == null || connection.isClosed()) {
+                if (dbType == DBManager.EVENT_INSERT ||
+                        dbType == DBManager.EVENT_UPDATA ||
+                        dbType == DBManager.EVENT_DELET) {
+                    asynCallBack.onError("数据库连接失败");
+                    return;
+                } else if (!initConnection()) {
+                    asynCallBack.onError("数据库连接失败");
+                    return;
                 }
+            }
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             if (params != null && params.length != 0) {
                 for (int i = 0; i < params.length; i++) {
@@ -154,7 +161,6 @@ public class DbDeal extends AsynInterface {
                 }
             }
             int result = preparedStatement.executeUpdate();
-            asynCallBack.onSuccess(null);
 //            if (result > 0) {
 //                asynCallBack.onSuccess(null);
 //            } else {
@@ -166,7 +172,17 @@ public class DbDeal extends AsynInterface {
                     dbType == DBManager.EVENT_DELET)) {
                 connection.close();
             }
+            asynCallBack.onSuccess(null);
         } catch (SQLException e) {
+            try {
+                if (!(dbType == DBManager.EVENT_INSERT ||
+                        dbType == DBManager.EVENT_UPDATA ||
+                        dbType == DBManager.EVENT_DELET)) {
+                    connection.close();
+                }
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             e.printStackTrace();
             asynCallBack.onError(e.getMessage());
         }
@@ -182,8 +198,12 @@ public class DbDeal extends AsynInterface {
             }
             connection.setAutoCommit(false);
             asynCallBack.onSuccess(null);
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
+            try {
+                connection.close();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             e.printStackTrace();
             asynCallBack.onError(e.getMessage());
         }
@@ -192,16 +212,15 @@ public class DbDeal extends AsynInterface {
     private void commitEvent(AsynCallBack asynCallBack) {
         try {
             if (connection == null || connection.isClosed()) {
-                connection.close();
                 asynCallBack.onError("数据库连接失败");
                 return;
             }
             PreparedStatement preparedStatement = connection.prepareStatement("COMMIT;");
             int resultSet = preparedStatement.executeUpdate();
-            asynCallBack.onSuccess(null);
             connection.setAutoCommit(true);
             preparedStatement.close();
             connection.close();
+            asynCallBack.onSuccess(null);
         } catch (SQLException e) {
             try {
                 connection.close();
@@ -216,16 +235,15 @@ public class DbDeal extends AsynInterface {
     private void rollbackEvent(AsynCallBack asynCallBack) {
         try {
             if (connection == null || connection.isClosed()) {
-                connection.close();
                 asynCallBack.onError("数据库连接失败");
                 return;
             }
             PreparedStatement preparedStatement = connection.prepareStatement("ROLLBACK;");
             int resultSet = preparedStatement.executeUpdate();
-            asynCallBack.onSuccess(null);
             connection.setAutoCommit(true);
             preparedStatement.close();
             connection.close();
+            asynCallBack.onSuccess(null);
         } catch (SQLException e) {
             try {
                 connection.close();
