@@ -27,7 +27,7 @@ public class MainActivity extends NFCBaseActivity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case HANDLER_CHENGE_UPDATE:     //延时检测是否有更新
-//                    new UpdateUtil(BzMainActivity.this, false).isUpdate();
+//                    new UpdateUtil(mActivity, false).isUpdate();
                     break;
             }
         }
