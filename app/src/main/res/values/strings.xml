@@ -194,5 +194,10 @@
     <string name="device_bzwd">标准文档</string>
     <string name="lingyongren">领用人</string>
     <string name="lingyongrendianhua">领用人电话</string>
+    <string name="device_apply">设备申请</string>
+    <string name="record_apply">申请记录</string>
+    <string name="apply_people">申请人</string>
+    <string name="apply_time">申请时间</string>
+    <string name="apply_remark">申请备注</string>
 
 </resources>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <View
+            style="@style/vertile_line_d5"/>
+
+        <TextView
+            android:id="@+id/operator_people"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/item_height"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/apply_people"
+            android:textColor="@color/text_content_color"
+            android:textSize="@dimen/content_text_size"/>
+
+        <View
+            style="@style/vertile_line_d5"/>
+
+        <TextView
+            android:id="@+id/operator_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/item_height"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/apply_time"
+            android:textColor="@color/text_content_color"
+            android:textSize="@dimen/content_text_size"/>
+
+        <View
+            style="@style/vertile_line_d5"/>
+
+        <TextView
+            android:id="@+id/check_result"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/item_height"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/check_jieguo"
+            android:textColor="@color/text_content_color"
+            android:textSize="@dimen/content_text_size"/>
+
+
+        <View
+            style="@style/vertile_line_d5"/>
+
+    </LinearLayout>
+
+    <View
+        style="@style/line_d5"/>
+
+</LinearLayout>

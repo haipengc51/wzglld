@@ -290,6 +290,8 @@ public class SqlUrl {
     public static final String GET_INSPECTION_RECORD = "SELECT deviceinspection.*, userinfo.USERNAME as czrname FROM " +
             "deviceinspection, userinfo WHERE deviceinspection.SBBH = ? AND userinfo.USERID = deviceinspection.CZR";
 
+    public static final String GetDeviceApplyINPage = "SELECT deviceapply.*, userinfo.USERNAME as czrname " +
+            " FROM deviceapply, userinfo WHERE userinfo.USERID = deviceapply.SQR";
     /**
      * 查找设备入库记录，分页加载
      */

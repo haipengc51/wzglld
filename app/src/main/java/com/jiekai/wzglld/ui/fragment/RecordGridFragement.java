@@ -12,9 +12,8 @@ import android.widget.TextView;
 
 import com.jiekai.wzglld.R;
 import com.jiekai.wzglld.adapter.RecordGridAdapter;
-import com.jiekai.wzglld.entity.KeeperEntity;
 import com.jiekai.wzglld.entity.RecordGridEntity;
-import com.jiekai.wzglld.ui.KeeperMainActivity;
+import com.jiekai.wzglld.ui.RecordDeviceApplayActivity;
 import com.jiekai.wzglld.ui.fragment.base.MyNFCBaseFragment;
 import com.jiekai.wzglld.ui.record.RecordDeviceInActivity;
 import com.jiekai.wzglld.ui.record.RecordDeviceInspectionActivity;
@@ -28,8 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * Created by laowu on 2018/1/22.
@@ -60,6 +57,8 @@ public class RecordGridFragement extends MyNFCBaseFragment implements AdapterVie
 
         dataList.add(new RecordGridEntity(getResources().getString(R.string.device_use_record_find),
                 RecordDeviceUseActivity.class, R.drawable.ic_device_use));
+        dataList.add(new RecordGridEntity(getResources().getString(R.string.record_apply),
+                RecordDeviceApplayActivity.class, R.drawable.ic_device_apply));
         dataList.add(new RecordGridEntity(getResources().getString(R.string.record_in),
                 RecordDeviceInActivity.class, R.drawable.ic_device_in));
         dataList.add(new RecordGridEntity(getResources().getString(R.string.record_out),

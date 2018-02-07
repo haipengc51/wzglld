@@ -2,49 +2,39 @@ package com.jiekai.wzglld.entity;
 
 import com.jiekai.wzglld.entity.base.BaseEntity;
 
+import java.sql.Timestamp;
+
 /**
  * Created by laowu on 2017/12/18.
  */
 
 public class DeviceapplyEntity extends BaseEntity {
-    private String SQID;        //
-    private String SBMC;        //  （设备名称）
-    private String SBXH;
-    private String SYJH;        //
-    private String LYDW;        //
-    private String LYR;        //
-    private String ZPDZ;        //
-    private String SQR;        //
-    private String SQSJ;        //
-    private String SQZT;        //
-    private String SQBZ;        //
-    private String SPR;        //
-    private String SPZT;        //
-    private String SPSJ;        //
-    private String SPBZ;        //
+    private int SQID;
+    private String SYDH;
+    private String SYJH;
+    private String SQR;
+    private Timestamp SQSJ;
+    private Timestamp SHSJ;
+    private String SHR;
+    private String SQBZ;
+    private String SHBZ;
+    private String SHYJ;
+    private String czrname;
 
-    public String getSQID() {
+    public int getSQID() {
         return SQID;
     }
 
-    public void setSQID(String SQID) {
+    public void setSQID(int SQID) {
         this.SQID = SQID;
     }
 
-    public String getSBMC() {
-        return SBMC;
+    public String getSYDH() {
+        return SYDH;
     }
 
-    public void setSBMC(String SBMC) {
-        this.SBMC = SBMC;
-    }
-
-    public String getSBXH() {
-        return SBXH;
-    }
-
-    public void setSBXH(String SBXH) {
-        this.SBXH = SBXH;
+    public void setSYDH(String SYDH) {
+        this.SYDH = SYDH;
     }
 
     public String getSYJH() {
@@ -55,30 +45,6 @@ public class DeviceapplyEntity extends BaseEntity {
         this.SYJH = SYJH;
     }
 
-    public String getLYDW() {
-        return LYDW;
-    }
-
-    public void setLYDW(String LYDW) {
-        this.LYDW = LYDW;
-    }
-
-    public String getLYR() {
-        return LYR;
-    }
-
-    public void setLYR(String LYR) {
-        this.LYR = LYR;
-    }
-
-    public String getZPDZ() {
-        return ZPDZ;
-    }
-
-    public void setZPDZ(String ZPDZ) {
-        this.ZPDZ = ZPDZ;
-    }
-
     public String getSQR() {
         return SQR;
     }
@@ -87,20 +53,28 @@ public class DeviceapplyEntity extends BaseEntity {
         this.SQR = SQR;
     }
 
-    public String getSQSJ() {
+    public Timestamp getSQSJ() {
         return SQSJ;
     }
 
-    public void setSQSJ(String SQSJ) {
+    public void setSQSJ(Timestamp SQSJ) {
         this.SQSJ = SQSJ;
     }
 
-    public String getSQZT() {
-        return SQZT;
+    public Timestamp getSHSJ() {
+        return SHSJ;
     }
 
-    public void setSQZT(String SQZT) {
-        this.SQZT = SQZT;
+    public void setSHSJ(Timestamp SHSJ) {
+        this.SHSJ = SHSJ;
+    }
+
+    public String getSHR() {
+        return SHR;
+    }
+
+    public void setSHR(String SHR) {
+        this.SHR = SHR;
     }
 
     public String getSQBZ() {
@@ -111,35 +85,27 @@ public class DeviceapplyEntity extends BaseEntity {
         this.SQBZ = SQBZ;
     }
 
-    public String getSPR() {
-        return SPR;
+    public String getSHBZ() {
+        return SHBZ;
     }
 
-    public void setSPR(String SPR) {
-        this.SPR = SPR;
+    public void setSHBZ(String SHBZ) {
+        this.SHBZ = SHBZ;
     }
 
-    public String getSPZT() {
-        return SPZT;
+    public String getSHYJ() {
+        return SHYJ;
     }
 
-    public void setSPZT(String SPZT) {
-        this.SPZT = SPZT;
+    public void setSHYJ(String SHYJ) {
+        this.SHYJ = SHYJ;
     }
 
-    public String getSPSJ() {
-        return SPSJ;
+    public String getCzrname() {
+        return czrname;
     }
 
-    public void setSPSJ(String SPSJ) {
-        this.SPSJ = SPSJ;
-    }
-
-    public String getSPBZ() {
-        return SPBZ;
-    }
-
-    public void setSPBZ(String SPBZ) {
-        this.SPBZ = SPBZ;
+    public void setCzrname(String czrname) {
+        this.czrname = czrname;
     }
 }
