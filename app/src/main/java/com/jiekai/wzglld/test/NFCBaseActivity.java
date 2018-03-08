@@ -3,6 +3,9 @@ package com.jiekai.wzglld.test;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
 
 import com.jiekai.wzglld.ui.base.MyBaseActivity;
 import com.jiekai.wzglld.utils.nfcutils.NfcUtils;
@@ -16,6 +19,7 @@ public abstract class NFCBaseActivity extends MyBaseActivity {
 
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
+    private EditText deviceId;
 
     /**
      * 获取到nfc卡的信息
@@ -59,5 +63,29 @@ public abstract class NFCBaseActivity extends MyBaseActivity {
         if (nfcEnable) {
             getNfcData(NfcUtils.getNFCNum(intent));
         }
+    }
+
+    public void setDeviceId(EditText editText) {
+        this.deviceId = editText;
+        this.deviceId.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (nfcEnable) {
+                    if (deviceId.getText().length() == 16) {
+                        getNfcData(deviceId.getText().toString());
+                    }
+                }
+            }
+        });
     }
 }

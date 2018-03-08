@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,6 +19,7 @@ import com.jiekai.wzglld.ui.DeviceDetailActivity;
 import com.jiekai.wzglld.ui.fragment.base.MyNFCBaseFragment;
 import com.jiekai.wzglld.ui.uiUtils.TypeUtils;
 import com.jiekai.wzglld.utils.CommonUtils;
+import com.jiekai.wzglld.utils.EditTextUtils;
 import com.jiekai.wzglld.utils.StringUtils;
 import com.jiekai.wzglld.utils.dbutils.DBManager;
 import com.jiekai.wzglld.utils.dbutils.DbCallBack;
@@ -47,7 +49,7 @@ public class QueryDeviceInfoFragment extends MyNFCBaseFragment implements View.O
     @BindView(R.id.device_guige)
     TextView deviceGuige;
     @BindView(R.id.device_id)
-    TextView deviceId;
+    EditText deviceId;
     @BindView(R.id.read_card)
     TextView readCard;
     @BindView(R.id.sao_ma)
@@ -82,6 +84,9 @@ public class QueryDeviceInfoFragment extends MyNFCBaseFragment implements View.O
                 .setTitle("")
                 .setMessage(getResources().getString(R.string.please_nfc))
                 .create();
+
+        EditTextUtils.setEditSoftKeywordShow(getActivity(), deviceId, false);
+        setDeviceId(deviceId);
     }
 
     @Override
@@ -102,7 +107,7 @@ public class QueryDeviceInfoFragment extends MyNFCBaseFragment implements View.O
                 if (getActivity() instanceof NFCBaseActivity) {
                     ((NFCBaseActivity) getActivity()).nfcEnable = true;
                     enableNfc = true;
-                    alertDialog.show();
+//                    alertDialog.show();
                 } else {
                     alert(R.string.dont_allow_readcard);
                 }
