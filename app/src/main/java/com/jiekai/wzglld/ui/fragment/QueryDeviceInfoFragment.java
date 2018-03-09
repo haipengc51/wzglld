@@ -1,12 +1,10 @@
 package com.jiekai.wzglld.ui.fragment;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -58,8 +56,6 @@ public class QueryDeviceInfoFragment extends MyNFCBaseFragment implements View.O
     TextView enter;
 
     private TypeUtils typeUtils;
-    private AlertDialog alertDialog;
-    private EditText deviceReadcardEdit;
 
     @Override
     public View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,20 +76,12 @@ public class QueryDeviceInfoFragment extends MyNFCBaseFragment implements View.O
     @Override
     public void initOperation() {
         typeUtils = new TypeUtils(mActivity, deviceLeibie, deviceXinghao, deviceGuige, deviceId);
-
-        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_readcard_artdialog, null);
-        deviceReadcardEdit = (EditText) dialogView.findViewById(R.id.device_read_card_edit);
-        alertDialog = new AlertDialog.Builder(mActivity)
-                .setView(dialogView)
-                .create();
-
-        setDeviceIdEdit(deviceReadcardEdit);
     }
 
     @Override
     protected void getNfcData(String nfcString) {
-        if (alertDialog != null) {
-            alertDialog.dismiss();
+        if (deviceReadcardDialog != null) {
+            deviceReadcardDialog.dismiss();
         }
         ((NFCBaseActivity) getActivity()).nfcEnable = false;
         enableNfc = false;
@@ -108,7 +96,7 @@ public class QueryDeviceInfoFragment extends MyNFCBaseFragment implements View.O
                 if (getActivity() instanceof NFCBaseActivity) {
                     ((NFCBaseActivity) getActivity()).nfcEnable = true;
                     enableNfc = true;
-                    alertDialog.show();
+                    deviceReadcardDialog.show();
                     DeviceIdUtils.setEditSoftKeywordShow(getActivity(), deviceReadcardEdit, false);
                 } else {
                     alert(R.string.dont_allow_readcard);

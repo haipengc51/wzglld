@@ -17,6 +17,7 @@ import com.jiekai.wzglld.entity.DeviceEntity;
 import com.jiekai.wzglld.entity.DevicescrapEntity;
 import com.jiekai.wzglld.test.NFCBaseActivity;
 import com.jiekai.wzglld.ui.fragment.base.MyNFCBaseFragment;
+import com.jiekai.wzglld.utils.DeviceIdUtils;
 import com.jiekai.wzglld.utils.FileSizeUtils;
 import com.jiekai.wzglld.utils.GlidUtils;
 import com.jiekai.wzglld.utils.PictureSelectUtils;
@@ -67,7 +68,6 @@ public class DeviceScrapFragment extends MyNFCBaseFragment implements View.OnCli
     TextView cancle;
 
     private List<LocalMedia> choosePictures = new ArrayList<>();
-    private AlertDialog alertDialog;
     private DeviceEntity currentDevice;
 
     private String imagePath;       //图片的远程地址 /out/123.jpg
@@ -98,16 +98,13 @@ public class DeviceScrapFragment extends MyNFCBaseFragment implements View.OnCli
 
     @Override
     public void initOperation() {
-        alertDialog = new AlertDialog.Builder(mActivity)
-                .setTitle("")
-                .setMessage(getResources().getString(R.string.please_nfc))
-                .create();
+
     }
 
     @Override
     protected void getNfcData(String nfcString) {
-        if (alertDialog != null) {
-            alertDialog.dismiss();
+        if (deviceReadcardDialog != null && deviceReadcardDialog.isShowing()) {
+            deviceReadcardDialog.dismiss();
         }
         ((NFCBaseActivity) mActivity).nfcEnable = false;
         enableNfc = false;
@@ -125,7 +122,8 @@ public class DeviceScrapFragment extends MyNFCBaseFragment implements View.OnCli
                 if (getActivity() instanceof NFCBaseActivity) {
                     ((NFCBaseActivity) mActivity).nfcEnable = true;
                     enableNfc = true;
-                    alertDialog.show();
+                    deviceReadcardDialog.show();
+                    DeviceIdUtils.setEditSoftKeywordShow(getActivity(), deviceReadcardEdit, false);
                 } else {
                     alert(R.string.dont_allow_readcard);
                 }

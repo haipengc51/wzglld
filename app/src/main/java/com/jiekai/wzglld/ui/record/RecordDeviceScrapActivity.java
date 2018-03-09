@@ -21,6 +21,7 @@ import com.jiekai.wzglld.test.NFCBaseActivity;
 import com.jiekai.wzglld.ui.uiUtils.TypeUtils;
 import com.jiekai.wzglld.ui.uiUtils.XListViewUtils;
 import com.jiekai.wzglld.utils.CommonUtils;
+import com.jiekai.wzglld.utils.DeviceIdUtils;
 import com.jiekai.wzglld.utils.StringUtils;
 import com.jiekai.wzglld.utils.dbutils.DBManager;
 import com.jiekai.wzglld.utils.dbutils.DbCallBack;
@@ -60,7 +61,6 @@ public class RecordDeviceScrapActivity extends NFCBaseActivity implements View.O
     private XListViewUtils xListViewUtils;
 
     private TypeUtils typeUtils;
-    private AlertDialog alertDialog;
 
     private RecordDeviceScrapAdapter adapter;
     private List<DevicescrapEntity> dataList = new ArrayList();
@@ -102,11 +102,6 @@ public class RecordDeviceScrapActivity extends NFCBaseActivity implements View.O
     public void initOperation() {
         typeUtils = new TypeUtils(mActivity, deviceLeibie, deviceXinghao, deviceGuige, deviceId);
 
-        alertDialog = new AlertDialog.Builder(this)
-                .setTitle("")
-                .setMessage(getResources().getString(R.string.please_nfc))
-                .create();
-
         xListViewUtils = new XListViewUtils(listView);
         if (adapter == null) {
             adapter = new RecordDeviceScrapAdapter(mActivity, dataList);
@@ -119,8 +114,8 @@ public class RecordDeviceScrapActivity extends NFCBaseActivity implements View.O
 
     @Override
     public void getNfcData(String nfcString) {
-        if (alertDialog != null && alertDialog.isShowing()) {
-            alertDialog.dismiss();
+        if (deviceReadcardDialog != null && deviceReadcardDialog.isShowing()) {
+            deviceReadcardDialog.dismiss();
         }
         nfcEnable = false;
         getDeviceDataById(nfcString);
@@ -140,7 +135,8 @@ public class RecordDeviceScrapActivity extends NFCBaseActivity implements View.O
                 break;
             case R.id.read_card:
                 nfcEnable = true;
-                alertDialog.show();
+                deviceReadcardDialog.show();
+                DeviceIdUtils.setEditSoftKeywordShow(this, deviceReadcardEdit, false);
                 break;
             case R.id.filtrate:
                 filtrate(true);

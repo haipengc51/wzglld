@@ -19,6 +19,7 @@ import com.jiekai.wzglld.entity.PankuDataEntity;
 import com.jiekai.wzglld.test.NFCBaseActivity;
 import com.jiekai.wzglld.ui.uiUtils.TypeUtils;
 import com.jiekai.wzglld.utils.CommonUtils;
+import com.jiekai.wzglld.utils.DeviceIdUtils;
 import com.jiekai.wzglld.utils.StringUtils;
 import com.jiekai.wzglld.utils.dbutils.DBManager;
 import com.jiekai.wzglld.utils.dbutils.DbCallBack;
@@ -53,7 +54,6 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
     private TextView saoMa;
 
     private TypeUtils typeUtils;
-    private AlertDialog alertDialog;
     private RecordDeviceAdapter adapter;
     private List<DevicelogsortEntity> dataList = new ArrayList();
 
@@ -89,10 +89,6 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
         typeUtils = new TypeUtils(mActivity, deviceLeibie, deviceXinghao, deviceGuige, deviceId);
         typeUtils.setSbbhClick(this);
 
-        alertDialog = new AlertDialog.Builder(this)
-                .setTitle("")
-                .setMessage(getResources().getString(R.string.please_nfc))
-                .create();
         if (adapter == null) {
             adapter = new RecordDeviceAdapter(mActivity, dataList);
             listView.setAdapter(adapter);
@@ -102,8 +98,8 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
 
     @Override
     public void getNfcData(String nfcString) {
-        if (alertDialog != null && alertDialog.isShowing()) {
-            alertDialog.dismiss();
+        if (deviceReadcardDialog != null && deviceReadcardDialog.isShowing()) {
+            deviceReadcardDialog.dismiss();
         }
         nfcEnable = false;
         getDeviceDataById(nfcString);
@@ -121,7 +117,8 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
                 break;
             case R.id.read_card:
                 nfcEnable = true;
-                alertDialog.show();
+                deviceReadcardDialog.show();
+                DeviceIdUtils.setEditSoftKeywordShow(this, deviceReadcardEdit, false);
                 break;
         }
     }

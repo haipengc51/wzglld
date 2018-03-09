@@ -1,5 +1,6 @@
 package com.jiekai.wzglld.ui.fragment.base;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,7 +29,9 @@ import butterknife.ButterKnife;
 public abstract class MyNFCBaseFragment extends Fragment implements DeviceCardReaderInterface {
     public MyBaseActivity mActivity;
     private ProgressDialog progressDialog = null;
-    private EditText deviceId;
+
+    protected AlertDialog deviceReadcardDialog;
+    protected EditText deviceReadcardEdit;
     private String deviceIdCache;
     private BeepManager beepManager;
 
@@ -52,6 +55,7 @@ public abstract class MyNFCBaseFragment extends Fragment implements DeviceCardRe
         ButterKnife.bind(this, view);
         initData();
         initOperation();
+        initDialog();
         return view;
     }
 
@@ -85,8 +89,18 @@ public abstract class MyNFCBaseFragment extends Fragment implements DeviceCardRe
         }
     }
 
+    @Override
+    public void initDialog() {
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_readcard_artdialog, null);
+        deviceReadcardEdit = (EditText) dialogView.findViewById(R.id.device_read_card_edit);
+        deviceReadcardDialog = new AlertDialog.Builder(mActivity)
+                .setView(dialogView)
+                .create();
+
+        setDeviceIdEdit(deviceReadcardEdit);
+    }
+
     public void setDeviceIdEdit(EditText editText) {
-        this.deviceId = editText;
         final Handler handler = new Handler();
         final Runnable runnable = new Runnable() {
             @Override
@@ -94,7 +108,7 @@ public abstract class MyNFCBaseFragment extends Fragment implements DeviceCardRe
                 getEditTextString();
             }
         };
-        this.deviceId.addTextChangedListener(new TextWatcher() {
+        deviceReadcardEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -117,9 +131,9 @@ public abstract class MyNFCBaseFragment extends Fragment implements DeviceCardRe
         if (enableNfc) {
             //有必要去判断读取数据的位数吗？后续如果标签的位数不是16位了呢
 //            if (deviceId.getText().toString().length() >= 16)
-            if (!StringUtils.isEmpty(deviceId.getText().toString()))
+            if (!StringUtils.isEmpty(deviceReadcardEdit.getText().toString()))
             {
-                deviceIdCache = StringUtils.replaceBlank(deviceId.getText().toString());
+                deviceIdCache = StringUtils.replaceBlank(deviceReadcardEdit.getText().toString());
 //                if (deviceIdCache.length() == 16)
                 {
                     deviceIdCache = DeviceIdUtils.reverseDeviceId(deviceIdCache);
