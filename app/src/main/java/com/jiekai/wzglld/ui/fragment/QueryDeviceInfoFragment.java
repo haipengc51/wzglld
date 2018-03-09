@@ -19,7 +19,7 @@ import com.jiekai.wzglld.ui.DeviceDetailActivity;
 import com.jiekai.wzglld.ui.fragment.base.MyNFCBaseFragment;
 import com.jiekai.wzglld.ui.uiUtils.TypeUtils;
 import com.jiekai.wzglld.utils.CommonUtils;
-import com.jiekai.wzglld.utils.EditTextUtils;
+import com.jiekai.wzglld.utils.DeviceIdUtils;
 import com.jiekai.wzglld.utils.StringUtils;
 import com.jiekai.wzglld.utils.dbutils.DBManager;
 import com.jiekai.wzglld.utils.dbutils.DbCallBack;
@@ -49,7 +49,7 @@ public class QueryDeviceInfoFragment extends MyNFCBaseFragment implements View.O
     @BindView(R.id.device_guige)
     TextView deviceGuige;
     @BindView(R.id.device_id)
-    EditText deviceId;
+    TextView deviceId;
     @BindView(R.id.read_card)
     TextView readCard;
     @BindView(R.id.sao_ma)
@@ -59,6 +59,7 @@ public class QueryDeviceInfoFragment extends MyNFCBaseFragment implements View.O
 
     private TypeUtils typeUtils;
     private AlertDialog alertDialog;
+    private EditText deviceReadcardEdit;
 
     @Override
     public View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,13 +81,13 @@ public class QueryDeviceInfoFragment extends MyNFCBaseFragment implements View.O
     public void initOperation() {
         typeUtils = new TypeUtils(mActivity, deviceLeibie, deviceXinghao, deviceGuige, deviceId);
 
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_readcard_artdialog, null);
+        deviceReadcardEdit = (EditText) dialogView.findViewById(R.id.device_read_card_edit);
         alertDialog = new AlertDialog.Builder(mActivity)
-                .setTitle("")
-                .setMessage(getResources().getString(R.string.please_nfc))
+                .setView(dialogView)
                 .create();
 
-        EditTextUtils.setEditSoftKeywordShow(getActivity(), deviceId, false);
-        setDeviceId(deviceId);
+        setDeviceIdEdit(deviceReadcardEdit);
     }
 
     @Override
@@ -107,7 +108,8 @@ public class QueryDeviceInfoFragment extends MyNFCBaseFragment implements View.O
                 if (getActivity() instanceof NFCBaseActivity) {
                     ((NFCBaseActivity) getActivity()).nfcEnable = true;
                     enableNfc = true;
-//                    alertDialog.show();
+                    alertDialog.show();
+                    DeviceIdUtils.setEditSoftKeywordShow(getActivity(), deviceReadcardEdit, false);
                 } else {
                     alert(R.string.dont_allow_readcard);
                 }

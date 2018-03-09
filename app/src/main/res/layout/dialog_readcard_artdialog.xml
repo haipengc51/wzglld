@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/marginTop20"
+        android:text="@string/please_nfc"
+        android:textSize="@dimen/content_text_size"
+        android:textColor="@color/black"/>
+
+    <EditText
+        android:id="@+id/device_read_card_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/marginTop20"
+        android:textColor="@color/transparent"
+        android:lines="1"
+        android:ellipsize="middle"
+        android:background="@color/transparent"
+        android:cursorVisible="false"
+        android:visibility="visible"/>
+
+</RelativeLayout>

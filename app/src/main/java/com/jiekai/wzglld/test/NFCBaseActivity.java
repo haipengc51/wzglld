@@ -3,23 +3,28 @@ package com.jiekai.wzglld.test;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
 import com.jiekai.wzglld.ui.base.MyBaseActivity;
+import com.jiekai.wzglld.ui.fragment.base.DeviceCardReaderInterface;
+import com.jiekai.wzglld.utils.DeviceIdUtils;
+import com.jiekai.wzglld.utils.StringUtils;
 import com.jiekai.wzglld.utils.nfcutils.NfcUtils;
 
 /**
  * Created by laowu on 2017/12/1.
  */
 
-public abstract class NFCBaseActivity extends MyBaseActivity {
+public abstract class NFCBaseActivity extends MyBaseActivity implements DeviceCardReaderInterface {
     public boolean nfcEnable = false;
 
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
     private EditText deviceId;
+    private String deviceIdCache;
 
     /**
      * 获取到nfc卡的信息
@@ -65,8 +70,15 @@ public abstract class NFCBaseActivity extends MyBaseActivity {
         }
     }
 
-    public void setDeviceId(EditText editText) {
+    public void setDeviceIdEdit(EditText editText) {
         this.deviceId = editText;
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                getEditTextString();
+            }
+        };
         this.deviceId.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -80,12 +92,21 @@ public abstract class NFCBaseActivity extends MyBaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (nfcEnable) {
-                    if (deviceId.getText().length() == 16) {
-                        getNfcData(deviceId.getText().toString());
-                    }
-                }
+                handler.removeCallbacks(runnable);
+                handler.postDelayed(runnable, 500);
             }
         });
+    }
+
+    public void getEditTextString() {
+        if (nfcEnable) {
+            if (deviceId.getText().toString().length() >= 16) {
+                deviceIdCache = StringUtils.replaceBlank(deviceId.getText().toString());
+                if (deviceIdCache.length() == 16) {
+                    deviceIdCache = DeviceIdUtils.reverseDeviceId(deviceIdCache);
+                    getNfcData(deviceIdCache);
+                }
+            }
+        }
     }
 }

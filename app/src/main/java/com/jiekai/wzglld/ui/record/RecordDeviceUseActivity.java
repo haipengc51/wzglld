@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,7 +19,6 @@ import com.jiekai.wzglld.entity.PankuDataEntity;
 import com.jiekai.wzglld.test.NFCBaseActivity;
 import com.jiekai.wzglld.ui.uiUtils.TypeUtils;
 import com.jiekai.wzglld.utils.CommonUtils;
-import com.jiekai.wzglld.utils.EditTextUtils;
 import com.jiekai.wzglld.utils.StringUtils;
 import com.jiekai.wzglld.utils.dbutils.DBManager;
 import com.jiekai.wzglld.utils.dbutils.DbCallBack;
@@ -50,7 +48,7 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
     private TextView deviceLeibie;
     private TextView deviceXinghao;
     private TextView deviceGuige;
-    private EditText deviceId;
+    private TextView deviceId;
     private TextView readCard;
     private TextView saoMa;
 
@@ -75,7 +73,7 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
         deviceLeibie = (TextView) headerView.findViewById(R.id.device_leibie);
         deviceXinghao = (TextView) headerView.findViewById(R.id.device_xinghao);
         deviceGuige = (TextView) headerView.findViewById(R.id.device_guige);
-        deviceId = (EditText) headerView.findViewById(R.id.device_id);
+        deviceId = (TextView) headerView.findViewById(R.id.device_id);
         readCard = (TextView) headerView.findViewById(R.id.read_card);
         saoMa = (TextView) headerView.findViewById(R.id.sao_ma);
 
@@ -84,9 +82,6 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
         back.setOnClickListener(this);
         readCard.setOnClickListener(this);
         saoMa.setOnClickListener(this);
-
-        EditTextUtils.setEditSoftKeywordShow(this, deviceId, false);
-        setDeviceId(deviceId);
     }
 
     @Override

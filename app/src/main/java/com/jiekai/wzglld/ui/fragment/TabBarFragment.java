@@ -185,14 +185,18 @@ public class TabBarFragment extends Fragment {
 
         FragmentTransaction transaction = myActivity.getSupportFragmentManager().beginTransaction();
         if (position < 4) {
-            if (currentFragment != null) {
-                if (!baseFragment.isAdded()) {
+            if (!baseFragment.isAdded() && getFragmentManager().findFragmentByTag(String.valueOf(position)) == null) {
+                if (currentFragment != null) {
                     transaction.hide(currentFragment).add(R.id.content, baseFragment,String.valueOf(position)).commitAllowingStateLoss();
                 } else {
-                    transaction.hide(currentFragment).show(baseFragment).commitAllowingStateLoss();
+                    transaction.add(R.id.content, baseFragment,String.valueOf(position)).commitAllowingStateLoss();
                 }
             } else {
-                transaction.add(R.id.content,baseFragment,String.valueOf(position)).commitAllowingStateLoss();
+                if (currentFragment != null) {
+                    transaction.hide(currentFragment).show(baseFragment).commitAllowingStateLoss();
+                } else {
+                    transaction.show(baseFragment).commitAllowingStateLoss();
+                }
             }
             this.currentFragment = baseFragment;
         }
