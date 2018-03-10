@@ -7,6 +7,7 @@ import android.os.Handler;
 
 import com.jiekai.wzglld.MainActivity;
 import com.jiekai.wzglld.R;
+import com.jiekai.wzglld.config.IntentFlag;
 import com.jiekai.wzglld.config.ShareConstants;
 import com.jiekai.wzglld.config.SqlUrl;
 import com.jiekai.wzglld.entity.UserInfoEntity;
@@ -131,6 +132,7 @@ public class WelcomActivity extends MyBaseActivity {
             isTime = false;
             saveLoginData(userInfoEntity);
             Intent intent = new Intent(mActivity, MainActivity.class);
+            intent.putExtra(IntentFlag.IS_NORMAL, true);
             startActivity(intent);
             finish();
         } else if (isTime && !myLogin) {

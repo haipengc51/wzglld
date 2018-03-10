@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import butterknife.ButterKnife;
  */
 
 public abstract class MyNFCBaseFragment extends Fragment implements DeviceCardReaderInterface {
+    private static final String STATE_SAVE_IS_HIDDEN = "STATE_SAVE_IS_HIDDEN";
     public MyBaseActivity mActivity;
     private ProgressDialog progressDialog = null;
 
@@ -45,6 +47,27 @@ public abstract class MyNFCBaseFragment extends Fragment implements DeviceCardRe
      * @param nfcString
      */
     protected abstract void getNfcData(String nfcString);
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            boolean isSupportHidden = savedInstanceState.getBoolean(STATE_SAVE_IS_HIDDEN);
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            if (isSupportHidden) {
+                ft.hide(this);
+            } else {
+                ft.show(this);
+            }
+            ft.commit();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+        outState.putBoolean(STATE_SAVE_IS_HIDDEN, isHidden());
+    }
 
     @Nullable
     @Override
@@ -138,7 +161,9 @@ public abstract class MyNFCBaseFragment extends Fragment implements DeviceCardRe
                 {
                     deviceIdCache = DeviceIdUtils.reverseDeviceId(deviceIdCache);
                     getNfcData(deviceIdCache);
-                    beepManager.playBeepSoundAndVibrate();
+                    if (beepManager != null) {
+                        beepManager.playBeepSoundAndVibrate();
+                    }
                 }
             }
         }
@@ -147,6 +172,8 @@ public abstract class MyNFCBaseFragment extends Fragment implements DeviceCardRe
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        beepManager.close();
+        if (beepManager != null) {
+            beepManager.close();
+        }
     }
 }

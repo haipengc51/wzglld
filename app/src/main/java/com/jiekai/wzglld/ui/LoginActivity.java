@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.jiekai.wzglld.MainActivity;
 import com.jiekai.wzglld.R;
+import com.jiekai.wzglld.config.IntentFlag;
 import com.jiekai.wzglld.config.ShareConstants;
 import com.jiekai.wzglld.config.SqlUrl;
 import com.jiekai.wzglld.entity.UserInfoEntity;
@@ -17,8 +18,8 @@ import com.jiekai.wzglld.ui.base.MyBaseActivity;
 import com.jiekai.wzglld.utils.InputPasswordUtils;
 import com.jiekai.wzglld.utils.JSONHelper;
 import com.jiekai.wzglld.utils.StringUtils;
-import com.jiekai.wzglld.utils.dbutils.DbCallBack;
 import com.jiekai.wzglld.utils.dbutils.DBManager;
+import com.jiekai.wzglld.utils.dbutils.DbCallBack;
 import com.jiekai.wzglld.weight.ClickDrawableEdit;
 
 import java.util.List;
@@ -165,6 +166,7 @@ public class LoginActivity extends MyBaseActivity implements View.OnClickListene
                             if (isOne) {
                                 saveLoginData(userInfoEntity);
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                intent.putExtra(IntentFlag.IS_NORMAL, true);
                                 startActivity(intent);
                                 finish();
                             } else {

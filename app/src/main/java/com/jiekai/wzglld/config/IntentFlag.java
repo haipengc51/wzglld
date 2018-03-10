@@ -15,4 +15,6 @@ public class IntentFlag {
     public static final String LEIBIE = "leibie";
     public static final String XINGHAO = "xinghao";
     public static final String GUIGE = "guige";
+
+    public static final String IS_NORMAL = "is_normal";
 }

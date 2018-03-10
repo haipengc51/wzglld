@@ -51,6 +51,11 @@ public abstract class NFCBaseActivity extends MyBaseActivity implements DeviceCa
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);

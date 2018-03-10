@@ -1,8 +1,9 @@
 package com.jiekai.wzglld.ui.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +20,8 @@ import com.jiekai.wzglld.ui.fragment.base.MyNFCBaseFragment;
  * Created by laowu on 2018/1/21.
  */
 
-public class TabBarFragment extends Fragment {
+public class TabBarFragment extends MyNFCBaseFragment {
+
     ImageView tab_one;
     ImageView tab_two;
     ImageView tab_three;
@@ -38,13 +40,26 @@ public class TabBarFragment extends Fragment {
     private FrameLayout tab_four_bg;
 
     public MyNFCBaseFragment baseFragment;
-    private MyNFCBaseFragment currentFragment;
+//    private MyNFCBaseFragment currentFragment;
+    private int currentFragmentPosition;
+    private MyNFCBaseFragment tagFragment;
     private MyBaseActivity myActivity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         myActivity = (MyBaseActivity) getActivity();
+
+        //TODO
+        if (savedInstanceState != null) {
+            SharedPreferences share = getActivity().getSharedPreferences("test", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = share.edit();
+            editor.putString("liu", "---------------------------");
+            for (String key : savedInstanceState.keySet()) {
+                editor.putString(key, String.valueOf(savedInstanceState.get(key)));
+            }
+            editor.commit();
+        }
     }
 
     @Nullable
@@ -99,6 +114,10 @@ public class TabBarFragment extends Fragment {
                 onTabSelected(3);
             }
         });
+        if (getFragmentManager().findFragmentById(R.id.content) == null) {
+            onTabSelected(0);
+            alert("tabbar init中选择了0");
+        }
     }
 
     public void onTabSelected(int position) {
@@ -185,24 +204,67 @@ public class TabBarFragment extends Fragment {
 
         FragmentTransaction transaction = myActivity.getSupportFragmentManager().beginTransaction();
         if (position < 4) {
-            if (!baseFragment.isAdded() && getFragmentManager().findFragmentByTag(String.valueOf(position)) == null) {
-                if (currentFragment != null) {
-                    transaction.hide(currentFragment).add(R.id.content, baseFragment,String.valueOf(position)).commitAllowingStateLoss();
-                } else {
-                    transaction.add(R.id.content, baseFragment,String.valueOf(position)).commitAllowingStateLoss();
-                }
-            } else {
-                if (currentFragment != null) {
-                    transaction.hide(currentFragment).show(baseFragment).commitAllowingStateLoss();
+            tagFragment = (MyNFCBaseFragment) getFragmentManager().findFragmentById(R.id.content);
+            if (baseFragment.isAdded()) {
+                if (tagFragment != null) {
+                    transaction.hide(tagFragment).show(baseFragment).commitAllowingStateLoss();
                 } else {
                     transaction.show(baseFragment).commitAllowingStateLoss();
                 }
+            } else {
+                if (tagFragment != null) {
+                    transaction.hide(tagFragment).add(R.id.content, baseFragment, String.valueOf(position)).commitAllowingStateLoss();
+                } else {
+                    transaction.add(R.id.content, baseFragment, String.valueOf(position)).commitAllowingStateLoss();
+                }
             }
-            this.currentFragment = baseFragment;
+//            if (!baseFragment.isAdded() && tagFragment == null) {
+//                if (currentFragment != null) {
+//                    transaction.hide(currentFragment).add(R.id.content, baseFragment,String.valueOf(position)).commitAllowingStateLoss();
+//                } else {
+//                    if (tagFragment != null) {
+//                        transaction.hide(tagFragment).add(R.id.content, baseFragment, String.valueOf(position)).commitAllowingStateLoss();
+//                    } else {
+//                        transaction.add(R.id.content, baseFragment, String.valueOf(position)).commitAllowingStateLoss();
+//                    }
+//                }
+//            } else {
+//                if (currentFragment != null) {
+//                    transaction.hide(currentFragment).show(baseFragment).commitAllowingStateLoss();
+//                } else {
+//                    transaction.show(baseFragment).commitAllowingStateLoss();
+//                }
+//            }
+//            this.currentFragment = baseFragment;
+            this.currentFragmentPosition = position;
         }
     }
 
     public MyNFCBaseFragment getCurrentFragment() {
-        return this.currentFragment;
+        return tagFragment;
+    }
+
+    public int getCurrentFragmentPosition() {
+        return  this.currentFragmentPosition;
+    }
+
+    @Override
+    public View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return null;
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+    @Override
+    public void initOperation() {
+
+    }
+
+    @Override
+    protected void getNfcData(String nfcString) {
+
     }
 }
