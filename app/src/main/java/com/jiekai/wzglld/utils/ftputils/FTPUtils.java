@@ -168,12 +168,14 @@ public class FTPUtils {
     public String downLoadFile(String localFilePath, String remoteFilePath, String remoteFileName, FtpCallBack ftpCallBack) {
         if (!ftpClient.isConnected()) {
             if (!initFTPSetting(FTPUrl,  FTPPort,  UserName,  UserPassword)) {
+                ftpCallBack.ftpFaild("连接服务器失败");
                 return "连接服务器失败";
             }
         }
         try {
             //判断远程服务器的文件名是否存在
             if (!ftpClient.changeWorkingDirectory(remoteFilePath)){
+                ftpCallBack.ftpFaild("服务器中没有此文件");
                 return "服务器中没有此文件";
             }
             //判断本地服务器的文件名是否存在

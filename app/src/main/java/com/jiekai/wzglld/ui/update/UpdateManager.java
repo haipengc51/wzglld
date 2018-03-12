@@ -69,7 +69,6 @@ public class UpdateManager {
                         switch (v.getId()) {
                             case R.id.enter:
                                 String path = updateData.getPATH();
-                                ///View/AppImage/app/lingdao.apk
                                 int nameAndPath = path.lastIndexOf("/");
                                 if (nameAndPath != -1) {
                                     String remotName = path.substring(nameAndPath+1, path.length());
