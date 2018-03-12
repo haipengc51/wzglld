@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.SocketException;
 
@@ -159,42 +160,67 @@ public class FTPUtils {
 
     /**
      * 下载文件
-     * @param FilePath  要存放的文件的路径
-     * @param FileName   远程FTP服务器上的那个文件的名字
+     * @param localFilePath  要存放的文件的路径
+     * @param remoteFilePath   远程FTP服务器上的那个文件的路径
+     * @param remoteFileName   远程FTP服务器上的那个文件的名字
      * @return   true为成功，false为失败
      */
-    public boolean downLoadFile(String FilePath, String FileName) {
+    public String downLoadFile(String localFilePath, String remoteFilePath, String remoteFileName, FtpCallBack ftpCallBack) {
         if (!ftpClient.isConnected()) {
             if (!initFTPSetting(FTPUrl,  FTPPort,  UserName,  UserPassword)) {
-                return false;
+                return "连接服务器失败";
             }
         }
         try {
-            // 转到指定下载目录
-            ftpClient.changeWorkingDirectory("/data");
-            // 列出该目录下所有文件
+            //判断远程服务器的文件名是否存在
+            if (!ftpClient.changeWorkingDirectory(remoteFilePath)){
+                return "服务器中没有此文件";
+            }
+            //判断本地服务器的文件名是否存在
+            File localPath = new File(localFilePath);
+            if (!localPath.exists()) {
+                localPath.mkdirs();
+            }
+            //下载文件
             FTPFile[] files = ftpClient.listFiles();
-            // 遍历所有文件，找到指定的文件
             for (FTPFile file : files) {
-                if (file.getName().equals(FileName)) {
-                    //根据绝对路径初始化文件
-                    File localFile = new File(FilePath);
-                    // 输出流
+                if (file.getName().equals(remoteFileName)) {
+                    File localFile = new File(localFilePath + remoteFileName);
+                    if (!localFile.exists()) {
+                        localFile.createNewFile();
+                    }
                     OutputStream outputStream = new FileOutputStream(localFile);
-                    // 下载文件
-                    ftpClient.retrieveFile(file.getName(), outputStream);
-                    //关闭流
+
+                    InputStream inputStream = ftpClient.retrieveFileStream(new String(file.getName()));
+
+                    byte[] bytes = new byte[1024];
+                    long step = lRemoteSize / 100;
+                    long process = localSize / step;
+                    int c;
+                    while ((c = in.read(bytes)) != -1) {
+                        out.write(bytes, 0, c);
+                        localSize += c;
+                        long nowProcess = localSize / step;
+                        if (nowProcess > process) {
+                            process = nowProcess;
+                            if (process % 10 == 0){
+                                System.out.println("下载进度：" + process);
+                            }
+                            // TODO 更新文件下载进度,值存放在process变量中
+                        }
+                    }
+                    inputStream.close();
                     outputStream.close();
+                    ftpClient.logout();
+                    ftpClient.disconnect();
+                    return SUCCESS + DIVITION + localFilePath + remoteFileName;
                 }
             }
-            //退出登陆FTP，关闭ftpCLient的连接
-            ftpClient.logout();
-            ftpClient.disconnect();
+            return "服务器中没有此文件";
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            return e.getMessage();
         }
-        return true;
     }
 
     /**
