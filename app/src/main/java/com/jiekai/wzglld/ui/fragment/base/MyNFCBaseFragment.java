@@ -48,27 +48,6 @@ public abstract class MyNFCBaseFragment extends Fragment implements DeviceCardRe
      */
     protected abstract void getNfcData(String nfcString);
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            boolean isSupportHidden = savedInstanceState.getBoolean(STATE_SAVE_IS_HIDDEN);
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            if (isSupportHidden) {
-                ft.hide(this);
-            } else {
-                ft.show(this);
-            }
-            ft.commit();
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-        outState.putBoolean(STATE_SAVE_IS_HIDDEN, isHidden());
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

@@ -21,12 +21,10 @@ import com.jiekai.wzglld.ui.fragment.base.MyNFCBaseFragment;
 public class MainActivity extends NFCBaseActivity {
     private final int BASIC_PERMISSION_REQUEST_CODE = 100;
     private static final int HANDLER_CHENGE_UPDATE = 0;
-    private static final String TabBarPosition = "TAB_POSITION";
 
     private TabBarFragment tabFragment;
     private long mBackPressedTime;
     private FragmentTransaction transaction;
-    private boolean isNormal = false;
 
     Handler mHandler = new Handler() {
         @Override
@@ -44,13 +42,6 @@ public class MainActivity extends NFCBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mHandler.sendEmptyMessageDelayed(HANDLER_CHENGE_UPDATE, 3000 * 1);
-        isNormal = getIntent().getBooleanExtra(IntentFlag.IS_NORMAL, false);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(TabBarPosition, tabFragment.getCurrentFragmentPosition());
-        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -63,7 +54,6 @@ public class MainActivity extends NFCBaseActivity {
             tabFragment = new TabBarFragment();
             transaction.add(R.id.tab_fragment, tabFragment);
             transaction.commit();
-            alert("从新add了tabbar");
         }
     }
 

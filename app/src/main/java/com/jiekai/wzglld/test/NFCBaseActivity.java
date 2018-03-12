@@ -51,11 +51,6 @@ public abstract class NFCBaseActivity extends MyBaseActivity implements DeviceCa
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
     protected void onStart() {
         super.onStart();
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
@@ -135,7 +130,9 @@ public abstract class NFCBaseActivity extends MyBaseActivity implements DeviceCa
                 {
                     deviceIdCache = DeviceIdUtils.reverseDeviceId(deviceIdCache);
                     getNfcData(deviceIdCache);
-                    beepManager.playBeepSoundAndVibrate();
+                    if (beepManager != null) {
+                        beepManager.playBeepSoundAndVibrate();
+                    }
                 }
             }
         }
@@ -144,6 +141,8 @@ public abstract class NFCBaseActivity extends MyBaseActivity implements DeviceCa
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        beepManager.close();
+        if (beepManager != null) {
+            beepManager.close();
+        }
     }
 }

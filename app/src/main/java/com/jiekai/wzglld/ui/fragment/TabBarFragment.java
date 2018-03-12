@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +18,14 @@ import com.jiekai.wzglld.R;
 import com.jiekai.wzglld.ui.base.MyBaseActivity;
 import com.jiekai.wzglld.ui.fragment.base.MyNFCBaseFragment;
 
+import java.util.List;
+
 /**
  * Created by laowu on 2018/1/21.
  */
 
 public class TabBarFragment extends MyNFCBaseFragment {
+    private static final String POSITION = "position";
 
     ImageView tab_one;
     ImageView tab_two;
@@ -41,7 +46,7 @@ public class TabBarFragment extends MyNFCBaseFragment {
 
     public MyNFCBaseFragment baseFragment;
 //    private MyNFCBaseFragment currentFragment;
-    private int currentFragmentPosition;
+    private int currentFragmentPosition = -1;
     private MyNFCBaseFragment tagFragment;
     private MyBaseActivity myActivity;
 
@@ -49,17 +54,12 @@ public class TabBarFragment extends MyNFCBaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         myActivity = (MyBaseActivity) getActivity();
+    }
 
-        //TODO
-        if (savedInstanceState != null) {
-            SharedPreferences share = getActivity().getSharedPreferences("test", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = share.edit();
-            editor.putString("liu", "---------------------------");
-            for (String key : savedInstanceState.keySet()) {
-                editor.putString(key, String.valueOf(savedInstanceState.get(key)));
-            }
-            editor.commit();
-        }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(POSITION, currentFragmentPosition);
+        super.onSaveInstanceState(outState);
     }
 
     @Nullable
@@ -67,6 +67,14 @@ public class TabBarFragment extends MyNFCBaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mainView = inflater.inflate(R.layout.fragement_tabbar, container, false);
         initView(mainView);
+
+        if (savedInstanceState != null) {
+            int position = savedInstanceState.getInt(POSITION);
+            if (position != -1) {
+                this.selectView(position);
+            }
+        }
+
         return mainView;
     }
 
@@ -116,12 +124,45 @@ public class TabBarFragment extends MyNFCBaseFragment {
         });
         if (getFragmentManager().findFragmentById(R.id.content) == null) {
             onTabSelected(0);
-            alert("tabbar init中选择了0");
         }
     }
 
     public void onTabSelected(int position) {
+        this.currentFragmentPosition = position;
         baseFragment = (MyNFCBaseFragment) getFragmentManager().findFragmentByTag(String.valueOf(position));
+
+        selectView(position);
+        selectFragment(position);
+
+        FragmentTransaction transaction = myActivity.getSupportFragmentManager().beginTransaction();
+        if (position < 4) {
+            tagFragment = (MyNFCBaseFragment) getVisibleFragment(R.id.content);
+            if (baseFragment.isAdded()) {
+                if (tagFragment != null) {
+                    transaction.hide(tagFragment).show(baseFragment).commitAllowingStateLoss();
+                } else {
+                    transaction.show(baseFragment).commitAllowingStateLoss();
+                }
+            } else {
+                if (tagFragment != null) {
+                    transaction.hide(tagFragment).add(R.id.content, baseFragment, String.valueOf(position)).commitAllowingStateLoss();
+                } else {
+                    transaction.add(R.id.content, baseFragment, String.valueOf(position)).commitAllowingStateLoss();
+                }
+            }
+        }
+    }
+
+    public MyNFCBaseFragment getCurrentFragment() {
+        return tagFragment;
+    }
+
+    public int getCurrentFragmentPosition() {
+        return  this.currentFragmentPosition;
+    }
+
+    private void selectView(int position){
+        this.currentFragmentPosition = position;
         switch (position) {
             case 0:
                 this.tab_one.setImageResource(R.drawable.ic_find_press);
@@ -138,10 +179,6 @@ public class TabBarFragment extends MyNFCBaseFragment {
                 this.tab_two_text.setTextColor(getResources().getColor(R.color.tabar_color));
                 this.tab_three_text.setTextColor(getResources().getColor(R.color.tabar_color));
                 this.tab_four_text.setTextColor(getResources().getColor(R.color.tabar_color));
-
-                if (baseFragment == null) {
-                    baseFragment = new QueryDeviceInfoFragment();
-                }
                 break;
             case 1:
                 this.tab_one.setImageResource(R.drawable.ic_find);
@@ -158,9 +195,6 @@ public class TabBarFragment extends MyNFCBaseFragment {
                 this.tab_two_text.setTextColor(getResources().getColor(R.color.tabar_color_press));
                 this.tab_three_text.setTextColor(getResources().getColor(R.color.tabar_color));
                 this.tab_four_text.setTextColor(getResources().getColor(R.color.tabar_color));
-                if (baseFragment == null) {
-                    baseFragment = new RecordGridFragement();
-                }
                 break;
             case 2:
                 this.tab_one.setImageResource(R.drawable.ic_find);
@@ -177,9 +211,6 @@ public class TabBarFragment extends MyNFCBaseFragment {
                 this.tab_two_text.setTextColor(getResources().getColor(R.color.tabar_color));
                 this.tab_three_text.setTextColor(getResources().getColor(R.color.tabar_color_press));
                 this.tab_four_text.setTextColor(getResources().getColor(R.color.tabar_color));
-                if (baseFragment == null) {
-                    baseFragment = new DeviceScrapFragment();
-                }
                 break;
             case 3:
                 this.tab_one.setImageResource(R.drawable.ic_find);
@@ -196,56 +227,46 @@ public class TabBarFragment extends MyNFCBaseFragment {
                 this.tab_two_text.setTextColor(getResources().getColor(R.color.tabar_color));
                 this.tab_three_text.setTextColor(getResources().getColor(R.color.tabar_color));
                 this.tab_four_text.setTextColor(getResources().getColor(R.color.tabar_color_press));
+                break;
+        }
+    }
+
+    private  void selectFragment(int position) {
+        this.currentFragmentPosition = position;
+        switch (position) {
+            case 0:
+                if (baseFragment == null) {
+                    baseFragment = new QueryDeviceInfoFragment();
+                }
+                break;
+            case 1:
+                if (baseFragment == null) {
+                    baseFragment = new RecordGridFragement();
+                }
+                break;
+            case 2:
+                if (baseFragment == null) {
+                    baseFragment = new DeviceScrapFragment();
+                }
+                break;
+            case 3:
                 if (baseFragment == null) {
                     baseFragment = new MeFragment();
                 }
                 break;
         }
+    }
 
-        FragmentTransaction transaction = myActivity.getSupportFragmentManager().beginTransaction();
-        if (position < 4) {
-            tagFragment = (MyNFCBaseFragment) getFragmentManager().findFragmentById(R.id.content);
-            if (baseFragment.isAdded()) {
-                if (tagFragment != null) {
-                    transaction.hide(tagFragment).show(baseFragment).commitAllowingStateLoss();
-                } else {
-                    transaction.show(baseFragment).commitAllowingStateLoss();
-                }
-            } else {
-                if (tagFragment != null) {
-                    transaction.hide(tagFragment).add(R.id.content, baseFragment, String.valueOf(position)).commitAllowingStateLoss();
-                } else {
-                    transaction.add(R.id.content, baseFragment, String.valueOf(position)).commitAllowingStateLoss();
-                }
+    private Fragment getVisibleFragment(int id) {
+        List<Fragment> allFragment = getFragmentManager().getFragments();
+        Fragment visibleFragment;
+        for (int i=0; i<allFragment.size(); i++) {
+            visibleFragment = allFragment.get(i);
+            if (visibleFragment.getId() == id && visibleFragment.isVisible()) {
+                return visibleFragment;
             }
-//            if (!baseFragment.isAdded() && tagFragment == null) {
-//                if (currentFragment != null) {
-//                    transaction.hide(currentFragment).add(R.id.content, baseFragment,String.valueOf(position)).commitAllowingStateLoss();
-//                } else {
-//                    if (tagFragment != null) {
-//                        transaction.hide(tagFragment).add(R.id.content, baseFragment, String.valueOf(position)).commitAllowingStateLoss();
-//                    } else {
-//                        transaction.add(R.id.content, baseFragment, String.valueOf(position)).commitAllowingStateLoss();
-//                    }
-//                }
-//            } else {
-//                if (currentFragment != null) {
-//                    transaction.hide(currentFragment).show(baseFragment).commitAllowingStateLoss();
-//                } else {
-//                    transaction.show(baseFragment).commitAllowingStateLoss();
-//                }
-//            }
-//            this.currentFragment = baseFragment;
-            this.currentFragmentPosition = position;
         }
-    }
-
-    public MyNFCBaseFragment getCurrentFragment() {
-        return tagFragment;
-    }
-
-    public int getCurrentFragmentPosition() {
-        return  this.currentFragmentPosition;
+        return null;
     }
 
     @Override
