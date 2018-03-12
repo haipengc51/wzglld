@@ -59,6 +59,11 @@ public class FtpManager {
         });
     }
 
+    /**
+     * 删除图片
+     * @param filePath
+     * @param ftpCallBack
+     */
     public void deletFile(final String filePath, final FtpCallBack ftpCallBack) {
         mExecutor.execute(new Runnable() {
             @Override
@@ -69,6 +74,24 @@ public class FtpManager {
                     doSuccess("", ftpCallBack);
                 } else {
                     doFaild("", ftpCallBack);
+                }
+            }
+        });
+    }
+
+    /**
+     * 下载文件
+     */
+    public void downloadFile(final String localFilePath, final String remoteFilePath, final String remoteFileName, final FtpCallBack ftpCallBack) {
+        mExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                doStart(ftpCallBack);
+                String result = mFtpUtils.downLoadFile(localFilePath, remoteFilePath, remoteFileName, ftpCallBack);
+                if (result != null && result.contains(FTPUtils.SUCCESS)) {
+                    doSuccess(result, ftpCallBack);
+                } else {
+                    doFaild(result, ftpCallBack);
                 }
             }
         });

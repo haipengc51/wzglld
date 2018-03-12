@@ -326,4 +326,9 @@ public class SqlUrl {
      * 修改密码
      */
     public static final String CHANGE_PASSWORD = "UPDATE userinfo SET PASSWORD = ? WHERE USERID = ?";
+
+    /**
+     * 获取远程服务器的版本号信息
+     */
+    public static final String GET_UPDATE_VERSION = "SELECT * FROM appmanager WHERE LB = \"LD\"";
 }

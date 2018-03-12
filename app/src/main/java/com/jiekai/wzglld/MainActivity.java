@@ -17,6 +17,7 @@ import com.jiekai.wzglld.ui.LoginActivity;
 import com.jiekai.wzglld.ui.fragment.QueryDeviceInfoFragment;
 import com.jiekai.wzglld.ui.fragment.TabBarFragment;
 import com.jiekai.wzglld.ui.fragment.base.MyNFCBaseFragment;
+import com.jiekai.wzglld.ui.update.UpdateManager;
 
 public class MainActivity extends NFCBaseActivity {
     private final int BASIC_PERMISSION_REQUEST_CODE = 100;
@@ -32,7 +33,8 @@ public class MainActivity extends NFCBaseActivity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case HANDLER_CHENGE_UPDATE:     //延时检测是否有更新
-//                    new UpdateUtil(mActivity, false).isUpdate();
+                    UpdateManager updateManager = new UpdateManager(MainActivity.this);
+                    updateManager.getRemoteVersion();
                     break;
             }
         }

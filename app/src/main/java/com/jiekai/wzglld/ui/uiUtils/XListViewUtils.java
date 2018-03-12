@@ -11,9 +11,9 @@ import com.jiekai.wzglld.utils.dbutils.DbDeal;
 import com.jiekai.wzglld.weight.XListView;
 import com.jiekai.wzglld.weight.XListViewFooter;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Created by laowu on 2018/1/15.
@@ -27,7 +27,7 @@ public class XListViewUtils implements XListView.IXListViewListener, AdapterView
     private int size = 20;
     private MyBaseAdapter myBaseAdapter;
     private String sqlUrl;
-    private Map<String, Object> params = new TreeMap<>();
+    private Map<String, Object> params = new LinkedHashMap<>();
     private Class clazz;
     private boolean isLoading = false;
 
