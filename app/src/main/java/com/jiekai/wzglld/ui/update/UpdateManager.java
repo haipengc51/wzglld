@@ -1,24 +1,19 @@
 package com.jiekai.wzglld.ui.update;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Toast;
 
-import com.jiekai.wzglld.R;
+import com.jiekai.wzglld.config.ShareConstants;
 import com.jiekai.wzglld.config.SqlUrl;
 import com.jiekai.wzglld.entity.UpdateEntity;
+import com.jiekai.wzglld.utils.JSONHelper;
 import com.jiekai.wzglld.utils.StringUtils;
 import com.jiekai.wzglld.utils.dbutils.DBManager;
 import com.jiekai.wzglld.utils.dbutils.DbCallBack;
@@ -33,11 +28,15 @@ import java.util.List;
  * 升级工具类
  */
 
-public class UpdateManager {
+public class UpdateManager implements HaveUpdateInterface {
     private String localPath = Environment.getExternalStorageDirectory().getPath()+"/liu/";
     private Activity activity;
     private UpdateEntity updateData;
-    private DialogFragment dialogFragment;
+    private UpdateHaveUpdateDialog haveUpdateDialog;
+    private UpdateLoadingDialog loadingDialog;
+
+    private String alreadyLoadingApkPath = null;
+    private boolean isAlreadayLoaddingApk = false;  //已经下载完成Apk了吗
 
     public UpdateManager(Activity activity) {
         this.activity = activity;
@@ -48,42 +47,26 @@ public class UpdateManager {
      */
     private void compareRemoteVersion(Context context) {
         int localVersion = getLocalVersion(context);
+
+        UpdateEntity historyData = getLoadingHistroyData();
+//        if (historyData != null && historyData.getVERSION() >= updateData.getVERSION()
+//                && !StringUtils.isEmpty(historyData.getLocalPath())) {
+//            String localPath =  historyData.getLocalPath();
+//            File file = new File(localPath);
+//            if (file.exists()) {
+//                alreadyLoadingApkPath = localPath;
+//                isAlreadayLoaddingApk = true;
+//                haveUpdateDialog = new UpdateHaveUpdateDialog(false, false, "您已经下载完毕了更新文件，可以直接更新！", this);
+//                haveUpdateDialog.show(activity.getFragmentManager(), "have_update");
+//                return;
+//            }
+//        }
         if (updateData != null
                 && updateData.getVERSION() != -1 && localVersion != -1
                 && updateData.getVERSION() > localVersion) {
-            //显示有更新的界面
-            dialogFragment = new DialogFragment(){
-                @Nullable
-                @Override
-                public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-                    getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    View view = inflater.inflate(R.layout.update_dialog_have_new_apk, container);
-                    view.findViewById(R.id.enter).setOnClickListener(lisen);
-                    view.findViewById(R.id.cancle).setOnClickListener(lisen);
-                    return view;
-                }
-
-                private View.OnClickListener lisen = new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        switch (v.getId()) {
-                            case R.id.enter:
-                                String path = updateData.getPATH();
-                                int nameAndPath = path.lastIndexOf("/");
-                                if (nameAndPath != -1) {
-                                    String remotName = path.substring(nameAndPath+1, path.length());
-                                    String remotPath = path.substring(0, nameAndPath);
-                                    downloadApk(localPath, remotPath, remotName);
-                                }
-                                break;
-                            case R.id.cancle:
-                                dialogFragment.dismiss();
-                                break;
-                        }
-                    }
-                };
-            };
-            dialogFragment.show(activity.getFragmentManager(), "刘海鹏");
+                    isAlreadayLoaddingApk = false;
+                    haveUpdateDialog = new UpdateHaveUpdateDialog(false, false, updateData.getINFO(), this);
+                    haveUpdateDialog.show(activity.getFragmentManager(), "have_update");
         }
     }
 
@@ -133,26 +116,33 @@ public class UpdateManager {
      */
     private void downloadApk(String localFilePath, String remoteFilePath, String remoteFileName) {
         if (StringUtils.isEmpty(localFilePath)) {
+            Toast.makeText(activity, "路径错误", Toast.LENGTH_SHORT).show();
             return;
         }
         FtpManager.getInstance().downloadFile(localFilePath, remoteFilePath, remoteFileName, new FtpCallBack() {
             @Override
             public void ftpStart() {
+                loadingDialog = new UpdateLoadingDialog(false, false);
+                loadingDialog.show(activity.getFragmentManager(), "loading_dialog");
+            }
 
+            @Override
+            public void ftpProgress(long allSize, long currentSize, int process) {
+                loadingDialog.setProgressBar(allSize, currentSize, process);
             }
 
             @Override
             public void ftpSuccess(String remotePath) {
-                if (dialogFragment != null) {
-                    dialogFragment.dismiss();
-                }
-                Toast.makeText(activity, "下载成功", Toast.LENGTH_SHORT).show();
+                updateData.setLocalPath(remotePath);
+                loadingDialog.hideDialog();
                 installApk(activity, remotePath);
+                saveLoadingData();
             }
 
             @Override
             public void ftpFaild(String error) {
-
+                loadingDialog.hideDialog();
+                Toast.makeText(activity, error, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -173,5 +163,47 @@ public class UpdateManager {
         i.setDataAndType(Uri.parse("file://" + apkfile.toString()), "application/vnd.android.package-archive");
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(i);
+    }
+
+    private void saveLoadingData() {
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(ShareConstants.UPDATE_LOADING, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String loadingData = JSONHelper.toJSONString(updateData);
+        editor.putString(ShareConstants.UPDATE_LOADING, loadingData);
+        editor.commit();
+    }
+
+    private UpdateEntity getLoadingHistroyData() {
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(ShareConstants.UPDATE_LOADING, Context.MODE_PRIVATE);
+        String updata = sharedPreferences.getString(ShareConstants.UPDATE_LOADING, "");
+        if (updata != null && updata.length() != 0) {
+            return JSONHelper.fromJSONObject(updata, UpdateEntity.class);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public void enterDownLoad() {
+        if (isAlreadayLoaddingApk) {
+            installApk(activity, alreadyLoadingApkPath);
+        } else {
+            String path = updateData.getPATH();
+            int nameAndPath = path.lastIndexOf("/");        ///View/AppImage/app/lingdao.apk
+            if (nameAndPath != -1) {
+                String remotName = path.substring(nameAndPath + 1, path.length());
+                String remotPath = path.substring(0, nameAndPath);
+                downloadApk(localPath, remotPath, remotName);
+            } else {
+                Toast.makeText(activity, "路径错误", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void cancleDownLoad() {
+        if ("1".equals(updateData.getFORCE())) {
+            System.exit(0);
+        }
     }
 }

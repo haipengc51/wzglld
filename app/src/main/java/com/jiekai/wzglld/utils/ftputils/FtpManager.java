@@ -86,13 +86,7 @@ public class FtpManager {
         mExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                doStart(ftpCallBack);
-                String result = mFtpUtils.downLoadFile(localFilePath, remoteFilePath, remoteFileName, ftpCallBack);
-                if (result != null && result.contains(FTPUtils.SUCCESS)) {
-                    doSuccess(result, ftpCallBack);
-                } else {
-                    doFaild(result, ftpCallBack);
-                }
+                mFtpUtils.downLoadFile(localFilePath, remoteFilePath, remoteFileName, plantFrom, ftpCallBack);
             }
         });
     }
