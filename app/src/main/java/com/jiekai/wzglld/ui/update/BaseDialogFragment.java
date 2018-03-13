@@ -18,18 +18,10 @@ import android.view.WindowManager;
  */
 
 public abstract class BaseDialogFragment extends DialogFragment {
-    private boolean mIsOutCanback = true;       //点击弹出窗口外面可以消失
-    private boolean mIsKeyCanback = true;       //点击back键可以消失
+    protected boolean mIsOutCanback = true;       //点击弹出窗口外面可以消失
+    protected boolean mIsKeyCanback = true;       //点击back键可以消失
 
     protected abstract View bindView(LayoutInflater inflater, ViewGroup container);
-
-    public BaseDialogFragment() {
-    }
-
-    public BaseDialogFragment(boolean mIsOutCanback, boolean mIsKeyCanback) {
-        this.mIsOutCanback = mIsOutCanback;
-        this.mIsKeyCanback = mIsKeyCanback;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

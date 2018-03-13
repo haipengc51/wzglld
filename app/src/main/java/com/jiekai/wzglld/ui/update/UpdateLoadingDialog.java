@@ -1,5 +1,6 @@
 package com.jiekai.wzglld.ui.update;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +20,21 @@ public class UpdateLoadingDialog extends BaseDialogFragment {
     private TextView currentSize;
     private TextView allSize;
 
-    public UpdateLoadingDialog() {
+    public static UpdateLoadingDialog newInstance(boolean mIsOutCanback, boolean mIsKeyCanback) {
+        Bundle args = new Bundle();
+        args.putBoolean("mIsOutCanback", mIsOutCanback);
+        args.putBoolean("mIsKeyCanback", mIsKeyCanback);
+        UpdateLoadingDialog fragment = new UpdateLoadingDialog();
+        fragment.setArguments(args);
+        return fragment;
     }
 
-    public UpdateLoadingDialog(boolean mIsOutCanback, boolean mIsKeyCanback) {
-        super(mIsOutCanback, mIsKeyCanback);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        mIsKeyCanback = bundle.getBoolean("mIsKeyCanback", false);
+        mIsOutCanback = bundle.getBoolean("mIsOutCanback", false);
     }
 
     @Override

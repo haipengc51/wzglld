@@ -1,11 +1,13 @@
 package com.jiekai.wzglld.ui.update;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jiekai.wzglld.R;
+import com.mysql.jdbc.UpdatableResultSet;
 
 /**
  * Created by LaoWu on 2018/3/13.
@@ -16,13 +18,32 @@ public class UpdateHaveUpdateDialog extends BaseDialogFragment {
     private String updataInfo;
     private HaveUpdateInterface updateInterface;
 
-    public UpdateHaveUpdateDialog() {
+    public UpdateHaveUpdateDialog newInstance() {
+        UpdateHaveUpdateDialog updateHaveUpdateDialog = new UpdateHaveUpdateDialog();
+        return updateHaveUpdateDialog;
     }
 
-    public UpdateHaveUpdateDialog(boolean mIsOutCanback, boolean mIsKeyCanback, String updataInfo, HaveUpdateInterface updateInterface) {
-        super(mIsOutCanback, mIsKeyCanback);
-        this.updataInfo = updataInfo;
+    public static UpdateHaveUpdateDialog newInstance(boolean mIsOutCanback, boolean mIsKeyCanback, String updataInfo) {
+        UpdateHaveUpdateDialog updateHaveUpdateDialog = new UpdateHaveUpdateDialog();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("mIsOutCanback", mIsOutCanback);
+        bundle.putBoolean("mIsKeyCanback", mIsKeyCanback);
+        bundle.putString("updataInfo", updataInfo);
+        updateHaveUpdateDialog.setArguments(bundle);
+        return updateHaveUpdateDialog;
+    }
+
+    public void setUpdateInterface(HaveUpdateInterface updateInterface) {
         this.updateInterface = updateInterface;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        mIsOutCanback = bundle.getBoolean("mIsOutCanback", false);
+        mIsKeyCanback = bundle.getBoolean("mIsKeyCanback", false);
+        updataInfo = bundle.getString("updataInfo", "");
     }
 
     @Override
@@ -39,11 +60,15 @@ public class UpdateHaveUpdateDialog extends BaseDialogFragment {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.enter:
-                    updateInterface.enterDownLoad();
+                    if (updateInterface != null) {
+                        updateInterface.enterDownLoad();
+                    }
                     hideDialog();
                     break;
                 case R.id.cancle:
-                    updateInterface.cancleDownLoad();
+                    if (updateInterface != null) {
+                        updateInterface.cancleDownLoad();
+                    }
                     hideDialog();
                     break;
             }

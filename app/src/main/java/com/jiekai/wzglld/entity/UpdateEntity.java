@@ -13,6 +13,7 @@ public class UpdateEntity extends BaseEntity {
     private String FORCE;
     private String PATH;
     private String localPath;   //本地存放的更新文件路径
+    private long localFileSize; //本地存储文件大小
 
     public String getLB() {
         return LB;
@@ -60,5 +61,13 @@ public class UpdateEntity extends BaseEntity {
 
     public void setLocalPath(String localPath) {
         this.localPath = localPath;
+    }
+
+    public long getLocalFileSize() {
+        return localFileSize;
+    }
+
+    public void setLocalFileSize(long localFileSize) {
+        this.localFileSize = localFileSize;
     }
 }

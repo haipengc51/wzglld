@@ -49,23 +49,27 @@ public class UpdateManager implements HaveUpdateInterface {
         int localVersion = getLocalVersion(context);
 
         UpdateEntity historyData = getLoadingHistroyData();
-//        if (historyData != null && historyData.getVERSION() >= updateData.getVERSION()
-//                && !StringUtils.isEmpty(historyData.getLocalPath())) {
-//            String localPath =  historyData.getLocalPath();
-//            File file = new File(localPath);
-//            if (file.exists()) {
-//                alreadyLoadingApkPath = localPath;
-//                isAlreadayLoaddingApk = true;
-//                haveUpdateDialog = new UpdateHaveUpdateDialog(false, false, "您已经下载完毕了更新文件，可以直接更新！", this);
-//                haveUpdateDialog.show(activity.getFragmentManager(), "have_update");
-//                return;
-//            }
-//        }
+        if (historyData != null && historyData.getVERSION() >= updateData.getVERSION()
+                && !StringUtils.isEmpty(historyData.getLocalPath())) {
+            String localPath =  historyData.getLocalPath();
+            File file = new File(localPath);
+            if (file.exists() && file.length() == historyData.getLocalFileSize()) {
+                alreadyLoadingApkPath = localPath;
+                isAlreadayLoaddingApk = true;
+                haveUpdateDialog = UpdateHaveUpdateDialog.newInstance(false, false, "您已经下载完毕了更新文件，可以直接更新！");
+                haveUpdateDialog.setUpdateInterface(this);
+                haveUpdateDialog.show(activity.getFragmentManager(), "have_update");
+                return;
+            } else {
+                clearLoadingHistroyData();
+            }
+        }
         if (updateData != null
                 && updateData.getVERSION() != -1 && localVersion != -1
                 && updateData.getVERSION() > localVersion) {
                     isAlreadayLoaddingApk = false;
-                    haveUpdateDialog = new UpdateHaveUpdateDialog(false, false, updateData.getINFO(), this);
+                    haveUpdateDialog = UpdateHaveUpdateDialog.newInstance(false, false, "您已经下载完毕了更新文件，可以直接更新！");
+                    haveUpdateDialog.setUpdateInterface(this);
                     haveUpdateDialog.show(activity.getFragmentManager(), "have_update");
         }
     }
@@ -114,7 +118,7 @@ public class UpdateManager implements HaveUpdateInterface {
     /**
      * 下载远程服务器版本
      */
-    private void downloadApk(String localFilePath, String remoteFilePath, String remoteFileName) {
+    private void downloadApk(String localFilePath, String remoteFilePath, final String remoteFileName) {
         if (StringUtils.isEmpty(localFilePath)) {
             Toast.makeText(activity, "路径错误", Toast.LENGTH_SHORT).show();
             return;
@@ -122,7 +126,7 @@ public class UpdateManager implements HaveUpdateInterface {
         FtpManager.getInstance().downloadFile(localFilePath, remoteFilePath, remoteFileName, new FtpCallBack() {
             @Override
             public void ftpStart() {
-                loadingDialog = new UpdateLoadingDialog(false, false);
+                loadingDialog = UpdateLoadingDialog.newInstance(false, false);
                 loadingDialog.show(activity.getFragmentManager(), "loading_dialog");
             }
 
@@ -134,6 +138,7 @@ public class UpdateManager implements HaveUpdateInterface {
             @Override
             public void ftpSuccess(String remotePath) {
                 updateData.setLocalPath(remotePath);
+                updateData.setLocalFileSize(getFileSize(remotePath));
                 loadingDialog.hideDialog();
                 installApk(activity, remotePath);
                 saveLoadingData();
@@ -180,6 +185,27 @@ public class UpdateManager implements HaveUpdateInterface {
             return JSONHelper.fromJSONObject(updata, UpdateEntity.class);
         } else {
             return null;
+        }
+    }
+
+    private void clearLoadingHistroyData() {
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(ShareConstants.UPDATE_LOADING, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.commit();
+    }
+
+    private long getFileSize(String filePath) {
+        if (filePath == null && filePath.length() == 0) {
+            return 0;
+        } else {
+            try {
+                File file = new File(filePath);
+                return file.length();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return 0;
+            }
         }
     }
 
