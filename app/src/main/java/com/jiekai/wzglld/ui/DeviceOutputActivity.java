@@ -294,6 +294,11 @@ public class DeviceOutputActivity extends NFCBaseActivity implements View.OnClic
                     }
 
                     @Override
+                    public void ftpProgress(long allSize, long currentSize, int process) {
+
+                    }
+
+                    @Override
                     public void ftpSuccess(String remotePath) {
                         dismissProgressDialog();
                         imagePath = Config.FTP_PATH_HANDLER + remotePath;
@@ -316,6 +321,11 @@ public class DeviceOutputActivity extends NFCBaseActivity implements View.OnClic
         FtpManager.getInstance().deletFile(path, new FtpCallBack() {
             @Override
             public void ftpStart() {
+
+            }
+
+            @Override
+            public void ftpProgress(long allSize, long currentSize, int process) {
 
             }
 

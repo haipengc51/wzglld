@@ -10,6 +10,13 @@ public interface FtpCallBack {
      * 开始上传之前的回调
      */
     public void ftpStart();
+
+    /**
+     * Ftp操作进度（现在之后下载进度）
+     * @param allSize
+     * @param currentSize
+     */
+    public void ftpProgress(long allSize, long currentSize, int process);
     /**
      * 上传成功的回调
      * @param remotePath 上传成功后服务器端的地址（路径+文件名）

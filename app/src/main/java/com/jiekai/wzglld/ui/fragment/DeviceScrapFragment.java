@@ -284,6 +284,11 @@ public class DeviceScrapFragment extends MyNFCBaseFragment implements View.OnCli
                     }
 
                     @Override
+                    public void ftpProgress(long allSize, long currentSize, int process) {
+
+                    }
+
+                    @Override
                     public void ftpSuccess(String remotePath) {
                         dismissProgressDialog();
                         imagePath = Config.FTP_PATH_HANDLER + remotePath;
@@ -306,6 +311,11 @@ public class DeviceScrapFragment extends MyNFCBaseFragment implements View.OnCli
         FtpManager.getInstance().deletFile(path, new FtpCallBack() {
             @Override
             public void ftpStart() {
+
+            }
+
+            @Override
+            public void ftpProgress(long allSize, long currentSize, int process) {
 
             }
 

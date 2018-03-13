@@ -161,6 +161,11 @@ public class RecordHistoryDetailActivity extends MyBaseActivity implements View.
                     }
 
                     @Override
+                    public void ftpProgress(long allSize, long currentSize, int process) {
+
+                    }
+
+                    @Override
                     public void ftpSuccess(String remotePath) {
                         dismissProgressDialog();
                         imagePath = Config.FTP_PATH_HANDLER + remotePath;
@@ -186,6 +191,11 @@ public class RecordHistoryDetailActivity extends MyBaseActivity implements View.
         FtpManager.getInstance().deletFile(path, new FtpCallBack() {
             @Override
             public void ftpStart() {
+
+            }
+
+            @Override
+            public void ftpProgress(long allSize, long currentSize, int process) {
 
             }
 
@@ -329,6 +339,11 @@ public class RecordHistoryDetailActivity extends MyBaseActivity implements View.
                         FtpManager.getInstance().deletFile(filePath, new FtpCallBack() {
                             @Override
                             public void ftpStart() {
+
+                            }
+
+                            @Override
+                            public void ftpProgress(long allSize, long currentSize, int process) {
 
                             }
 

@@ -12,6 +12,7 @@ public class UpdateEntity extends BaseEntity {
     private String INFO;
     private String FORCE;
     private String PATH;
+    private String localPath;   //本地存放的更新文件路径
 
     public String getLB() {
         return LB;
@@ -51,5 +52,13 @@ public class UpdateEntity extends BaseEntity {
 
     public void setPATH(String PATH) {
         this.PATH = PATH;
+    }
+
+    public String getLocalPath() {
+        return localPath;
+    }
+
+    public void setLocalPath(String localPath) {
+        this.localPath = localPath;
     }
 }

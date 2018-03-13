@@ -1,6 +1,9 @@
 package com.jiekai.wzglld.utils.ftputils;
 
+import android.util.Log;
+
 import com.jiekai.wzglld.utils.LogUtils;
+import com.jiekai.wzglld.utils.dbutils.PlantFrom;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -165,17 +168,18 @@ public class FTPUtils {
      * @param remoteFileName   远程FTP服务器上的那个文件的名字
      * @return   true为成功，false为失败
      */
-    public String downLoadFile(String localFilePath, String remoteFilePath, String remoteFileName, FtpCallBack ftpCallBack) {
+    public String downLoadFile(String localFilePath, String remoteFilePath, String remoteFileName, PlantFrom plantFrom, FtpCallBack ftpCallBack) {
+        doStart(plantFrom, ftpCallBack);
         if (!ftpClient.isConnected()) {
             if (!initFTPSetting(FTPUrl,  FTPPort,  UserName,  UserPassword)) {
-                ftpCallBack.ftpFaild("连接服务器失败");
+                doFail(plantFrom, ftpCallBack, "连接服务器失败");
                 return "连接服务器失败";
             }
         }
         try {
             //判断远程服务器的文件名是否存在
             if (!ftpClient.changeWorkingDirectory(remoteFilePath)){
-                ftpCallBack.ftpFaild("服务器中没有此文件");
+                doFail(plantFrom, ftpCallBack, "服务器中没有此文件");
                 return "服务器中没有此文件";
             }
             //判断本地服务器的文件名是否存在
@@ -191,36 +195,42 @@ public class FTPUtils {
                     if (!localFile.exists()) {
                         localFile.createNewFile();
                     }
+                    long allSize = file.getSize();
                     OutputStream outputStream = new FileOutputStream(localFile);
-
+                    ftpClient.enterLocalPassiveMode();
+                    ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
                     InputStream inputStream = ftpClient.retrieveFileStream(new String(file.getName()));
 
                     byte[] bytes = new byte[1024];
-                    long step = lRemoteSize / 100;
-                    long process = localSize / step;
-                    int c;
-                    while ((c = in.read(bytes)) != -1) {
-                        out.write(bytes, 0, c);
-                        localSize += c;
-                        long nowProcess = localSize / step;
-                        if (nowProcess > process) {
-                            process = nowProcess;
-                            if (process % 10 == 0){
-                                System.out.println("下载进度：" + process);
-                            }
-                            // TODO 更新文件下载进度,值存放在process变量中
+                    long step = allSize / 100;
+                    long localSize = 0;
+                    int onceReadSize;
+                    while ((onceReadSize = inputStream.read(bytes)) != -1) {
+                        outputStream.write(bytes, 0, onceReadSize);
+                        localSize += onceReadSize;
+                        if (localSize >= 4020000) {
+                            Log.i("liu", "dada");
+                        }
+                        int process = (int) (localSize / step);
+                        if (process % 3 == 0){
+                            doProgress(plantFrom, ftpCallBack, allSize, localSize, process);
                         }
                     }
                     inputStream.close();
+                    outputStream.flush();
                     outputStream.close();
+                    ftpClient.completePendingCommand();
                     ftpClient.logout();
                     ftpClient.disconnect();
+                    doSuccess(plantFrom, ftpCallBack, SUCCESS + DIVITION + localFilePath + remoteFileName);
                     return SUCCESS + DIVITION + localFilePath + remoteFileName;
                 }
             }
+            doFail(plantFrom, ftpCallBack, "服务器中没有此文件");
             return "服务器中没有此文件";
         } catch (IOException e) {
             e.printStackTrace();
+            doFail(plantFrom, ftpCallBack, e.getMessage());
             return e.getMessage();
         }
     }
@@ -251,5 +261,45 @@ public class FTPUtils {
             e.printStackTrace();
             return false;
         }
+    }
+
+    private void doStart(PlantFrom plantFrom, final FtpCallBack ftpCallBack) {
+        plantFrom.execut(new Runnable() {
+            @Override
+            public void run() {
+                ftpCallBack.ftpStart();
+            }
+        });
+    }
+
+    private void doProgress(PlantFrom plantFrom, final FtpCallBack ftpCallBack, final long allSize, final long currentSize, final int process) {
+        plantFrom.execut(new Runnable() {
+            @Override
+            public void run() {
+                ftpCallBack.ftpProgress(allSize, currentSize, process);
+            }
+        });
+    }
+
+    private void doSuccess(PlantFrom plantFrom, final FtpCallBack ftpCallBack, final String result) {
+        plantFrom.execut(new Runnable() {
+            @Override
+            public void run() {
+                String filePath = "";
+                if (result.indexOf(DIVITION) != 0 && result.indexOf(DIVITION) != -1) {
+                    filePath = result.substring(result.indexOf(DIVITION)+ DIVITION.length());
+                }
+                ftpCallBack.ftpSuccess(filePath);
+            }
+        });
+    }
+
+    private void doFail(PlantFrom plantFrom, final FtpCallBack ftpCallBack, final String result) {
+        plantFrom.execut(new Runnable() {
+            @Override
+            public void run() {
+                ftpCallBack.ftpFaild(result);
+            }
+        });
     }
 }
