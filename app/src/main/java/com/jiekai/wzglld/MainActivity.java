@@ -11,7 +11,6 @@ import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.jiekai.wzglld.config.Constants;
-import com.jiekai.wzglld.config.IntentFlag;
 import com.jiekai.wzglld.test.NFCBaseActivity;
 import com.jiekai.wzglld.ui.LoginActivity;
 import com.jiekai.wzglld.ui.fragment.QueryDeviceInfoFragment;
@@ -43,7 +42,9 @@ public class MainActivity extends NFCBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mHandler.sendEmptyMessageDelayed(HANDLER_CHENGE_UPDATE, 3000 * 1);
+        if (savedInstanceState == null) {
+            mHandler.sendEmptyMessageDelayed(HANDLER_CHENGE_UPDATE, 3000 * 1);
+        }
     }
 
     @Override

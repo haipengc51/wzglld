@@ -29,17 +29,18 @@ import java.util.List;
  */
 
 public class UpdateManager implements HaveUpdateInterface {
-    private String localPath = Environment.getExternalStorageDirectory().getPath()+"/liu/";
     private Activity activity;
     private UpdateEntity updateData;
     private UpdateHaveUpdateDialog haveUpdateDialog;
     private UpdateLoadingDialog loadingDialog;
+    private String localPath;
 
     private String alreadyLoadingApkPath = null;
     private boolean isAlreadayLoaddingApk = false;  //已经下载完成Apk了吗
 
     public UpdateManager(Activity activity) {
         this.activity = activity;
+        localPath = Environment.getExternalStorageDirectory().getPath() + File.separator + getSaveName() + File.separator;
     }
 
     /**
@@ -49,8 +50,9 @@ public class UpdateManager implements HaveUpdateInterface {
         int localVersion = getLocalVersion(context);
 
         UpdateEntity historyData = getLoadingHistroyData();
-        if (historyData != null && historyData.getVERSION() >= updateData.getVERSION()
-                && !StringUtils.isEmpty(historyData.getLocalPath())) {
+        if (historyData != null && !StringUtils.isEmpty(historyData.getLocalPath())
+                && updateData.getVERSION() != -1 && localVersion != -1 && updateData.getVERSION() > localVersion
+                && historyData.getVERSION() == updateData.getVERSION()) {
             String localPath =  historyData.getLocalPath();
             File file = new File(localPath);
             if (file.exists() && file.length() == historyData.getLocalFileSize()) {
@@ -209,6 +211,13 @@ public class UpdateManager implements HaveUpdateInterface {
         }
     }
 
+    private String getSaveName() {
+        String packageName = activity.getPackageName();
+        String names[] = packageName.split("\\.");
+        String name = names[names.length - 1];
+        return name;
+    }
+
     @Override
     public void enterDownLoad() {
         if (isAlreadayLoaddingApk) {
@@ -231,6 +240,6 @@ public class UpdateManager implements HaveUpdateInterface {
         if ("1".equals(updateData.getFORCE())) {
             System.exit(0);
         }
-        clearLoadingHistroyData();
+//        clearLoadingHistroyData();
     }
 }
