@@ -68,7 +68,7 @@ public class UpdateManager implements HaveUpdateInterface {
                 && updateData.getVERSION() != -1 && localVersion != -1
                 && updateData.getVERSION() > localVersion) {
                     isAlreadayLoaddingApk = false;
-                    haveUpdateDialog = UpdateHaveUpdateDialog.newInstance(false, false, "您已经下载完毕了更新文件，可以直接更新！");
+                    haveUpdateDialog = UpdateHaveUpdateDialog.newInstance(false, false, updateData.getINFO());
                     haveUpdateDialog.setUpdateInterface(this);
                     haveUpdateDialog.show(activity.getFragmentManager(), "have_update");
         }
@@ -231,5 +231,6 @@ public class UpdateManager implements HaveUpdateInterface {
         if ("1".equals(updateData.getFORCE())) {
             System.exit(0);
         }
+        clearLoadingHistroyData();
     }
 }
