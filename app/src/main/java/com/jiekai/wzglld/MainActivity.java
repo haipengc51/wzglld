@@ -43,7 +43,7 @@ public class MainActivity extends NFCBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
-            mHandler.sendEmptyMessageDelayed(HANDLER_CHENGE_UPDATE, 3000 * 1);
+            mHandler.sendEmptyMessageDelayed(HANDLER_CHENGE_UPDATE, 1000 * 2);
         }
     }
 
