@@ -20,6 +20,7 @@ import com.jiekai.wzglld.utils.JSONHelper;
 import com.jiekai.wzglld.utils.StringUtils;
 import com.jiekai.wzglld.utils.dbutils.DBManager;
 import com.jiekai.wzglld.utils.dbutils.DbCallBack;
+import com.jiekai.wzglld.utils.dbutils.DbDeal;
 import com.jiekai.wzglld.weight.ClickDrawableEdit;
 
 import java.util.List;
@@ -52,6 +53,8 @@ public class LoginActivity extends MyBaseActivity implements View.OnClickListene
     private InputPasswordUtils userInputUtils;
     private InputPasswordUtils passwordInputUtils;
 
+    private DbDeal dbDeal = null;
+
     @Override
     public void initView() {
         setContentView(R.layout.activity_login);
@@ -79,6 +82,14 @@ public class LoginActivity extends MyBaseActivity implements View.OnClickListene
     }
 
     @Override
+    public void cancleDbDeal() {
+        if (dbDeal != null) {
+            dbDeal.cancleDbDeal();
+            dismissProgressDialog();
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back:
@@ -101,11 +112,11 @@ public class LoginActivity extends MyBaseActivity implements View.OnClickListene
             alert(R.string.please_input_password);
             return;
         }
-        DBManager.dbDeal(DBManager.SELECT)
-                .sql(SqlUrl.LoginSql)
+        dbDeal = DBManager.dbDeal(DBManager.SELECT);
+                dbDeal.sql(SqlUrl.LoginSql)
                 .params(new String[]{username, password})
                 .clazz(UserInfoEntity.class)
-                .execut(new DbCallBack() {
+                .execut(mContext, new DbCallBack() {
                     @Override
                     public void onDbStart() {
                         showProgressDialog(getResources().getString(R.string.loging));
@@ -115,6 +126,8 @@ public class LoginActivity extends MyBaseActivity implements View.OnClickListene
                     public void onError(String err) {
                         alert(err);
                         dismissProgressDialog();
+                        //判断上次的数据进行登录
+                        useOldDataLogin();
                     }
 
                     @Override
@@ -136,11 +149,11 @@ public class LoginActivity extends MyBaseActivity implements View.OnClickListene
     }
 
     private void checkUserPermission(final UserInfoEntity userInfoEntity) {
-        DBManager.dbDeal(DBManager.SELECT)
-                .sql(SqlUrl.LoginRule)
+        dbDeal = DBManager.dbDeal(DBManager.SELECT);
+                dbDeal.sql(SqlUrl.LoginRule)
                 .params(new String[]{userInfoEntity.getUSERID()})
                 .clazz(UserRoleEntity.class)
-                .execut(new DbCallBack() {
+                .execut(mContext, new DbCallBack() {
                     @Override
                     public void onDbStart() {
 
@@ -186,5 +199,20 @@ public class LoginActivity extends MyBaseActivity implements View.OnClickListene
         String userData = JSONHelper.toJSONString(loginData);
         editor.putString(ShareConstants.USERINFO, userData);
         editor.commit();
+    }
+
+    private void useOldDataLogin() {
+        String userName = inputUsername.getText().toString();
+        String userPassword = inputPassword.getText().toString();
+        if (!StringUtils.isEmpty(userName) && !StringUtils.isEmpty(userPassword)
+                && userData != null && !StringUtils.isEmpty(userData.getUSERID())
+                && !StringUtils.isEmpty(userData.getPASSWORD())) {
+            if (userName.equals(userData.getUSERID()) && userPassword.equals(userData.getPASSWORD())) {
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra(IntentFlag.IS_NORMAL, true);
+                startActivity(intent);
+                finish();
+            }
+        }
     }
 }

@@ -17,6 +17,7 @@ import com.jiekai.wzglld.utils.JSONHelper;
 import com.jiekai.wzglld.utils.StringUtils;
 import com.jiekai.wzglld.utils.dbutils.DBManager;
 import com.jiekai.wzglld.utils.dbutils.DbCallBack;
+import com.jiekai.wzglld.utils.dbutils.DbDeal;
 
 import java.util.List;
 
@@ -30,6 +31,9 @@ public class WelcomActivity extends MyBaseActivity {
     private boolean myLogin = false;    //后台登录成功标志
 
     private UserInfoEntity userInfoEntity;
+
+    private DbDeal dbDeal = null;
+
     @Override
     public void initView() {
         setContentView(R.layout.activity_welcom);
@@ -55,6 +59,15 @@ public class WelcomActivity extends MyBaseActivity {
             login(userData.getUSERID(), userData.getPASSWORD());
         }
     }
+
+    @Override
+    public void cancleDbDeal() {
+        if (dbDeal != null) {
+            dbDeal.cancleDbDeal();
+            dismissProgressDialog();
+        }
+    }
+
     private void login(String username, String password) {
         if (StringUtils.isEmpty(username)) {
             alert(R.string.please_input_username);
@@ -64,11 +77,11 @@ public class WelcomActivity extends MyBaseActivity {
             alert(R.string.please_input_password);
             return;
         }
-        DBManager.dbDeal(DBManager.SELECT)
-                .sql(SqlUrl.LoginSql)
+        dbDeal = DBManager.dbDeal(DBManager.SELECT);
+                dbDeal.sql(SqlUrl.LoginSql)
                 .params(new String[]{username, password})
                 .clazz(UserInfoEntity.class)
-                .execut(new DbCallBack() {
+                .execut(mContext, new DbCallBack() {
                     @Override
                     public void onDbStart() {
                     }
@@ -91,11 +104,11 @@ public class WelcomActivity extends MyBaseActivity {
     }
 
     private void checkUserPermission(final UserInfoEntity userInfoEntity1) {
-        DBManager.dbDeal(DBManager.SELECT)
-                .sql(SqlUrl.LoginRule)
+        dbDeal = DBManager.dbDeal(DBManager.SELECT);
+                dbDeal.sql(SqlUrl.LoginRule)
                 .params(new String[]{userInfoEntity1.getUSERID()})
                 .clazz(UserRoleEntity.class)
-                .execut(new DbCallBack() {
+                .execut(mContext, new DbCallBack() {
                     @Override
                     public void onDbStart() {
                     }

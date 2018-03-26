@@ -174,7 +174,7 @@ public class TypeUtils implements View.OnClickListener{
         DBManager.dbDeal(DBManager.SELECT)
                 .sql(SqlUrl.GetAllLeiBie)
                 .clazz(DevicesortEntity.class)
-                .execut(new DbCallBack() {
+                .execut(activity.getApplicationContext(), new DbCallBack() {
                     @Override
                     public void onDbStart() {
                         showProgressDialog(activity.getResources().getString(R.string.loading_leixing));
@@ -213,7 +213,7 @@ public class TypeUtils implements View.OnClickListener{
                 .sql(SqlUrl.GetXingHaoByLeiBie)
                 .params(new String[]{leibie})
                 .clazz(DevicesortEntity.class)
-                .execut(new DbCallBack() {
+                .execut(activity.getApplicationContext(), new DbCallBack() {
                     @Override
                     public void onDbStart() {
                         showProgressDialog(activity.getResources().getString(R.string.loading_leixing));
@@ -256,7 +256,7 @@ public class TypeUtils implements View.OnClickListener{
                 .sql(SqlUrl.GetGuiGeByXingHao)
                 .params(new String[]{xinghao})
                 .clazz(DevicesortEntity.class)
-                .execut(new DbCallBack() {
+                .execut(activity.getApplicationContext(), new DbCallBack() {
                     @Override
                     public void onDbStart() {
                         showProgressDialog(activity.getResources().getString(R.string.loading_leixing));
@@ -306,7 +306,7 @@ public class TypeUtils implements View.OnClickListener{
                 .sql(SqlUrl.GetBHByLeiBieXinghaoGuige)
                 .params(new String[]{leibie, xinghao, guige})
                 .clazz(DeviceBHEntity.class)
-                .execut(new DbCallBack() {
+                .execut(activity.getApplicationContext(), new DbCallBack() {
                     @Override
                     public void onDbStart() {
                         showProgressDialog(activity.getResources().getString(R.string.loding_device_bh));

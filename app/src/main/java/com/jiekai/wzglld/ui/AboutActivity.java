@@ -58,4 +58,9 @@ public class AboutActivity extends MyBaseActivity {
     public void initOperation() {
 
     }
+
+    @Override
+    public void cancleDbDeal() {
+
+    }
 }

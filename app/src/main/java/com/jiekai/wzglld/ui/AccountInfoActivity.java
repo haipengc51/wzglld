@@ -22,4 +22,9 @@ public class AccountInfoActivity extends MyBaseActivity {
     public void initOperation() {
 
     }
+
+    @Override
+    public void cancleDbDeal() {
+
+    }
 }

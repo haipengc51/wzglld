@@ -122,7 +122,7 @@ public class XListViewUtils implements XListView.IXListViewListener, AdapterView
         dbDeal.sql(builder.toString());
         dbDeal.params(objects);
         dbDeal.clazz(clazz);
-        dbDeal.execut(new DbCallBack() {
+        dbDeal.execut(xListView.getContext(), new DbCallBack() {
             @Override
             public void onDbStart() {
 

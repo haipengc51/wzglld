@@ -71,6 +71,11 @@ public class MainActivity extends NFCBaseActivity {
     }
 
     @Override
+    public void cancleDbDeal() {
+
+    }
+
+    @Override
     public void getNfcData(String nfcString) {
         MyNFCBaseFragment baseFragment = tabFragment.getCurrentFragment();
         baseFragment.setNfcData(nfcString);

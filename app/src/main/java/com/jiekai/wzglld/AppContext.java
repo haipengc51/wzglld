@@ -57,7 +57,6 @@ public class AppContext extends Application {
      * 检查是否有没有审核通过的信息
      * @param activity
      * @param userId
-     */
     public static void getUnCheckedData(final Activity activity, String userId) {
         DBManager.dbDeal(DBManager.SELECT)
                 .sql(SqlUrl.GET_RECORD_CHECK_LIST)
@@ -98,4 +97,5 @@ public class AppContext extends Application {
                     }
                 });
     }
+     */
 }

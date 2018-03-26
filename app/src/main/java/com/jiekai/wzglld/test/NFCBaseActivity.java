@@ -15,6 +15,7 @@ import android.widget.EditText;
 
 import com.jiekai.wzglld.R;
 import com.jiekai.wzglld.ui.base.MyBaseActivity;
+import com.jiekai.wzglld.ui.dialog.ReadCardErroDialog;
 import com.jiekai.wzglld.ui.fragment.base.DeviceCardReaderInterface;
 import com.jiekai.wzglld.utils.DeviceIdUtils;
 import com.jiekai.wzglld.utils.StringUtils;
@@ -36,6 +37,8 @@ public abstract class NFCBaseActivity extends MyBaseActivity implements DeviceCa
     private String deviceIdCache;
     private BeepManager beepManager;
 
+    protected ReadCardErroDialog readCardErroDialog;
+
     /**
      * 获取到nfc卡的信息
      * @param nfcString
@@ -46,6 +49,7 @@ public abstract class NFCBaseActivity extends MyBaseActivity implements DeviceCa
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        readCardErroDialog = new ReadCardErroDialog(this);
         beepManager = new BeepManager(this);
         initDialog();
     }

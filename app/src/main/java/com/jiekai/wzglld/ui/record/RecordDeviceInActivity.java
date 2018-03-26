@@ -25,6 +25,7 @@ import com.jiekai.wzglld.utils.DeviceIdUtils;
 import com.jiekai.wzglld.utils.StringUtils;
 import com.jiekai.wzglld.utils.dbutils.DBManager;
 import com.jiekai.wzglld.utils.dbutils.DbCallBack;
+import com.jiekai.wzglld.utils.dbutils.DbDeal;
 import com.jiekai.wzglld.utils.zxing.CaptureActivity;
 import com.jiekai.wzglld.weight.XListView;
 
@@ -64,6 +65,8 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
 
     private RecordDeviceInAdapter adapter;
     private List<DevicestoreEntity> dataList = new ArrayList();
+
+    private DbDeal dbDeal = null;
 
     @Override
     public void initView() {
@@ -109,6 +112,14 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
         }
         xListViewUtils.setMyBaseAdapter(adapter);
         filtrate(false);
+    }
+
+    @Override
+    public void cancleDbDeal() {
+        if (dbDeal != null) {
+            dbDeal.cancleDbDeal();
+            dismissFiltrateDialog();
+        }
     }
 
     @Override
@@ -161,7 +172,7 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
      * 通过ID卡号获取设备信息
      * @param id
      */
-    private void getDeviceDataById(String id) {
+    private void getDeviceDataById(final String id) {
         if (StringUtils.isEmpty(id)) {
             return;
         }
@@ -169,11 +180,11 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
         deviceXinghao.setText("");
         deviceGuige.setText("");
         deviceId.setText("");
-        DBManager.NewDbDeal(DBManager.SELECT)
-                .sql(SqlUrl.GetPanKuDataByID)
+        dbDeal = DBManager.dbDeal(DBManager.SELECT);
+                dbDeal.sql(SqlUrl.GetPanKuDataByID)
                 .params(new String[]{id, id, id})
                 .clazz(PankuDataEntity.class)
-                .execut(new DbCallBack() {
+                .execut(mContext, new DbCallBack() {
                     @Override
                     public void onDbStart() {
                         showProgressDialog(getResources().getString(R.string.loading_device));
@@ -183,6 +194,7 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
                     public void onError(String err) {
                         alert(err);
                         dismissProgressDialog();
+                        readCardErroDialog.errShowIdDialog(id, true);
                     }
 
                     @Override
@@ -208,7 +220,7 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
      * 通过二维码获取设备信息
      * @param id
      */
-    private void getDeviceDataBySAOMA(String id) {
+    private void getDeviceDataBySAOMA(final String id) {
         if (StringUtils.isEmpty(id)) {
             return;
         }
@@ -216,11 +228,11 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
         deviceXinghao.setText("");
         deviceGuige.setText("");
         deviceId.setText("");
-        DBManager.NewDbDeal(DBManager.SELECT)
-                .sql(SqlUrl.GetPanKuDataBySAOMA)
+        dbDeal = DBManager.dbDeal(DBManager.SELECT);
+                dbDeal.sql(SqlUrl.GetPanKuDataBySAOMA)
                 .params(new String[]{id})
                 .clazz(PankuDataEntity.class)
-                .execut(new DbCallBack() {
+                .execut(mContext, new DbCallBack() {
                     @Override
                     public void onDbStart() {
                         showProgressDialog(getResources().getString(R.string.loading_device));
@@ -230,6 +242,7 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
                     public void onError(String err) {
                         alert(err);
                         dismissProgressDialog();
+                        readCardErroDialog.errShowIdDialog(id, false);
                     }
 
                     @Override

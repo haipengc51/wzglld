@@ -72,13 +72,18 @@ public class MeFragment extends MyNFCBaseFragment implements View.OnClickListene
 
         userName = mActivity.userData.getUSERNAME();
         userPhone = mActivity.userData.getPHONE();
-        if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(userPhone)) {
+        if (userName == null && userPhone == null) {
             accoutInfoLinear.setVisibility(View.GONE);
         } else {
             accoutInfoLinear.setVisibility(View.VISIBLE);
-            name.setText(userName);
-            phone.setText(userPhone);
+            name.setText(StringUtils.isEmpty(userName) ? "" : userName);
+            phone.setText(StringUtils.isEmpty(userPhone) ? "" : userPhone);
         }
+    }
+
+    @Override
+    public void cancleDbDeal() {
+
     }
 
     @Override

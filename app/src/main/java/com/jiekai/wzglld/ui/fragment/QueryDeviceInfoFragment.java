@@ -21,6 +21,7 @@ import com.jiekai.wzglld.utils.DeviceIdUtils;
 import com.jiekai.wzglld.utils.StringUtils;
 import com.jiekai.wzglld.utils.dbutils.DBManager;
 import com.jiekai.wzglld.utils.dbutils.DbCallBack;
+import com.jiekai.wzglld.utils.dbutils.DbDeal;
 import com.jiekai.wzglld.utils.zxing.CaptureActivity;
 
 import java.util.List;
@@ -56,6 +57,7 @@ public class QueryDeviceInfoFragment extends MyNFCBaseFragment implements View.O
     TextView enter;
 
     private TypeUtils typeUtils;
+    private DbDeal dbDeal = null;
 
     @Override
     public View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -76,6 +78,14 @@ public class QueryDeviceInfoFragment extends MyNFCBaseFragment implements View.O
     @Override
     public void initOperation() {
         typeUtils = new TypeUtils(mActivity, deviceLeibie, deviceXinghao, deviceGuige, deviceId);
+    }
+
+    @Override
+    public void cancleDbDeal() {
+        if (dbDeal != null) {
+            dbDeal.cancleDbDeal();
+            dismissProgressDialog();
+        }
     }
 
     @Override
@@ -123,7 +133,7 @@ public class QueryDeviceInfoFragment extends MyNFCBaseFragment implements View.O
      * 通过ID卡号获取设备信息
      * @param id
      */
-    private void getDeviceDataById(String id) {
+    private void getDeviceDataById(final String id) {
         if (StringUtils.isEmpty(id)) {
             return;
         }
@@ -131,11 +141,11 @@ public class QueryDeviceInfoFragment extends MyNFCBaseFragment implements View.O
         deviceXinghao.setText("");
         deviceGuige.setText("");
         deviceId.setText("");
-        DBManager.dbDeal(DBManager.SELECT)
-                .sql(SqlUrl.GetPanKuDataByID)
+        dbDeal = DBManager.dbDeal(DBManager.SELECT);
+                dbDeal.sql(SqlUrl.GetPanKuDataByID)
                 .params(new String[]{id, id, id})
                 .clazz(PankuDataEntity.class)
-                .execut(new DbCallBack() {
+                .execut(mContext, new DbCallBack() {
                     @Override
                     public void onDbStart() {
                         showProgressDialog(getResources().getString(R.string.loading_device));
@@ -145,6 +155,7 @@ public class QueryDeviceInfoFragment extends MyNFCBaseFragment implements View.O
                     public void onError(String err) {
                         alert(err);
                         dismissProgressDialog();
+                        readCardErroDialog.errShowIdDialog(id, true);
                     }
 
                     @Override
@@ -167,7 +178,7 @@ public class QueryDeviceInfoFragment extends MyNFCBaseFragment implements View.O
      * 通过ID卡号获取设备信息
      * @param id
      */
-    private void getDeviceDataBySaoMa(String id) {
+    private void getDeviceDataBySaoMa(final String id) {
         if (StringUtils.isEmpty(id)) {
             return;
         }
@@ -175,11 +186,11 @@ public class QueryDeviceInfoFragment extends MyNFCBaseFragment implements View.O
         deviceXinghao.setText("");
         deviceGuige.setText("");
         deviceId.setText("");
-        DBManager.dbDeal(DBManager.SELECT)
-                .sql(SqlUrl.GetPanKuDataBySAOMA)
+        dbDeal = DBManager.dbDeal(DBManager.SELECT);
+                dbDeal.sql(SqlUrl.GetPanKuDataBySAOMA)
                 .params(new String[]{id})
                 .clazz(PankuDataEntity.class)
-                .execut(new DbCallBack() {
+                .execut(mContext, new DbCallBack() {
                     @Override
                     public void onDbStart() {
                         showProgressDialog(getResources().getString(R.string.loading_device));
@@ -189,6 +200,7 @@ public class QueryDeviceInfoFragment extends MyNFCBaseFragment implements View.O
                     public void onError(String err) {
                         alert(err);
                         dismissProgressDialog();
+                        readCardErroDialog.errShowIdDialog(id, false);
                     }
 
                     @Override

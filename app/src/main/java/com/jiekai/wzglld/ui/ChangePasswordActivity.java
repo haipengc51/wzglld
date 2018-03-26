@@ -15,6 +15,7 @@ import com.jiekai.wzglld.ui.uiUtils.EditTextPasswordInput;
 import com.jiekai.wzglld.utils.StringUtils;
 import com.jiekai.wzglld.utils.dbutils.DBManager;
 import com.jiekai.wzglld.utils.dbutils.DbCallBack;
+import com.jiekai.wzglld.utils.dbutils.DbDeal;
 
 import java.util.List;
 
@@ -68,6 +69,7 @@ public class ChangePasswordActivity extends MyBaseActivity implements View.OnCli
     private boolean passwordVisibleFlag = false;
     private boolean passwordAgainVisileFlag = false;
     private boolean passwordAgainVisileAginFlag = false;
+    private DbDeal dbDeal = null;
 
     @Override
     public void initView() {
@@ -101,6 +103,14 @@ public class ChangePasswordActivity extends MyBaseActivity implements View.OnCli
     @Override
     public void initOperation() {
         tvAccount.setText(userData.getUSERID());
+    }
+
+    @Override
+    public void cancleDbDeal() {
+        if (dbDeal != null) {
+            dbDeal.cancleDbDeal();
+            dismissProgressDialog();
+        }
     }
 
     @Override
@@ -222,10 +232,10 @@ public class ChangePasswordActivity extends MyBaseActivity implements View.OnCli
             alert(R.string.password_different);
             return;
         }
-        DBManager.dbDeal(DBManager.UPDATA)
-                .sql(SqlUrl.CHANGE_PASSWORD)
+        dbDeal = DBManager.dbDeal(DBManager.UPDATA);
+                dbDeal.sql(SqlUrl.CHANGE_PASSWORD)
                 .params(new String[]{newPassword, userData.getUSERID()})
-                .execut(new DbCallBack() {
+                .execut(mContext, new DbCallBack() {
                     @Override
                     public void onDbStart() {
                         showProgressDialog(getResources().getString(R.string.uploading_db));

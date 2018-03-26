@@ -285,6 +285,11 @@ public class TabBarFragment extends MyNFCBaseFragment {
     }
 
     @Override
+    public void cancleDbDeal() {
+
+    }
+
+    @Override
     protected void getNfcData(String nfcString) {
 
     }

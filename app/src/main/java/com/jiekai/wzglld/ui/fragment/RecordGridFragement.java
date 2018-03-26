@@ -83,6 +83,11 @@ public class RecordGridFragement extends MyNFCBaseFragment implements AdapterVie
     }
 
     @Override
+    public void cancleDbDeal() {
+
+    }
+
+    @Override
     protected void getNfcData(String nfcString) {
 
     }

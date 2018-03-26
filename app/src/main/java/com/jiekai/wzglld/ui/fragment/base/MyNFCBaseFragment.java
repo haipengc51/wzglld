@@ -2,12 +2,15 @@ package com.jiekai.wzglld.ui.fragment.base;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +19,7 @@ import android.widget.Toast;
 
 import com.jiekai.wzglld.R;
 import com.jiekai.wzglld.ui.base.MyBaseActivity;
+import com.jiekai.wzglld.ui.dialog.ReadCardErroDialog;
 import com.jiekai.wzglld.utils.DeviceIdUtils;
 import com.jiekai.wzglld.utils.StringUtils;
 import com.jiekai.wzglld.utils.zxing.utils.BeepManager;
@@ -29,9 +33,11 @@ import butterknife.ButterKnife;
 public abstract class MyNFCBaseFragment extends Fragment implements DeviceCardReaderInterface {
     private static final String STATE_SAVE_IS_HIDDEN = "STATE_SAVE_IS_HIDDEN";
     public MyBaseActivity mActivity;
+    protected Context mContext;
     private ProgressDialog progressDialog = null;
 
     protected AlertDialog deviceReadcardDialog;
+    protected ReadCardErroDialog readCardErroDialog;
     protected EditText deviceReadcardEdit;
     private String deviceIdCache;
     private BeepManager beepManager;
@@ -41,6 +47,7 @@ public abstract class MyNFCBaseFragment extends Fragment implements DeviceCardRe
     public abstract View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
     public abstract void initData();
     public abstract void initOperation();
+    public abstract void cancleDbDeal();
     /**
      * 得到nfc的信息
      * @param nfcString
@@ -51,7 +58,9 @@ public abstract class MyNFCBaseFragment extends Fragment implements DeviceCardRe
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mActivity = (MyBaseActivity) getActivity();
+        mContext = getActivity().getApplicationContext();
         beepManager = new BeepManager(getActivity());
+        readCardErroDialog = new ReadCardErroDialog(mActivity);
         View view = initView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, view);
         initData();
@@ -73,6 +82,14 @@ public abstract class MyNFCBaseFragment extends Fragment implements DeviceCardRe
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(mActivity);
             progressDialog.setTitle(getResources().getString(R.string.please_wait));
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                @Override
+                public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                    cancleDbDeal();
+                    return false;
+                }
+            });
         }
         progressDialog.setMessage(msg);
         progressDialog.show();
@@ -153,5 +170,7 @@ public abstract class MyNFCBaseFragment extends Fragment implements DeviceCardRe
         if (beepManager != null) {
             beepManager.close();
         }
+        cancleDbDeal();
+        dismissProgressDialog();
     }
 }
