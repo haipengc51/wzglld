@@ -32,6 +32,7 @@ public class AppContext extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //LeakCanary.install(this);
         initDbFrame();
         initFTP();
         dbHelper = DBHelper.getInstance(getApplicationContext());

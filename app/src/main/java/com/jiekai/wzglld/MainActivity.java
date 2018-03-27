@@ -78,7 +78,9 @@ public class MainActivity extends NFCBaseActivity {
     @Override
     public void getNfcData(String nfcString) {
         MyNFCBaseFragment baseFragment = tabFragment.getCurrentFragment();
-        baseFragment.setNfcData(nfcString);
+        if (baseFragment != null) {
+            baseFragment.setNfcData(nfcString);
+        }
     }
 
     @Override

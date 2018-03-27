@@ -290,16 +290,12 @@ public class RecordDeviceRepairActivity extends NFCBaseActivity implements View.
         xListViewUtils.setSqlUrl(SqlUrl.GetDeviceRepairPage);
         xListViewUtils.clearParams();
         if (!StringUtils.isEmpty(sbbh)) {
-            alert("设备编号： " + sbbh);
             xListViewUtils.addParams(" AND devicestore.SBBH = ?", sbbh);
         } else if (guige != null) {
-            alert("规格： " + guige.getCOOD());
             xListViewUtils.addParams(" AND dv.GG = ?", guige.getCOOD());
         } else if (xinghao != null) {
-            alert("型号： " + xinghao.getCOOD());
             xListViewUtils.addParams(" AND dv.XH = ?", xinghao.getCOOD());
         } else if (leibie != null) {
-            alert("类别： " + leibie.getCOOD());
             xListViewUtils.addParams(" AND dv.LB = ?", leibie.getCOOD());
         }
         xListViewUtils.addParams(" AND (devicestore.LB = ?", "3");
