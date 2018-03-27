@@ -10,12 +10,13 @@ import com.jiekai.wzglld.R;
 import com.jiekai.wzglld.config.SqlUrl;
 import com.jiekai.wzglld.entity.DeviceBHEntity;
 import com.jiekai.wzglld.entity.DevicesortEntity;
-import com.jiekai.wzglld.entity.DevicestoreEntity;
+import com.jiekai.wzglld.ui.base.MyBaseActivity;
 import com.jiekai.wzglld.ui.popup.DeviceCodePopup;
 import com.jiekai.wzglld.ui.popup.DeviceNamePopup;
 import com.jiekai.wzglld.utils.StringUtils;
 import com.jiekai.wzglld.utils.dbutils.DBManager;
 import com.jiekai.wzglld.utils.dbutils.DbCallBack;
+import com.jiekai.wzglld.utils.dbutils.DbDeal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,8 @@ public class TypeUtils implements View.OnClickListener{
     private DevicesortEntity currentGuige;
     private String currentDeviceCode = null;    //选中设备的自编号
     private SBBHClick sbbhClick;
+
+    private DbDeal dbDeal = null;
 
     public interface SBBHClick {
         void clickGuige(DevicesortEntity guige);    //规格的点击回调
@@ -171,8 +174,8 @@ public class TypeUtils implements View.OnClickListener{
     }
 
     private void getLeiBie() {
-        DBManager.dbDeal(DBManager.SELECT)
-                .sql(SqlUrl.GetAllLeiBie)
+        dbDeal = DBManager.dbDeal(DBManager.SELECT);
+                dbDeal.sql(SqlUrl.GetAllLeiBie)
                 .clazz(DevicesortEntity.class)
                 .execut(activity.getApplicationContext(), new DbCallBack() {
                     @Override
@@ -209,8 +212,8 @@ public class TypeUtils implements View.OnClickListener{
             alert(activity.getResources().getString(R.string.params_empty));
             return;
         }
-        DBManager.dbDeal(DBManager.SELECT)
-                .sql(SqlUrl.GetXingHaoByLeiBie)
+        dbDeal = DBManager.dbDeal(DBManager.SELECT);
+                dbDeal.sql(SqlUrl.GetXingHaoByLeiBie)
                 .params(new String[]{leibie})
                 .clazz(DevicesortEntity.class)
                 .execut(activity.getApplicationContext(), new DbCallBack() {
@@ -252,8 +255,8 @@ public class TypeUtils implements View.OnClickListener{
             alert(activity.getResources().getString(R.string.params_empty));
             return;
         }
-        DBManager.dbDeal(DBManager.SELECT)
-                .sql(SqlUrl.GetGuiGeByXingHao)
+        dbDeal = DBManager.dbDeal(DBManager.SELECT);
+                dbDeal.sql(SqlUrl.GetGuiGeByXingHao)
                 .params(new String[]{xinghao})
                 .clazz(DevicesortEntity.class)
                 .execut(activity.getApplicationContext(), new DbCallBack() {
@@ -302,8 +305,8 @@ public class TypeUtils implements View.OnClickListener{
         String xinghao = currentXinghao.getCOOD();
         String guige = currentGuige.getCOOD();
         deviceId.setText("");
-        DBManager.dbDeal(DBManager.SELECT)
-                .sql(SqlUrl.GetBHByLeiBieXinghaoGuige)
+        dbDeal = DBManager.dbDeal(DBManager.SELECT);
+                dbDeal.sql(SqlUrl.GetBHByLeiBieXinghaoGuige)
                 .params(new String[]{leibie, xinghao, guige})
                 .clazz(DeviceBHEntity.class)
                 .execut(activity.getApplicationContext(), new DbCallBack() {
@@ -336,19 +339,19 @@ public class TypeUtils implements View.OnClickListener{
                 });
     }
 
+    public DbDeal getDbDeal() {
+        return dbDeal;
+    }
+
     private void showProgressDialog(String msg) {
-        dismissProgressDialog();
-        if (progressDialog == null) {
-            progressDialog = new ProgressDialog(activity);
-            progressDialog.setTitle(activity.getResources().getString(R.string.please_wait));
+        if (activity != null) {
+            ((MyBaseActivity) activity).showProgressDialog(msg);
         }
-        progressDialog.setMessage(msg);
-        progressDialog.show();
     }
 
     private void dismissProgressDialog() {
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
+        if (activity != null) {
+            ((MyBaseActivity) activity).dismissProgressDialog();
         }
     }
 

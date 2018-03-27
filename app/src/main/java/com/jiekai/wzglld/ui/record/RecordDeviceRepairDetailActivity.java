@@ -72,6 +72,9 @@ public class RecordDeviceRepairDetailActivity extends MyBaseActivity implements 
     private DevicestoreEntity currentData;
     private List<LocalMedia> choosePictures = new ArrayList<>();
 
+    private DbDeal imageDbDeal = null;
+    private DbDeal nameDbDeal = null;
+
     @Override
     public void initView() {
         setContentView(R.layout.activity_record_device_repair_detail);
@@ -123,6 +126,18 @@ public class RecordDeviceRepairDetailActivity extends MyBaseActivity implements 
     }
 
     @Override
+    public void cancleDbDeal() {
+        if (imageDbDeal != null) {
+            imageDbDeal.cancleDbDeal();
+            dismissProgressDialog();
+        }
+        if (nameDbDeal != null) {
+            nameDbDeal.cancleDbDeal();
+            dismissProgressDialog();
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back:
@@ -141,17 +156,17 @@ public class RecordDeviceRepairDetailActivity extends MyBaseActivity implements 
             alert(R.string.get_image_fail);
             return;
         }
-        DbDeal dbdeal = DBManager.NewDbDeal(DBManager.SELECT);
-        dbdeal.sql(SqlUrl.Get_Image_Path);
+        imageDbDeal = DBManager.dbDeal(DBManager.SELECT);
+        imageDbDeal.sql(SqlUrl.Get_Image_Path);
         if ("3".equals(currentData.getLB())) {
-            dbdeal.params(new Object[]{id, Config.doc_sbwx});
+            imageDbDeal.params(new Object[]{id, Config.doc_sbwx});
         } else if ("4".equals(currentData.getLB())) {
-            dbdeal.params(new Object[]{id, Config.doc_sbdx});
+            imageDbDeal.params(new Object[]{id, Config.doc_sbdx});
         } else if ("5".equals(currentData.getLB())) {
-            dbdeal.params(new Object[]{id, Config.doc_sbfc});
+            imageDbDeal.params(new Object[]{id, Config.doc_sbfc});
         }
-        dbdeal.clazz(DevicedocEntity.class);
-        dbdeal.execut(new DbCallBack() {
+        imageDbDeal.clazz(DevicedocEntity.class);
+        imageDbDeal.execut(mContext, new DbCallBack() {
             @Override
             public void onDbStart() {
 
@@ -180,11 +195,11 @@ public class RecordDeviceRepairDetailActivity extends MyBaseActivity implements 
         if (StringUtils.isEmpty(currentData.getSHR())) {
             return;
         }
-        DBManager.NewDbDeal(DBManager.SELECT)
-                .sql(SqlUrl.GET_NAME_BY_ID)
+        nameDbDeal = DBManager.dbDeal(DBManager.SELECT);
+                nameDbDeal.sql(SqlUrl.GET_NAME_BY_ID)
                 .params(new String[]{currentData.getSHR()})
                 .clazz(UserNameEntity.class)
-                .execut(new DbCallBack() {
+                .execut(mContext, new DbCallBack() {
                     @Override
                     public void onDbStart() {
 

@@ -86,6 +86,11 @@ public class QueryDeviceInfoFragment extends MyNFCBaseFragment implements View.O
             dbDeal.cancleDbDeal();
             dismissProgressDialog();
         }
+        DbDeal typeDbDeal = typeUtils.getDbDeal();
+        if (typeDbDeal != null) {
+            typeDbDeal.cancleDbDeal();
+            dismissProgressDialog();
+        }
     }
 
     @Override

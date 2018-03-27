@@ -16,6 +16,7 @@ import com.jiekai.wzglld.entity.DevicelogEntity;
 import com.jiekai.wzglld.ui.base.MyBaseActivity;
 import com.jiekai.wzglld.utils.dbutils.DBManager;
 import com.jiekai.wzglld.utils.dbutils.DbCallBack;
+import com.jiekai.wzglld.utils.dbutils.DbDeal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,8 @@ public class RecordHistoryActivity extends MyBaseActivity implements View.OnClic
     private RecordHistoryAdapter adapter;
     private List<DevicelogEntity> dataList = new ArrayList<>();
 
+    private DbDeal dbDeal = null;
+
     @Override
     public void initView() {
         setContentView(R.layout.activity_record_history);
@@ -67,6 +70,14 @@ public class RecordHistoryActivity extends MyBaseActivity implements View.OnClic
     }
 
     @Override
+    public void cancleDbDeal() {
+        if (dbDeal != null) {
+            dbDeal.cancleDbDeal();
+            dismissProgressDialog();
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back:
@@ -86,11 +97,11 @@ public class RecordHistoryActivity extends MyBaseActivity implements View.OnClic
     }
 
     private void getData() {
-        DBManager.dbDeal(DBManager.SELECT)
-                .sql(SqlUrl.GET_RECORD_CHECK_LIST)
+        dbDeal = DBManager.dbDeal(DBManager.SELECT);
+                dbDeal.sql(SqlUrl.GET_RECORD_CHECK_LIST)
                 .params(new String[]{userData.getUSERID()})
                 .clazz(DevicelogEntity.class)
-                .execut(new DbCallBack() {
+                .execut(mContext, new DbCallBack() {
                     @Override
                     public void onDbStart() {
                         showProgressDialog(getResources().getString(R.string.loading_data));

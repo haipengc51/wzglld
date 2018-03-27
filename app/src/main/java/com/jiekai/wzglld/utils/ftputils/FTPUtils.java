@@ -1,7 +1,5 @@
 package com.jiekai.wzglld.utils.ftputils;
 
-import android.util.Log;
-
 import com.jiekai.wzglld.utils.LogUtils;
 import com.jiekai.wzglld.utils.dbutils.PlantFrom;
 
@@ -208,9 +206,6 @@ public class FTPUtils {
                     while ((onceReadSize = inputStream.read(bytes)) != -1) {
                         outputStream.write(bytes, 0, onceReadSize);
                         localSize += onceReadSize;
-                        if (localSize >= 4020000) {
-                            Log.i("liu", "dada");
-                        }
                         int process = (int) (localSize / step);
                         if (process % 3 == 0){
                             doProgress(plantFrom, ftpCallBack, allSize, localSize, process);

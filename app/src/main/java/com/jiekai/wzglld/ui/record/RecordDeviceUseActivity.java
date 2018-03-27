@@ -1,6 +1,5 @@
 package com.jiekai.wzglld.ui.record;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +22,7 @@ import com.jiekai.wzglld.utils.DeviceIdUtils;
 import com.jiekai.wzglld.utils.StringUtils;
 import com.jiekai.wzglld.utils.dbutils.DBManager;
 import com.jiekai.wzglld.utils.dbutils.DbCallBack;
+import com.jiekai.wzglld.utils.dbutils.DbDeal;
 import com.jiekai.wzglld.utils.zxing.CaptureActivity;
 
 import java.util.ArrayList;
@@ -59,6 +59,10 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
 
     private DevicesortEntity currentGuiGe;
 
+    private DbDeal dbDeal = null;
+    private DbDeal deviceDbDeal = null;
+    private DbDeal recordListDbDeal = null;
+
     @Override
     public void initView() {
         setContentView(R.layout.activity_record_device_use);
@@ -93,6 +97,27 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
             adapter = new RecordDeviceAdapter(mActivity, dataList);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(this);
+        }
+    }
+
+    @Override
+    public void cancleDbDeal() {
+        if (dbDeal != null) {
+            dbDeal.cancleDbDeal();
+            dismissProgressDialog();
+        }
+        if (deviceDbDeal != null) {
+            deviceDbDeal.cancleDbDeal();
+            dismissProgressDialog();
+        }
+        if (recordListDbDeal != null) {
+            recordListDbDeal.cancleDbDeal();
+            dismissProgressDialog();
+        }
+        DbDeal typeDbDeal = typeUtils.getDbDeal();
+        if (typeDbDeal != null) {
+            typeDbDeal.cancleDbDeal();
+            dismissProgressDialog();
         }
     }
 
@@ -159,7 +184,7 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
      * 通过ID卡号获取设备信息
      * @param id
      */
-    private void getDeviceDataById(String id) {
+    private void getDeviceDataById(final String id) {
         if (StringUtils.isEmpty(id)) {
             return;
         }
@@ -167,11 +192,11 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
         deviceXinghao.setText("");
         deviceGuige.setText("");
         deviceId.setText("");
-        DBManager.NewDbDeal(DBManager.SELECT)
-                .sql(SqlUrl.GetPanKuDataByID)
+        deviceDbDeal = DBManager.dbDeal(DBManager.SELECT);
+                deviceDbDeal.sql(SqlUrl.GetPanKuDataByID)
                 .params(new String[]{id, id, id})
                 .clazz(PankuDataEntity.class)
-                .execut(new DbCallBack() {
+                .execut(mContext, new DbCallBack() {
                     @Override
                     public void onDbStart() {
                         showProgressDialog(getResources().getString(R.string.loading_device));
@@ -181,6 +206,7 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
                     public void onError(String err) {
                         alert(err);
                         dismissProgressDialog();
+                        readCardErroDialog.errShowIdDialog(id, true);
                     }
 
                     @Override
@@ -209,11 +235,11 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
             alert(R.string.get_id_err);
             return;
         }
-        DBManager.NewDbDeal(DBManager.SELECT)
-                .sql(SqlUrl.Get_Record_List)
+        recordListDbDeal = DBManager.dbDeal(DBManager.SELECT);
+                recordListDbDeal.sql(SqlUrl.Get_Record_List)
                 .params(new String[]{cardId, cardId, cardId})
                 .clazz(DevicelogsortEntity.class)
-                .execut(new DbCallBack() {
+                .execut(mContext, new DbCallBack() {
                     @Override
                     public void onDbStart() {
                         showProgressDialog(getResources().getString(R.string.loading_data));
@@ -241,7 +267,7 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
      * 通过二维码获取设备信息
      * @param id
      */
-    private void getDeviceDataBySAOMA(String id) {
+    private void getDeviceDataBySAOMA(final String id) {
         if (StringUtils.isEmpty(id)) {
             return;
         }
@@ -249,11 +275,11 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
         deviceXinghao.setText("");
         deviceGuige.setText("");
         deviceId.setText("");
-        DBManager.NewDbDeal(DBManager.SELECT)
-                .sql(SqlUrl.GetPanKuDataBySAOMA)
+        deviceDbDeal = DBManager.dbDeal(DBManager.SELECT);
+                deviceDbDeal.sql(SqlUrl.GetPanKuDataBySAOMA)
                 .params(new String[]{id})
                 .clazz(PankuDataEntity.class)
-                .execut(new DbCallBack() {
+                .execut(mContext, new DbCallBack() {
                     @Override
                     public void onDbStart() {
                         showProgressDialog(getResources().getString(R.string.loading_device));
@@ -263,6 +289,7 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
                     public void onError(String err) {
                         alert(err);
                         dismissProgressDialog();
+                        readCardErroDialog.errShowIdDialog(id, false);
                     }
 
                     @Override
@@ -291,11 +318,11 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
             alert(R.string.get_id_err);
             return;
         }
-        DBManager.NewDbDeal(DBManager.SELECT)
-                .sql(SqlUrl.Get_Record_List_By_SAOMA)
+        recordListDbDeal = DBManager.dbDeal(DBManager.SELECT);
+                recordListDbDeal.sql(SqlUrl.Get_Record_List_By_SAOMA)
                 .params(new String[]{cardId})
                 .clazz(DevicelogsortEntity.class)
-                .execut(new DbCallBack() {
+                .execut(mContext, new DbCallBack() {
                     @Override
                     public void onDbStart() {
                         showProgressDialog(getResources().getString(R.string.loading_data));
@@ -329,11 +356,11 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
             alert(R.string.get_bh_faild);
             return;
         }
-        DBManager.dbDeal(DBManager.SELECT)
-                .sql(SqlUrl.Get_Record_List_by_BH)
+        dbDeal = DBManager.dbDeal(DBManager.SELECT);
+                dbDeal.sql(SqlUrl.Get_Record_List_by_BH)
                 .params(new String[]{sbbh})
                 .clazz(DevicelogsortEntity.class)
-                .execut(new DbCallBack() {
+                .execut(mContext, new DbCallBack() {
                     @Override
                     public void onDbStart() {
                         showProgressDialog(getResources().getString(R.string.loading_data));
@@ -362,11 +389,11 @@ public class RecordDeviceUseActivity extends NFCBaseActivity implements View.OnC
             alert(R.string.get_bh_faild);
             return;
         }
-        DBManager.dbDeal(DBManager.SELECT)
-                .sql(SqlUrl.Get_Record_List_by_GG)
+        dbDeal = DBManager.dbDeal(DBManager.SELECT);
+                dbDeal.sql(SqlUrl.Get_Record_List_by_GG)
                 .params(new Object[]{devicesortEntity.getCOOD()})
                 .clazz(DevicelogsortEntity.class)
-                .execut(new DbCallBack() {
+                .execut(mContext, new DbCallBack() {
                     @Override
                     public void onDbStart() {
                         showProgressDialog(getResources().getString(R.string.loading_data));

@@ -18,20 +18,16 @@ import com.jiekai.wzglld.config.SqlUrl;
 import com.jiekai.wzglld.entity.DevicelogEntity;
 import com.jiekai.wzglld.entity.DevicelogsortEntity;
 import com.jiekai.wzglld.entity.DevicesortEntity;
-import com.jiekai.wzglld.entity.DevicestoreEntity;
 import com.jiekai.wzglld.ui.base.MyBaseActivity;
 import com.jiekai.wzglld.ui.uiUtils.XListViewUtils;
-import com.jiekai.wzglld.utils.CommonUtils;
 import com.jiekai.wzglld.utils.StringUtils;
-import com.jiekai.wzglld.utils.dbutils.DBManager;
-import com.jiekai.wzglld.utils.dbutils.DbCallBack;
+import com.jiekai.wzglld.utils.dbutils.DbDeal;
 import com.jiekai.wzglld.weight.XListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by laowu on 2018/1/14.
@@ -147,6 +143,15 @@ public class RecordDeviceUseDetailListActivity extends MyBaseActivity implements
             getListDataByGG();
         } else {
             getListDataById(id);
+        }
+    }
+
+    @Override
+    public void cancleDbDeal() {
+        DbDeal xlistDbDeal = xListViewUtils.getDbDeal();
+        if (xlistDbDeal != null) {
+            xlistDbDeal.cancleDbDeal();
+            dismissProgressDialog();
         }
     }
 

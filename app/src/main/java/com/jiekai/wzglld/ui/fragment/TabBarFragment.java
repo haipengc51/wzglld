@@ -1,12 +1,9 @@
 package com.jiekai.wzglld.ui.fragment;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -150,6 +147,7 @@ public class TabBarFragment extends MyNFCBaseFragment {
                     transaction.add(R.id.content, baseFragment, String.valueOf(position)).commitAllowingStateLoss();
                 }
             }
+            tagFragment = baseFragment;
         }
     }
 

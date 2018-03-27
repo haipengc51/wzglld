@@ -2,6 +2,7 @@ package com.jiekai.wzglld.utils.dbutils;
 
 
 import android.content.Context;
+import android.util.Log;
 
 import com.jiekai.wzglld.config.Config;
 
@@ -28,6 +29,16 @@ public class DbDeal extends AsynInterface {
     private Object[] params;
     private int dbType;
     private Class mClass;
+
+    private boolean isCancle = false;
+
+    public DbDeal() {
+        try {
+            Class.forName(Config.DB_CLASS_NAME);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static DbDeal getInstance() {
         if (mDbDeal == null) {
@@ -65,6 +76,7 @@ public class DbDeal extends AsynInterface {
     }
 
     public void execut(Context context, DbCallBack dbCallBack) {
+        isCancle = false;
         DBManager.getInstance().execute(context, DbDeal.this, dbCallBack);
     }
 
@@ -90,13 +102,10 @@ public class DbDeal extends AsynInterface {
      */
     private boolean initConnection() {
         try {
-            Class.forName(Config.DB_CLASS_NAME);
+//            Class.forName(Config.DB_CLASS_NAME);
             connection = DriverManager.getConnection(Config.DB_URL, Config.DB_USER_NAME, Config.DB_USER_PASSWORD);
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        } catch (ClassNotFoundException e) {
             e.printStackTrace();
             return false;
         }

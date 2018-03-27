@@ -15,8 +15,8 @@ import com.jiekai.wzglld.config.SqlUrl;
 import com.jiekai.wzglld.entity.DeviceapplyEntity;
 import com.jiekai.wzglld.entity.DevicestoreEntity;
 import com.jiekai.wzglld.ui.base.MyBaseActivity;
-import com.jiekai.wzglld.ui.record.RecordDeviceInDetailActivity;
 import com.jiekai.wzglld.ui.uiUtils.XListViewUtils;
+import com.jiekai.wzglld.utils.dbutils.DbDeal;
 import com.jiekai.wzglld.weight.XListView;
 
 import java.util.ArrayList;
@@ -73,7 +73,11 @@ public class RecordDeviceApplayActivity extends MyBaseActivity implements OnClic
 
     @Override
     public void cancleDbDeal() {
-
+        DbDeal dbDeal = xListViewUtils.getDbDeal();
+        if (dbDeal != null) {
+            dbDeal.cancleDbDeal();
+            dismissProgressDialog();
+        }
     }
 
     @Override

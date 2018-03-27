@@ -31,6 +31,8 @@ public class XListViewUtils implements XListView.IXListViewListener, AdapterView
     private Class clazz;
     private boolean isLoading = false;
 
+    private DbDeal dbDeal = null;
+
     public XListViewUtils(XListView xListView) {
         this.xListView = xListView;
         init();
@@ -103,7 +105,7 @@ public class XListViewUtils implements XListView.IXListViewListener, AdapterView
         }
         isLoading = true;
 
-        DbDeal dbDeal = DBManager.dbDeal(DBManager.SELECT);
+        dbDeal = DBManager.dbDeal(DBManager.SELECT);
 
         StringBuilder builder = new StringBuilder();
         builder.append(sqlUrl);
@@ -122,10 +124,18 @@ public class XListViewUtils implements XListView.IXListViewListener, AdapterView
         dbDeal.sql(builder.toString());
         dbDeal.params(objects);
         dbDeal.clazz(clazz);
+
+//        final int finalIndex = index;
         dbDeal.execut(xListView.getContext(), new DbCallBack() {
             @Override
             public void onDbStart() {
-
+//                if (finalIndex <= 1) {
+//                    try {
+//                        ((MyBaseActivity) xListView.getContext()).showProgressDialog("正在加载数据...");
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
             }
 
             @Override
@@ -133,10 +143,24 @@ public class XListViewUtils implements XListView.IXListViewListener, AdapterView
                 isLoading = false;
                 onLoad();
                 xListView.mFooterView.show();
+//                if (finalIndex <= 1) {
+//                    try {
+//                        ((MyBaseActivity) xListView.getContext()).dismissProgressDialog();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
             }
 
             @Override
             public void onResponse(List result) {
+//                if (finalIndex <= 1) {
+//                    try {
+//                        ((MyBaseActivity) xListView.getContext()).dismissProgressDialog();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
                 try {
                     isLoading = false;
                     onLoad();
@@ -167,5 +191,9 @@ public class XListViewUtils implements XListView.IXListViewListener, AdapterView
 
     public void onDestroy() {
         index = 1;
+    }
+
+    public DbDeal getDbDeal() {
+        return dbDeal;
     }
 }

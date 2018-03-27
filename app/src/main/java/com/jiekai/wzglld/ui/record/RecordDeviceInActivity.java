@@ -1,6 +1,5 @@
 package com.jiekai.wzglld.ui.record;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -119,6 +118,16 @@ public class RecordDeviceInActivity extends NFCBaseActivity implements View.OnCl
         if (dbDeal != null) {
             dbDeal.cancleDbDeal();
             dismissFiltrateDialog();
+        }
+        DbDeal xlistDbDeal = xListViewUtils.getDbDeal();
+        if (xlistDbDeal != null) {
+            xlistDbDeal.cancleDbDeal();
+            dismissProgressDialog();
+        }
+        DbDeal typeDbDeal = typeUtils.getDbDeal();
+        if (typeDbDeal != null) {
+            typeDbDeal.cancleDbDeal();
+            dismissProgressDialog();
         }
     }
 

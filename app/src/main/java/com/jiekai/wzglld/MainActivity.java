@@ -33,7 +33,7 @@ public class MainActivity extends NFCBaseActivity {
             switch (msg.what) {
                 case HANDLER_CHENGE_UPDATE:     //延时检测是否有更新
                     UpdateManager updateManager = new UpdateManager(MainActivity.this);
-                    updateManager.getRemoteVersion();
+                    updateManager.getRemoteVersion(mContext);
                     break;
             }
         }

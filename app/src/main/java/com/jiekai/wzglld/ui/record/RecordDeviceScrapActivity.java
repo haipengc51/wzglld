@@ -1,6 +1,5 @@
 package com.jiekai.wzglld.ui.record;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -25,6 +24,7 @@ import com.jiekai.wzglld.utils.DeviceIdUtils;
 import com.jiekai.wzglld.utils.StringUtils;
 import com.jiekai.wzglld.utils.dbutils.DBManager;
 import com.jiekai.wzglld.utils.dbutils.DbCallBack;
+import com.jiekai.wzglld.utils.dbutils.DbDeal;
 import com.jiekai.wzglld.utils.zxing.CaptureActivity;
 import com.jiekai.wzglld.weight.XListView;
 
@@ -64,6 +64,8 @@ public class RecordDeviceScrapActivity extends NFCBaseActivity implements View.O
 
     private RecordDeviceScrapAdapter adapter;
     private List<DevicescrapEntity> dataList = new ArrayList();
+
+    private DbDeal dbDeal = null;
 
     @Override
     public void initView() {
@@ -113,6 +115,24 @@ public class RecordDeviceScrapActivity extends NFCBaseActivity implements View.O
     }
 
     @Override
+    public void cancleDbDeal() {
+        if (dbDeal != null) {
+            dbDeal.cancleDbDeal();
+            dismissFiltrateDialog();
+        }
+        DbDeal xlistDbDeal = xListViewUtils.getDbDeal();
+        if (xlistDbDeal != null) {
+            xlistDbDeal.cancleDbDeal();
+            dismissProgressDialog();
+        }
+        DbDeal typeDbDeal = typeUtils.getDbDeal();
+        if (typeDbDeal != null) {
+            typeDbDeal.cancleDbDeal();
+            dismissProgressDialog();
+        }
+    }
+
+    @Override
     public void getNfcData(String nfcString) {
         if (deviceReadcardDialog != null && deviceReadcardDialog.isShowing()) {
             deviceReadcardDialog.dismiss();
@@ -158,7 +178,7 @@ public class RecordDeviceScrapActivity extends NFCBaseActivity implements View.O
      * 通过ID卡号获取设备信息
      * @param id
      */
-    private void getDeviceDataById(String id) {
+    private void getDeviceDataById(final String id) {
         if (StringUtils.isEmpty(id)) {
             return;
         }
@@ -166,11 +186,11 @@ public class RecordDeviceScrapActivity extends NFCBaseActivity implements View.O
         deviceXinghao.setText("");
         deviceGuige.setText("");
         deviceId.setText("");
-        DBManager.dbDeal(DBManager.SELECT)
-                .sql(SqlUrl.GetPanKuDataByID)
+        dbDeal = DBManager.dbDeal(DBManager.SELECT);
+                dbDeal.sql(SqlUrl.GetPanKuDataByID)
                 .params(new String[]{id, id, id})
                 .clazz(PankuDataEntity.class)
-                .execut(new DbCallBack() {
+                .execut(mContext, new DbCallBack() {
                     @Override
                     public void onDbStart() {
                         showProgressDialog(getResources().getString(R.string.loading_device));
@@ -180,6 +200,7 @@ public class RecordDeviceScrapActivity extends NFCBaseActivity implements View.O
                     public void onError(String err) {
                         alert(err);
                         dismissProgressDialog();
+                        readCardErroDialog.errShowIdDialog(id, true);
                     }
 
                     @Override
@@ -205,7 +226,7 @@ public class RecordDeviceScrapActivity extends NFCBaseActivity implements View.O
      * 通过二维码获取设备信息
      * @param id
      */
-    private void getDeviceDataBySAOMA(String id) {
+    private void getDeviceDataBySAOMA(final String id) {
         if (StringUtils.isEmpty(id)) {
             return;
         }
@@ -213,11 +234,11 @@ public class RecordDeviceScrapActivity extends NFCBaseActivity implements View.O
         deviceXinghao.setText("");
         deviceGuige.setText("");
         deviceId.setText("");
-        DBManager.dbDeal(DBManager.SELECT)
-                .sql(SqlUrl.GetPanKuDataBySAOMA)
+        dbDeal = DBManager.dbDeal(DBManager.SELECT);
+                dbDeal.sql(SqlUrl.GetPanKuDataBySAOMA)
                 .params(new String[]{id})
                 .clazz(PankuDataEntity.class)
-                .execut(new DbCallBack() {
+                .execut(mContext, new DbCallBack() {
                     @Override
                     public void onDbStart() {
                         showProgressDialog(getResources().getString(R.string.loading_device));
@@ -227,6 +248,7 @@ public class RecordDeviceScrapActivity extends NFCBaseActivity implements View.O
                     public void onError(String err) {
                         alert(err);
                         dismissProgressDialog();
+                        readCardErroDialog.errShowIdDialog(id, false);
                     }
 
                     @Override

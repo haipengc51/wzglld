@@ -19,6 +19,7 @@ import com.jiekai.wzglld.utils.StringUtils;
 import com.jiekai.wzglld.utils.TimeUtils;
 import com.jiekai.wzglld.utils.dbutils.DBManager;
 import com.jiekai.wzglld.utils.dbutils.DbCallBack;
+import com.jiekai.wzglld.utils.dbutils.DbDeal;
 import com.luck.picture.lib.entity.LocalMedia;
 
 import java.util.ArrayList;
@@ -68,6 +69,8 @@ public class RecordDeviceScrapDetailActivity extends MyBaseActivity implements V
     private DevicescrapEntity currentData;
     private List<LocalMedia> choosePictures = new ArrayList<>();
 
+    private DbDeal imageDbDeal = null;
+
     @Override
     public void initView() {
         setContentView(R.layout.activity_scrap_device_scrap_detail);
@@ -113,6 +116,14 @@ public class RecordDeviceScrapDetailActivity extends MyBaseActivity implements V
     }
 
     @Override
+    public void cancleDbDeal() {
+        if (imageDbDeal != null) {
+            imageDbDeal.cancleDbDeal();
+            dismissProgressDialog();
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back:
@@ -131,11 +142,11 @@ public class RecordDeviceScrapDetailActivity extends MyBaseActivity implements V
             alert(R.string.get_image_fail);
             return;
         }
-        DBManager.NewDbDeal(DBManager.SELECT)
-                .sql(SqlUrl.Get_Image_Path)
+        imageDbDeal = DBManager.dbDeal(DBManager.SELECT);
+                imageDbDeal.sql(SqlUrl.Get_Image_Path)
                 .params(new Object[]{id, Config.doc_sbbf})
                 .clazz(DevicedocEntity.class)
-                .execut(new DbCallBack() {
+                .execut(mContext, new DbCallBack() {
                     @Override
                     public void onDbStart() {
 
