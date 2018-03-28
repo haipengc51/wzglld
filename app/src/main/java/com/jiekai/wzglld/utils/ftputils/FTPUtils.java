@@ -99,7 +99,7 @@ public class FTPUtils {
         String upFielPath = remotePath;
         if (!ftpClient.isConnected()) {
             if (!initFTPSetting(FTPUrl,  FTPPort,  UserName,  UserPassword)) {
-                return "连接服务器失败";
+                return "连接服务器失败，请检查网络";
             }
         }
         try {
@@ -170,8 +170,8 @@ public class FTPUtils {
         doStart(plantFrom, ftpCallBack);
         if (!ftpClient.isConnected()) {
             if (!initFTPSetting(FTPUrl,  FTPPort,  UserName,  UserPassword)) {
-                doFail(plantFrom, ftpCallBack, "连接服务器失败");
-                return "连接服务器失败";
+                doFail(plantFrom, ftpCallBack, "连接服务器失败，请检查网络");
+                return "连接服务器失败，请检查网络";
             }
         }
         try {
